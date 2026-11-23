@@ -1,1 +1,1319 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>TaskTracker</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface-2: #273549;
+      --border: rgba(148, 163, 184, 0.16);
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --accent: #3b82f6;
+      --accent-soft: rgba(59, 130, 246, 0.16);
+      --green: #10b981;
+      --green-soft: rgba(16, 185, 129, 0.16);
+      --amber: #f59e0b;
+      --amber-soft: rgba(245, 158, 11, 0.16);
+      --red: #ef4444;
+      --red-soft: rgba(239, 68, 68, 0.16);
+      --radius: 14px;
+    }
 
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 84px;
+    }
+
+    .screen { display: none; padding: 14px; max-width: 680px; margin: 0 auto; }
+    .screen.active { display: block; }
+
+    /* Loading */
+    .loader-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 75vh;
+      gap: 14px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .spinner {
+      width: 34px; height: 34px;
+      border: 3px solid rgba(59,130,246,0.2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Card */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .title-lg { font-size: 20px; font-weight: 700; margin: 0 0 6px; }
+    .subtitle { font-size: 13px; color: var(--muted); margin: 0 0 18px; line-height: 1.45; }
+
+    /* Inputs & Buttons */
+    .field { margin-bottom: 14px; }
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .input, .select, .textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 11px 12px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .input:focus, .select:focus, .textarea:focus { border-color: var(--accent); }
+    .textarea { min-height: 86px; resize: vertical; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      border: none;
+      border-radius: 10px;
+      padding: 11px 15px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn-block { width: 100%; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-success { background: var(--green); color: #fff; }
+    .btn-danger { background: var(--red-soft); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+    .btn-outline { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); }
+    .btn-sm { padding: 7px 11px; font-size: 12.5px; border-radius: 8px; }
+
+    .phone-verified-box {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--green-soft);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #6ee7b7;
+      padding: 11px 13px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* Header */
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .user-meta { min-width: 0; }
+    .user-name {
+      font-size: 16px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .user-role-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 3px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #93c5fd;
+      background: var(--accent-soft);
+      padding: 3px 8px;
+      border-radius: 99px;
+    }
+    .header-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    .icon-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    /* Top Tabs */
+    .tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-bottom: 12px;
+      scrollbar-width: none;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      flex-shrink: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 8px 13px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tab-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .badge {
+      background: rgba(255,255,255,0.16);
+      padding: 1px 6px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .badge-alert {
+      background: var(--red);
+      color: #fff;
+    }
+
+    /* Filters */
+    .filters-box {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .search-wrap { position: relative; }
+    .search-wrap .input { padding-right: 36px; background: var(--surface); }
+    .search-clear {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 16px;
+      cursor: pointer;
+      display: none;
+      padding: 4px 6px;
+    }
+    .filter-row {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .filter-row::-webkit-scrollbar { display: none; }
+    .chip {
+      flex-shrink: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 6px 11px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .chip.active { background: var(--accent-soft); border-color: var(--accent); color: #93c5fd; }
+    .chip.prio-active { background: var(--red-soft); border-color: var(--red); color: #fca5a5; }
+
+    /* Task Cards */
+    .task-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 13px 14px;
+      margin-bottom: 10px;
+    }
+    .task-card.is-priority { border-left-color: var(--red); }
+    .task-card.is-done { border-left-color: var(--green); opacity: 0.82; }
+
+    .task-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .tag-group { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+    .tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .tag-prio { background: var(--red-soft); color: #fca5a5; }
+    .tag-normal { background: rgba(148,163,184,0.14); color: var(--muted); }
+    .tag-st-yangi { background: var(--accent-soft); color: #93c5fd; }
+    .tag-st-jarayonda { background: var(--amber-soft); color: #fcd34d; }
+    .tag-st-bajarildi { background: var(--green-soft); color: #6ee7b7; }
+
+    .task-text {
+      font-size: 14.5px;
+      font-weight: 600;
+      line-height: 1.4;
+      margin-bottom: 10px;
+      word-break: break-word;
+    }
+    .task-card.is-done .task-text { text-decoration: line-through; color: var(--muted); }
+
+    .task-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 12px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .task-meta span strong { color: #cbd5e1; font-weight: 600; }
+
+    .status-switch {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+    }
+    .st-btn {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 7px 6px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .st-btn.active-yangi { background: var(--accent-soft); border-color: var(--accent); color: #93c5fd; }
+    .st-btn.active-jarayonda { background: var(--amber-soft); border-color: var(--amber); color: #fcd34d; }
+    .st-btn.active-bajarildi { background: var(--green-soft); border-color: var(--green); color: #6ee7b7; }
+
+    /* Users Admin */
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin: 14px 0 8px;
+    }
+    .user-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 13px 14px;
+      margin-bottom: 10px;
+    }
+    .user-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .user-card-fio { font-size: 15px; font-weight: 700; }
+    .user-card-sub { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+    .approve-box {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .btn-row { display: flex; gap: 8px; }
+    .btn-row > * { flex: 1; }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 36px 16px;
+      color: var(--muted);
+      font-size: 14px;
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+    }
+
+    /* FAB */
+    .fab {
+      position: fixed;
+      right: 16px;
+      bottom: 18px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 99px;
+      padding: 13px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: inherit;
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      gap: 6px;
+      z-index: 40;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.75);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 80;
+      padding: 12px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-sheet {
+      width: 100%;
+      max-width: 560px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px 16px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .modal-title { font-size: 17px; font-weight: 700; margin: 0; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    .switch {
+      position: relative;
+      width: 44px;
+      height: 24px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      inset: 0;
+      background: #475569;
+      border-radius: 99px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .slider::before {
+      content: '';
+      position: absolute;
+      width: 18px; height: 18px;
+      left: 3px; top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: 0.2s;
+    }
+    .switch input:checked + .slider { background: var(--red); }
+    .switch input:checked + .slider::before { transform: translateX(20px); }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: #0b1220;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.25s;
+      z-index: 120;
+      max-width: 90vw;
+      text-align: center;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+  <div id="toast" class="toast"></div>
+
+  <!-- 1. LOADING SCREEN -->
+  <div id="screen-loading" class="screen active">
+    <div class="loader-wrap">
+      <div class="spinner"></div>
+      <div>Ma’lumotlar yuklanmoqda...</div>
+    </div>
+  </div>
+
+  <!-- 2. REGISTRATION SCREEN -->
+  <div id="screen-register" class="screen">
+    <div class="card" style="margin-top:16px;">
+      <h1 class="title-lg">📝 Ro‘yxatdan o‘tish</h1>
+      <p class="subtitle">Tizimdan foydalanish uchun to‘liq ism-sharifingizni kiriting va Telegram telefon raqamingizni yuboring.</p>
+
+      <div class="field">
+        <label for="regFio">To‘liq ism-sharifingiz (F.I.Sh)</label>
+        <input id="regFio" type="text" class="input" placeholder="Masalan: Aliyev Sardor Karimovich" autocomplete="name" />
+      </div>
+
+      <div class="field">
+        <label>Telefon raqamingiz</label>
+        <button id="btnSharePhone" type="button" class="btn btn-outline btn-block" onclick="requestUserPhone()">
+          📱 Raqamni yuborish
+        </button>
+        <div id="phoneVerifiedBox" class="phone-verified-box">
+          <span id="phoneVerifiedText">+998...</span>
+          <span>✓ Tasdiqlandi</span>
+        </div>
+        <div id="phoneHelpNote" style="display:none; margin-top:8px; font-size:12px; color:#fcd34d; line-height:1.4;"></div>
+      </div>
+
+      <button id="btnRegSubmit" type="button" class="btn btn-primary btn-block" onclick="submitRegistration()" disabled>
+        Ro‘yxatdan o‘tish
+      </button>
+    </div>
+  </div>
+
+  <!-- 3. PENDING SCREEN -->
+  <div id="screen-pending" class="screen">
+    <div class="card" style="margin-top:24px; text-align:center;">
+      <div style="font-size:40px; margin-bottom:10px;">⏳</div>
+      <h2 class="title-lg">Tasdiqlash kutilmoqda</h2>
+      <p class="subtitle" id="pendingDesc">So‘rovingiz Adminga yuborildi. Admin sizni jadvaldagi ismingizga bog‘lab tasdiqlashi bilan tizim ochiladi.</p>
+      <button type="button" class="btn btn-outline" onclick="loadAppData(true)">🔄 Holatni tekshirish</button>
+    </div>
+  </div>
+
+  <!-- 4. REJECTED SCREEN -->
+  <div id="screen-rejected" class="screen">
+    <div class="card" style="margin-top:24px; text-align:center;">
+      <div style="font-size:40px; margin-bottom:10px;">❌</div>
+      <h2 class="title-lg">So‘rov rad etilgan</h2>
+      <p class="subtitle">Ma’lumotlaringizni tekshirib, qaytadan ro‘yxatdan o‘tish so‘rovini yuborishingiz mumkin.</p>
+      <button type="button" class="btn btn-primary" onclick="showScreen('screen-register')">Qayta ro‘yxatdan o‘tish</button>
+    </div>
+  </div>
+
+  <!-- 5. MAIN APP SCREEN -->
+  <div id="screen-main" class="screen">
+    <div class="app-header">
+      <div class="user-meta">
+        <div class="user-name" id="hdrName">Foydalanuvchi</div>
+        <div class="user-role-pill" id="hdrBadge">Xodim</div>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" title="Yangilash" onclick="loadAppData(true)">🔄</button>
+      </div>
+    </div>
+
+    <!-- Top Navigation Tabs -->
+    <div class="tabs" id="topTabs"></div>
+
+    <!-- Filters (Tasks tabs) -->
+    <div id="filtersBox" class="filters-box">
+      <div class="search-wrap">
+        <input id="searchInput" type="text" class="input" placeholder="Vazifa yoki ijrochi qidirish..." oninput="onSearchInput()" />
+        <button id="searchClearBtn" class="search-clear" type="button" onclick="clearSearch()">✕</button>
+      </div>
+
+      <div id="adminPositionFilterWrap" style="display:none;">
+        <select id="adminPositionFilter" class="select" onchange="renderCurrentTab()">
+          <option value="">👥 Barcha xodimlar</option>
+        </select>
+      </div>
+
+      <div class="filter-row">
+        <button class="chip active" data-st="" onclick="setStatusFilter('', this)">Barchasi</button>
+        <button class="chip" data-st="Yangi" onclick="setStatusFilter('Yangi', this)">Yangi</button>
+        <button class="chip" data-st="Jarayonda" onclick="setStatusFilter('Jarayonda', this)">Jarayonda</button>
+        <button class="chip" data-st="Bajarildi" onclick="setStatusFilter('Bajarildi', this)">Bajarildi</button>
+        <button id="prioFilterChip" class="chip" onclick="togglePrioFilter()">🔥 Muhim</button>
+      </div>
+    </div>
+
+    <!-- Dynamic List Content -->
+    <div id="mainContent"></div>
+  </div>
+
+  <!-- Floating + Yangi vazifa Button -->
+  <button id="fabAddTask" class="fab" type="button" onclick="openTaskModal()">＋ Yangi vazifa</button>
+
+  <!-- MODAL: + YANGI VAZIFA -->
+  <div id="taskModal" class="modal-backdrop" onclick="if(event.target===this) closeTaskModal()">
+    <div class="modal-sheet">
+      <div class="modal-head">
+        <h3 class="modal-title">＋ Yangi vazifa qo‘shish</h3>
+        <button class="icon-btn" type="button" onclick="closeTaskModal()">✕</button>
+      </div>
+
+      <div class="field">
+        <label for="mPosition">Ijrochi (Kimga)</label>
+        <select id="mPosition" class="select"></select>
+      </div>
+
+      <div class="field" id="mManualPosWrap" style="display:none;">
+        <label for="mManualPos">Yoki yangi ijrochi ismi (ixtiyoriy)</label>
+        <input id="mManualPos" type="text" class="input" placeholder="Ro‘yxatda bo‘lmasa yozing..." />
+      </div>
+
+      <div class="field">
+        <label for="mTask">Vazifa matni</label>
+        <textarea id="mTask" class="textarea" placeholder="Nima qilinishi kerakligini yozing..."></textarea>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="mStart">Boshlash sanasi</label>
+          <input id="mStart" type="date" class="input" />
+        </div>
+        <div class="field">
+          <label for="mDeadline">Tugatish muddati</label>
+          <input id="mDeadline" type="date" class="input" />
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="mHours">Soat (ixtiyoriy)</label>
+          <input id="mHours" type="number" step="0.5" min="0" class="input" placeholder="Masalan: 2" />
+        </div>
+        <div class="field">
+          <label>Muhimlik</label>
+          <div class="toggle-row">
+            <span id="mPrioLabel" style="font-size:13px; font-weight:600;">Oddiy</span>
+            <label class="switch">
+              <input id="mPriority" type="checkbox" onchange="document.getElementById('mPrioLabel').innerText = this.checked ? '🔥 Muhim' : 'Oddiy'" />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <button id="btnSaveTask" type="button" class="btn btn-primary btn-block" onclick="submitNewTask()">
+        Saqlash va yuborish
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL: CONFIRM -->
+  <div id="confirmModal" class="modal-backdrop" onclick="if(event.target===this) closeConfirm()">
+    <div class="modal-sheet">
+      <h3 class="modal-title" style="margin-bottom:8px;">Tasdiqlang</h3>
+      <p id="confirmText" class="subtitle" style="margin-bottom:16px;"></p>
+      <div class="btn-row">
+        <button class="btn btn-outline" type="button" onclick="closeConfirm()">Bekor qilish</button>
+        <button id="confirmOkBtn" class="btn btn-danger" type="button">O‘chirish</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ==================== SOZLAMA ====================
+    // Google Apps Script Deploy qilingan Web App URL manzilini shu yerga qo'ying:
+    const SCRIPT_URL = 'WEB_APP_URL_MANZILINGIZNI_SHU_YERGA_YOZING';
+
+    const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+    }
+
+    const tgUser = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user : {};
+    const CHAT_ID = tgUser.id ? String(tgUser.id) : (new URLSearchParams(location.search).get('chatId') || '');
+    const USERNAME = tgUser.username || '';
+
+    let state = {
+      isAdmin: false,
+      user: null,
+      verifiedPhone: '',
+      planPositions: [],
+      assignablePositions: [],
+      tasks: [],
+      pendingUsers: [],
+      approvedUsers: [],
+      activeTab: '',
+      statusFilter: '',
+      prioOnly: false,
+      searchQuery: ''
+    };
+
+    let confirmCallback = null;
+
+    function escHtml(s) {
+      return String(s || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function normStr(s) {
+      return String(s || '').toLowerCase().trim().replace(/['`ʼʻ‘’ˈ′]/g, "'").replace(/\s+/g, ' ');
+    }
+
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.innerText = msg;
+      el.classList.add('show');
+      clearTimeout(el._t);
+      el._t = setTimeout(() => el.classList.remove('show'), 2800);
+    }
+
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById(id);
+      if (target) target.classList.add('active');
+      document.getElementById('fabAddTask').style.display = (id === 'screen-main') ? 'inline-flex' : 'none';
+    }
+
+    async function apiGet(params) {
+      const qs = new URLSearchParams(params).toString();
+      const res = await fetch(`${SCRIPT_URL}?${qs}`, { method: 'GET' });
+      return res.json();
+    }
+
+    async function apiPost(payload) {
+      // text/plain CORS preflight (OPTIONS) so'rovisiz to'g'ridan-to'g'ri Apps Script ga ishlaydi
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      });
+      return res.json();
+    }
+
+    async function loadAppData(silent) {
+      if (!CHAT_ID) {
+        showScreen('screen-register');
+        showToast('Telegram ichidan oching (Chat ID topilmadi).');
+        return;
+      }
+      if (!silent) showScreen('screen-loading');
+
+      try {
+        const data = await apiGet({ action: 'INIT_APP', chatId: CHAT_ID });
+        if (!data || !data.ok) {
+          throw new Error((data && data.error) || 'Serverdan javob olinmadi');
+        }
+
+        state.isAdmin = Boolean(data.isAdmin);
+        state.user = data.user;
+        state.verifiedPhone = data.verifiedPhone || (data.user && data.user.phone) || '';
+        state.planPositions = data.planPositions || [];
+        state.assignablePositions = data.assignablePositions || [];
+        state.tasks = data.tasks || [];
+        state.pendingUsers = data.pendingUsers || [];
+        state.approvedUsers = data.approvedUsers || [];
+
+        if (state.isAdmin || (state.user && state.user.status === 'Tasdiqlangan')) {
+          setupMainApp();
+          showScreen('screen-main');
+          if (silent) showToast('Yangilandi');
+        } else if (state.user && state.user.status === 'Kutilmoqda') {
+          document.getElementById('pendingDesc').innerText =
+            `${state.user.fio} (+${state.user.phone}) — so‘rovingiz Adminga yuborilgan. Tasdiqlangach tizim avtomatik ochiladi.`;
+          showScreen('screen-pending');
+        } else if (state.user && state.user.status === 'Rad etilgan') {
+          prefillRegForm();
+          showScreen('screen-rejected');
+        } else {
+          prefillRegForm();
+          showScreen('screen-register');
+        }
+      } catch (err) {
+        showToast('Xatolik: ' + err.message);
+        if (!silent) showScreen('screen-register');
+      }
+    }
+
+    // ==================== RO'YXATDAN O'TISH VA TELEFON RAQAM ====================
+    function prefillRegForm() {
+      const fioEl = document.getElementById('regFio');
+      if (!fioEl.value && tgUser.first_name) {
+        fioEl.value = [tgUser.first_name, tgUser.last_name].filter(Boolean).join(' ');
+      }
+      updateRegPhoneUI();
+    }
+
+    function updateRegPhoneUI() {
+      const btnShare = document.getElementById('btnSharePhone');
+      const box = document.getElementById('phoneVerifiedBox');
+      const submitBtn = document.getElementById('btnRegSubmit');
+
+      if (state.verifiedPhone) {
+        btnShare.style.display = 'none';
+        box.style.display = 'flex';
+        document.getElementById('phoneVerifiedText').innerText = '+' + state.verifiedPhone;
+        submitBtn.disabled = false;
+      } else {
+        btnShare.style.display = 'inline-flex';
+        box.style.display = 'none';
+        submitBtn.disabled = true;
+      }
+    }
+
+    function requestUserPhone() {
+      const noteEl = document.getElementById('phoneHelpNote');
+      noteEl.style.display = 'none';
+
+      if (tg && typeof tg.requestContact === 'function') {
+        tg.requestContact((sent, event) => {
+          if (!sent) {
+            showToast('Telefon raqam yuborilmadi.');
+            return;
+          }
+          const directPhone = event && event.responseUnsafe && event.responseUnsafe.contact && event.responseUnsafe.contact.phone_number;
+          if (directPhone) {
+            state.verifiedPhone = String(directPhone).replace(/\D/g, '');
+            updateRegPhoneUI();
+            showToast('Telefon raqam qabul qilindi!');
+            return;
+          }
+          // Webhook orqali saqlangan raqamni tekshirib olamiz
+          pollVerifiedPhone(0);
+        });
+      } else {
+        // Eski Telegram versiyalari uchun bot chatiga raqam yuborish tugmasini jo'natamiz
+        apiPost({ action: 'SEND_CONTACT_PROMPT', chatId: CHAT_ID }).catch(() => {});
+        noteEl.innerText = 'Bot chatiga «📱 Telefon raqamni yuborish» tugmasi yuborildi. Raqamingizni yuborib, shu oynaga qayting.';
+        noteEl.style.display = 'block';
+        pollVerifiedPhone(0);
+      }
+    }
+
+    async function pollVerifiedPhone(attempt) {
+      if (attempt === 0) showToast('Raqam tasdiqlanmoqda...');
+      try {
+        const res = await apiGet({ action: 'GET_VERIFIED_PHONE', chatId: CHAT_ID });
+        if (res && res.phone) {
+          state.verifiedPhone = res.phone;
+          updateRegPhoneUI();
+          showToast('Telefon raqam tasdiqlandi!');
+          return;
+        }
+      } catch (e) {}
+
+      if (attempt < 7) {
+        setTimeout(() => pollVerifiedPhone(attempt + 1), 1300);
+      } else {
+        showToast('Raqam hali kelmadi. Yana bir bor urinib ko‘ring.');
+      }
+    }
+
+    async function submitRegistration() {
+      const fio = document.getElementById('regFio').value.trim();
+      if (fio.length < 3) {
+        showToast('To‘liq ism-sharifingizni kiriting!');
+        return;
+      }
+      if (!state.verifiedPhone) {
+        showToast('Avval telefon raqamingizni yuboring!');
+        return;
+      }
+
+      const btn = document.getElementById('btnRegSubmit');
+      btn.disabled = true;
+      btn.innerText = 'Yuborilmoqda...';
+
+      try {
+        const res = await apiPost({
+          action: 'REGISTER_USER',
+          chatId: CHAT_ID,
+          fio: fio,
+          phone: state.verifiedPhone,
+          username: USERNAME
+        });
+        if (!res.ok) throw new Error(res.error || 'Ro‘yxatdan o‘tishda xatolik');
+        showToast('So‘rov Adminga yuborildi!');
+        loadAppData(true);
+      } catch (err) {
+        showToast(err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Ro‘yxatdan o‘tish';
+      }
+    }
+
+    // ==================== ASOSIY OYNA VA TABLAR ====================
+    function setupMainApp() {
+      document.getElementById('hdrName').innerText = state.user ? state.user.fio : 'Foydalanuvchi';
+      const roleText = state.isAdmin
+        ? ('🛡 Admin' + (state.user && state.user.position ? ' • ' + state.user.position : ''))
+        : ('👤 ' + (state.user && state.user.position ? state.user.position : 'Xodim'));
+      document.getElementById('hdrBadge').innerText = roleText;
+
+      // Admin uchun xodim filtri ro'yxatini to'ldirish
+      const posSel = document.getElementById('adminPositionFilter');
+      const prevFilter = posSel.value;
+      const uniquePositions = Array.from(new Set([
+        ...state.assignablePositions,
+        ...state.tasks.map(t => t.position).filter(Boolean)
+      ])).sort((a, b) => a.localeCompare(b));
+
+      posSel.innerHTML = '<option value="">👥 Barcha xodimlar</option>' +
+        uniquePositions.map(p => `<option value="${escHtml(p)}">${escHtml(p)}</option>`).join('');
+      if (uniquePositions.includes(prevFilter)) posSel.value = prevFilter;
+
+      // Tablarni yig'ish
+      const tabs = [];
+      if (state.isAdmin) {
+        tabs.push({ id: 'all', label: 'Barcha vazifalar', count: state.tasks.length });
+        if (state.user && state.user.position) {
+          tabs.push({ id: 'mine', label: 'Menga kelgan', count: getMineTasks().length });
+        }
+        tabs.push({ id: 'sent', label: 'Yuborganlarim', count: getSentTasks().length });
+        tabs.push({
+          id: 'users',
+          label: 'Foydalanuvchilar',
+          count: state.pendingUsers.length > 0 ? state.pendingUsers.length : state.approvedUsers.length,
+          alert: state.pendingUsers.length > 0
+        });
+      } else {
+        tabs.push({ id: 'mine', label: 'Menga kelgan', count: getMineTasks().length });
+        tabs.push({ id: 'sent', label: 'Yuborganlarim', count: getSentTasks().length });
+      }
+
+      if (!state.activeTab || !tabs.some(t => t.id === state.activeTab)) {
+        state.activeTab = tabs[0].id;
+      }
+
+      const tabsEl = document.getElementById('topTabs');
+      tabsEl.innerHTML = tabs.map(t => `
+        <button class="tab-btn ${state.activeTab === t.id ? 'active' : ''}" onclick="switchTab('${t.id}')">
+          <span>${t.label}</span>
+          <span class="badge ${t.alert ? 'badge-alert' : ''}">${t.count}</span>
+        </button>
+      `).join('');
+
+      renderCurrentTab();
+    }
+
+    function switchTab(tabId) {
+      state.activeTab = tabId;
+      setupMainApp();
+    }
+
+    function getMineTasks() {
+      const myPos = state.user && state.user.position ? normStr(state.user.position) : '';
+      if (!myPos) return [];
+      return state.tasks.filter(t => normStr(t.position) === myPos);
+    }
+
+    function getSentTasks() {
+      const myPos = state.user && state.user.position ? normStr(state.user.position) : '';
+      return state.tasks.filter(t => {
+        const isSender = (t.senderChatId === CHAT_ID) || (myPos && normStr(t.senderName) === myPos);
+        const isToOther = !myPos || normStr(t.position) !== myPos;
+        return isSender && isToOther;
+      });
+    }
+
+    function onSearchInput() {
+      const val = document.getElementById('searchInput').value;
+      state.searchQuery = val;
+      document.getElementById('searchClearBtn').style.display = val ? 'block' : 'none';
+      renderCurrentTab();
+    }
+
+    function clearSearch() {
+      document.getElementById('searchInput').value = '';
+      state.searchQuery = '';
+      document.getElementById('searchClearBtn').style.display = 'none';
+      renderCurrentTab();
+    }
+
+    function setStatusFilter(st, el) {
+      state.statusFilter = st;
+      document.querySelectorAll('.filter-row .chip[data-st]').forEach(c => c.classList.remove('active'));
+      if (el) el.classList.add('active');
+      renderCurrentTab();
+    }
+
+    function togglePrioFilter() {
+      state.prioOnly = !state.prioOnly;
+      document.getElementById('prioFilterChip').classList.toggle('prio-active', state.prioOnly);
+      renderCurrentTab();
+    }
+
+    function renderCurrentTab() {
+      const isUsersTab = state.activeTab === 'users';
+      document.getElementById('filtersBox').style.display = isUsersTab ? 'none' : 'flex';
+      document.getElementById('adminPositionFilterWrap').style.display =
+        (state.isAdmin && state.activeTab === 'all') ? 'block' : 'none';
+
+      if (isUsersTab) {
+        renderUsersTab();
+        return;
+      }
+
+      let list = [];
+      if (state.activeTab === 'all') list = state.tasks.slice();
+      else if (state.activeTab === 'mine') list = getMineTasks();
+      else if (state.activeTab === 'sent') list = getSentTasks();
+
+      // Admin xodim filtri
+      if (state.isAdmin && state.activeTab === 'all') {
+        const selPos = document.getElementById('adminPositionFilter').value;
+        if (selPos) list = list.filter(t => normStr(t.position) === normStr(selPos));
+      }
+
+      // Status va Priority filtri
+      if (state.statusFilter) {
+        list = list.filter(t => t.status === state.statusFilter);
+      }
+      if (state.prioOnly) {
+        list = list.filter(t => t.priority);
+      }
+
+      // Qidiruv
+      const q = normStr(state.searchQuery);
+      if (q) {
+        list = list.filter(t =>
+          normStr(t.task).includes(q) ||
+          normStr(t.position).includes(q) ||
+          normStr(t.senderName).includes(q)
+        );
+      }
+
+      const container = document.getElementById('mainContent');
+      if (!list.length) {
+        container.innerHTML = '<div class="empty-state">Hozircha bu bo‘limda vazifalar yo‘q.</div>';
+        return;
+      }
+
+      const myPos = state.user && state.user.position ? normStr(state.user.position) : '';
+
+      container.innerHTML = list.map((t, idx) => {
+        const stClass = t.status === 'Bajarildi'
+          ? 'tag-st-bajarildi'
+          : (t.status === 'Jarayonda' ? 'tag-st-jarayonda' : 'tag-st-yangi');
+        const cardExtra = (t.priority ? 'is-priority ' : '') + (t.status === 'Bajarildi' ? 'is-done' : '');
+        const canChangeStatus = state.isAdmin || (myPos && normStr(t.position) === myPos);
+
+        const dateLine = (t.startDate || t.deadline)
+          ? `<span>📅 <strong>${escHtml(t.startDate || '—')}</strong>${t.deadline ? ' → <strong>' + escHtml(t.deadline) + '</strong>' : ''}</span>`
+          : '';
+        const hoursLine = t.hours ? `<span>⏱ <strong>${escHtml(t.hours)} soat</strong></span>` : '';
+        const senderLine = t.senderName ? `<span>📤 Kimdan: <strong>${escHtml(t.senderName)}</strong></span>` : '';
+
+        return `
+          <div class="task-card ${cardExtra}" id="task-${t.rowIndex}-${idx}">
+            <div class="task-top">
+              <div class="tag-group">
+                ${t.priority ? '<span class="tag tag-prio">🔥 Muhim</span>' : '<span class="tag tag-normal">Oddiy</span>'}
+                <span class="tag ${stClass}">${escHtml(t.status)}</span>
+              </div>
+              <span style="font-size:11.5px; color:var(--muted);">#${t.rowIndex}</span>
+            </div>
+
+            <div class="task-text">${escHtml(t.task)}</div>
+
+            <div class="task-meta">
+              <span>👤 Ijrochi: <strong>${escHtml(t.position || '—')}</strong></span>
+              ${senderLine}
+              ${dateLine}
+              ${hoursLine}
+            </div>
+
+            ${canChangeStatus ? `
+              <div class="status-switch">
+                <button type="button" class="st-btn ${t.status === 'Yangi' ? 'active-yangi' : ''}"
+                  onclick="changeTaskStatus(${t.rowIndex}, '${escAttr(t.position)}', '${escAttr(t.task)}', 'Yangi')">Yangi</button>
+                <button type="button" class="st-btn ${t.status === 'Jarayonda' ? 'active-jarayonda' : ''}"
+                  onclick="changeTaskStatus(${t.rowIndex}, '${escAttr(t.position)}', '${escAttr(t.task)}', 'Jarayonda')">Jarayonda</button>
+                <button type="button" class="st-btn ${t.status === 'Bajarildi' ? 'active-bajarildi' : ''}"
+                  onclick="changeTaskStatus(${t.rowIndex}, '${escAttr(t.position)}', '${escAttr(t.task)}', 'Bajarildi')">Bajarildi</button>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function escAttr(s) {
+      return String(s || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, ' ');
+    }
+
+    async function changeTaskStatus(rowIndex, position, taskText, newStatus) {
+      const target = state.tasks.find(t => t.rowIndex === rowIndex && normStr(t.task) === normStr(taskText));
+      if (!target || target.status === newStatus) return;
+
+      const prevStatus = target.status;
+      target.status = newStatus;
+      renderCurrentTab();
+
+      try {
+        const res = await apiPost({
+          action: 'UPDATE_TASK_STATUS',
+          chatId: CHAT_ID,
+          rowIndex: rowIndex,
+          position: position,
+          task: taskText,
+          status: newStatus
+        });
+        if (!res.ok) throw new Error(res.error || 'Holatni yangilab bo‘lmadi');
+        showToast(`Holat: ${newStatus}`);
+      } catch (err) {
+        target.status = prevStatus;
+        renderCurrentTab();
+        showToast('Xatolik: ' + err.message);
+      }
+    }
+
+    // ==================== ADMIN: FOYDALANUVCHILAR BO'LIMI ====================
+    function renderUsersTab() {
+      const container = document.getElementById('mainContent');
+      let html = '';
+
+      // 1. Tasdiqlash kutilmoqda
+      html += `<div class="section-title">⏳ Tasdiqlash kutilmoqda (${state.pendingUsers.length})</div>`;
+      if (!state.pendingUsers.length) {
+        html += `<div class="empty-state" style="padding:18px;">Yangi so‘rovlar yo‘q.</div>`;
+      } else {
+        const posOptions = '<option value="">— Plan jadvalidan ism tanlang —</option>' +
+          state.planPositions.map(p => `<option value="${escHtml(p)}">${escHtml(p)}</option>`).join('');
+
+        html += state.pendingUsers.map((u, idx) => `
+          <div class="user-card" id="pend-${idx}">
+            <div class="user-card-head">
+              <div>
+                <div class="user-card-fio">${escHtml(u.fio)}</div>
+                <div class="user-card-sub">
+                  📞 +${escHtml(u.phone)} ${u.username ? ' • ' + escHtml(u.username) : ''}<br/>
+                  🕒 ${escHtml(u.date)}
+                </div>
+              </div>
+            </div>
+            <div class="approve-box">
+              <select id="pendSel-${idx}" class="select">${posOptions}</select>
+              <input id="pendManual-${idx}" type="text" class="input" placeholder="Yoki ro‘yxatda bo‘lmasa ismni qo‘lda yozing..." />
+              <div class="btn-row">
+                <button type="button" class="btn btn-success btn-sm" onclick="decideUser('${escAttr(u.chatId)}', ${idx}, 'APPROVE')">✅ Tasdiqlash</button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="decideUser('${escAttr(u.chatId)}', ${idx}, 'REJECT')">❌ Rad etish</button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // 2. Tasdiqlangan foydalanuvchilar
+      html += `<div class="section-title">👥 Faol foydalanuvchilar (${state.approvedUsers.length})</div>`;
+      if (!state.approvedUsers.length) {
+        html += `<div class="empty-state" style="padding:18px;">Tasdiqlangan foydalanuvchilar hali yo‘q.</div>`;
+      } else {
+        html += state.approvedUsers.map(u => `
+          <div class="user-card">
+            <div class="user-card-head">
+              <div>
+                <div class="user-card-fio">${escHtml(u.fio)}</div>
+                <div class="user-card-sub">
+                  🏷 Jadvaldagi ismi: <strong style="color:#93c5fd;">${escHtml(u.position)}</strong><br/>
+                  📞 +${escHtml(u.phone)} ${u.username ? ' • ' + escHtml(u.username) : ''}
+                </div>
+              </div>
+              <button type="button" class="btn btn-danger btn-sm" onclick="askDeleteUser('${escAttr(u.chatId)}', '${escAttr(u.fio)}')">🗑 O‘chirish</button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      container.innerHTML = html;
+    }
+
+    async function decideUser(targetChatId, idx, decision) {
+      let assignedPos = '';
+      if (decision === 'APPROVE') {
+        const manualVal = document.getElementById('pendManual-' + idx).value.trim();
+        const selectVal = document.getElementById('pendSel-' + idx).value.trim();
+        assignedPos = manualVal || selectVal;
+        if (!assignedPos) {
+          showToast('Ismni ro‘yxatdan tanlang yoki qo‘lda yozing!');
+          return;
+        }
+      }
+
+      const card = document.getElementById('pend-' + idx);
+      if (card) { card.style.opacity = '0.45'; card.style.pointerEvents = 'none'; }
+
+      try {
+        const res = await apiPost({
+          action: 'USER_DECISION',
+          adminChatId: CHAT_ID,
+          targetChatId: targetChatId,
+          decision: decision,
+          position: assignedPos
+        });
+        if (!res.ok) throw new Error(res.error || 'Amal bajarilmadi');
+        showToast(decision === 'APPROVE' ? 'Foydalanuvchi tasdiqlandi!' : 'So‘rov rad etildi');
+        loadAppData(true);
+      } catch (err) {
+        if (card) { card.style.opacity = '1'; card.style.pointerEvents = 'auto'; }
+        showToast('Xatolik: ' + err.message);
+      }
+    }
+
+    function askDeleteUser(targetChatId, fio) {
+      document.getElementById('confirmText').innerText =
+        `«${fio}» foydalanuvchisini tizimdan o‘chirib yuborishni tasdiqlaysizmi?`;
+      confirmCallback = async () => {
+        closeConfirm();
+        try {
+          const res = await apiPost({
+            action: 'DELETE_USER',
+            adminChatId: CHAT_ID,
+            targetChatId: targetChatId
+          });
+          if (!res.ok) throw new Error(res.error || 'O‘chirib bo‘lmadi');
+          showToast('Foydalanuvchi o‘chirildi');
+          loadAppData(true);
+        } catch (err) {
+          showToast('Xatolik: ' + err.message);
+        }
+      };
+      document.getElementById('confirmOkBtn').onclick = () => confirmCallback && confirmCallback();
+      document.getElementById('confirmModal').classList.add('open');
+    }
+
+    function closeConfirm() {
+      document.getElementById('confirmModal').classList.remove('open');
+      confirmCallback = null;
+    }
+
+    // ==================== + YANGI VAZIFA MODALI ====================
+    function openTaskModal() {
+      const sel = document.getElementById('mPosition');
+      const myPos = (state.user && state.user.position) ? state.user.position : '';
+      const names = Array.from(new Set([
+        ...state.assignablePositions,
+        ...(myPos ? [myPos] : [])
+      ])).sort((a, b) => a.localeCompare(b));
+
+      sel.innerHTML = names.map(n =>
+        `<option value="${escHtml(n)}" ${normStr(n) === normStr(myPos) ? 'selected' : ''}>${escHtml(n)}</option>`
+      ).join('');
+
+      document.getElementById('mManualPosWrap').style.display = state.isAdmin ? 'block' : 'none';
+      document.getElementById('mManualPos').value = '';
+      document.getElementById('mTask').value = '';
+      document.getElementById('mStart').value = new Date().toISOString().slice(0, 10);
+      document.getElementById('mDeadline').value = '';
+      document.getElementById('mHours').value = '';
+      document.getElementById('mPriority').checked = false;
+      document.getElementById('mPrioLabel').innerText = 'Oddiy';
+
+      document.getElementById('taskModal').classList.add('open');
+    }
+
+    function closeTaskModal() {
+      document.getElementById('taskModal').classList.remove('open');
+    }
+
+    async function submitNewTask() {
+      const manualPos = state.isAdmin ? document.getElementById('mManualPos').value.trim() : '';
+      const position = manualPos || document.getElementById('mPosition').value.trim();
+      const task = document.getElementById('mTask').value.trim();
+      const startDate = document.getElementById('mStart').value;
+      const deadline = document.getElementById('mDeadline').value;
+      const hours = document.getElementById('mHours').value.trim();
+      const priority = document.getElementById('mPriority').checked;
+
+      if (!task) {
+        showToast('Vazifa matnini kiriting!');
+        return;
+      }
+
+      const btn = document.getElementById('btnSaveTask');
+      btn.disabled = true;
+      btn.innerText = 'Saqlanmoqda...';
+
+      try {
+        const res = await apiPost({
+          action: 'CREATE_TASK',
+          chatId: CHAT_ID,
+          position: position,
+          task: task,
+          startDate: startDate,
+          deadline: deadline,
+          hours: hours,
+          priority: priority
+        });
+        if (!res.ok) throw new Error(res.error || 'Saqlashda xatolik');
+        closeTaskModal();
+        showToast('Vazifa qo‘shildi!');
+        loadAppData(true);
+      } catch (err) {
+        showToast('Xatolik: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Saqlash va yuborish';
+      }
+    }
+
+    // Dasturni ishga tushirish
+    loadAppData(false);
+  </script>
+</body>
+</html>
