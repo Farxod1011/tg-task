@@ -8,11 +8,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css" />
   <style>
     :root {
-      --bg: #0f172a;
-      --surface: #1e293b;
-      --surface-2: #273549;
+      --bg: #0b1220;
+      --surface: #151f32;
+      --surface-2: #1e2c44;
       --border: rgba(148, 163, 184, 0.16);
       --text: #f1f5f9;
       --muted: #94a3b8;
@@ -29,6 +30,14 @@
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
+    .fi {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      vertical-align: middle;
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -36,7 +45,8 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      padding-bottom: 84px;
+      padding-bottom: 88px;
+      overflow-x: hidden;
     }
 
     .screen { display: none; padding: 14px; max-width: 680px; margin: 0 auto; }
@@ -54,74 +64,107 @@
       font-size: 14px;
     }
     .spinner {
-      width: 34px; height: 34px;
-      border: 3px solid rgba(59,130,246,0.2);
+      width: 34px;
+      height: 34px;
+      border: 3px solid rgba(59, 130, 246, 0.2);
       border-top-color: var(--accent);
       border-radius: 50%;
       animation: spin 0.75s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Card */
+    .spinning {
+      animation: spin 0.75s linear infinite;
+    }
+
+    /* Cards */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 16px;
+      padding: 18px 16px;
       margin-bottom: 12px;
+      box-shadow: 0 6px 20px rgba(2, 6, 23, 0.28);
     }
 
-    .title-lg { font-size: 20px; font-weight: 700; margin: 0 0 6px; }
-    .subtitle { font-size: 13px; color: var(--muted); margin: 0 0 18px; line-height: 1.45; }
+    .state-icon-circle {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin-bottom: 12px;
+    }
+    .state-icon-pending { background: var(--amber-soft); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .state-icon-rejected { background: var(--red-soft); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
 
-    /* Inputs & Buttons */
+    .title-lg {
+      font-size: 19px;
+      font-weight: 700;
+      margin: 0 0 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .title-center { justify-content: center; }
+    .subtitle { font-size: 13px; color: var(--muted); margin: 0 0 18px; line-height: 1.5; }
+
+    /* Form Controls */
     .field { margin-bottom: 14px; }
     .field label {
-      display: block;
-      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
       font-weight: 600;
       color: var(--muted);
       margin-bottom: 6px;
       text-transform: uppercase;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.35px;
     }
     .input, .select, .textarea {
       width: 100%;
       background: var(--bg);
       border: 1px solid var(--border);
       color: var(--text);
-      border-radius: 10px;
+      border-radius: 11px;
       padding: 11px 12px;
       font-size: 14px;
       font-family: inherit;
       outline: none;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .input:focus, .select:focus, .textarea:focus { border-color: var(--accent); }
+    .input:focus, .select:focus, .textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.14);
+    }
     .textarea { min-height: 86px; resize: vertical; }
 
+    /* Buttons */
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 7px;
       border: none;
-      border-radius: 10px;
+      border-radius: 11px;
       padding: 11px 15px;
       font-size: 14px;
       font-weight: 600;
       font-family: inherit;
       cursor: pointer;
-      transition: opacity 0.15s, transform 0.1s;
+      transition: opacity 0.15s, transform 0.1s, background 0.15s;
     }
     .btn:active { transform: scale(0.98); }
     .btn:disabled { opacity: 0.45; cursor: not-allowed; }
     .btn-block { width: 100%; }
     .btn-primary { background: var(--accent); color: #fff; }
     .btn-success { background: var(--green); color: #fff; }
-    .btn-danger { background: var(--red-soft); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+    .btn-danger { background: var(--red-soft); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
     .btn-outline { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); }
-    .btn-sm { padding: 7px 11px; font-size: 12.5px; border-radius: 8px; }
+    .btn-sm { padding: 7px 11px; font-size: 12.5px; border-radius: 9px; }
 
     .phone-verified-box {
       display: none;
@@ -131,7 +174,7 @@
       border: 1px solid rgba(16, 185, 129, 0.35);
       color: #6ee7b7;
       padding: 11px 13px;
-      border-radius: 10px;
+      border-radius: 11px;
       font-size: 14px;
       font-weight: 600;
     }
@@ -143,10 +186,14 @@
       justify-content: space-between;
       gap: 10px;
       margin-bottom: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 11px 13px;
     }
     .user-meta { min-width: 0; }
     .user-name {
-      font-size: 16px;
+      font-size: 15.5px;
       font-weight: 700;
       white-space: nowrap;
       overflow: hidden;
@@ -156,36 +203,41 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      margin-top: 3px;
+      margin-top: 4px;
       font-size: 11.5px;
       font-weight: 600;
       color: #93c5fd;
       background: var(--accent-soft);
-      padding: 3px 8px;
+      padding: 3px 9px;
       border-radius: 99px;
     }
     .header-actions { display: flex; gap: 8px; flex-shrink: 0; }
     .icon-btn {
-      background: var(--surface);
+      background: var(--surface-2);
       border: 1px solid var(--border);
       color: var(--text);
-      width: 38px; height: 38px;
-      border-radius: 10px;
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       font-size: 16px;
+      transition: background 0.15s, border-color 0.15s;
     }
+    .icon-btn:active { transform: scale(0.95); }
 
     /* Top Tabs */
     .tabs {
       display: flex;
-      gap: 6px;
+      gap: 8px;
       overflow-x: auto;
-      padding-bottom: 4px;
-      margin-bottom: 12px;
+      padding: 2px 2px 6px;
+      margin-bottom: 10px;
       scrollbar-width: none;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
     }
     .tabs::-webkit-scrollbar { display: none; }
     .tab-btn {
@@ -193,24 +245,27 @@
       background: var(--surface);
       border: 1px solid var(--border);
       color: var(--muted);
-      padding: 8px 13px;
-      border-radius: 10px;
+      padding: 9px 13px;
+      border-radius: 11px;
       font-size: 13px;
       font-weight: 600;
       font-family: inherit;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
     }
+    .tab-btn .fi { font-size: 14px; }
     .tab-btn.active {
       background: var(--accent);
       border-color: var(--accent);
       color: #fff;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.32);
     }
     .badge {
-      background: rgba(255,255,255,0.16);
-      padding: 1px 6px;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 2px 7px;
       border-radius: 99px;
       font-size: 11px;
       font-weight: 700;
@@ -228,10 +283,23 @@
       margin-bottom: 12px;
     }
     .search-wrap { position: relative; }
-    .search-wrap .input { padding-right: 36px; background: var(--surface); }
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 14px;
+      pointer-events: none;
+    }
+    .search-wrap .input {
+      padding-left: 36px;
+      padding-right: 36px;
+      background: var(--surface);
+    }
     .search-clear {
       position: absolute;
-      right: 8px;
+      right: 6px;
       top: 50%;
       transform: translateY(-50%);
       background: none;
@@ -240,13 +308,18 @@
       font-size: 16px;
       cursor: pointer;
       display: none;
-      padding: 4px 6px;
+      width: 28px;
+      height: 28px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
     }
     .filter-row {
       display: flex;
       gap: 6px;
       overflow-x: auto;
       scrollbar-width: none;
+      padding-bottom: 2px;
     }
     .filter-row::-webkit-scrollbar { display: none; }
     .chip {
@@ -254,12 +327,15 @@
       background: var(--surface);
       border: 1px solid var(--border);
       color: var(--muted);
-      padding: 6px 11px;
+      padding: 6px 12px;
       border-radius: 99px;
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
     }
     .chip.active { background: var(--accent-soft); border-color: var(--accent); color: #93c5fd; }
     .chip.prio-active { background: var(--red-soft); border-color: var(--red); color: #fca5a5; }
@@ -272,6 +348,7 @@
       border-radius: var(--radius);
       padding: 13px 14px;
       margin-bottom: 10px;
+      transition: opacity 0.2s;
     }
     .task-card.is-priority { border-left-color: var(--red); }
     .task-card.is-done { border-left-color: var(--green); opacity: 0.82; }
@@ -286,13 +363,16 @@
     }
     .tag-group { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
     .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
       font-size: 11px;
       font-weight: 600;
       padding: 3px 8px;
-      border-radius: 6px;
+      border-radius: 7px;
     }
     .tag-prio { background: var(--red-soft); color: #fca5a5; }
-    .tag-normal { background: rgba(148,163,184,0.14); color: var(--muted); }
+    .tag-normal { background: rgba(148, 163, 184, 0.14); color: var(--muted); }
     .tag-st-yangi { background: var(--accent-soft); color: #93c5fd; }
     .tag-st-jarayonda { background: var(--amber-soft); color: #fcd34d; }
     .tag-st-bajarildi { background: var(--green-soft); color: #6ee7b7; }
@@ -300,7 +380,7 @@
     .task-text {
       font-size: 14.5px;
       font-weight: 600;
-      line-height: 1.4;
+      line-height: 1.45;
       margin-bottom: 10px;
       word-break: break-word;
     }
@@ -309,18 +389,24 @@
     .task-meta {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px 12px;
+      gap: 7px 14px;
       font-size: 12px;
       color: var(--muted);
       margin-bottom: 10px;
     }
-    .task-meta span strong { color: #cbd5e1; font-weight: 600; }
+    .meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .meta-item .fi { font-size: 12.5px; color: #64748b; }
+    .meta-item strong { color: #e2e8f0; font-weight: 600; }
 
     .status-switch {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 6px;
-      padding-top: 8px;
+      padding-top: 9px;
       border-top: 1px solid var(--border);
     }
     .st-btn {
@@ -328,11 +414,15 @@
       border: 1px solid var(--border);
       color: var(--muted);
       padding: 7px 6px;
-      border-radius: 8px;
+      border-radius: 9px;
       font-size: 12px;
       font-weight: 600;
       font-family: inherit;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
     }
     .st-btn.active-yangi { background: var(--accent-soft); border-color: var(--accent); color: #93c5fd; }
     .st-btn.active-jarayonda { background: var(--amber-soft); border-color: var(--amber); color: #fcd34d; }
@@ -340,7 +430,10 @@
 
     /* Users Admin */
     .section-title {
-      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12.5px;
       font-weight: 700;
       color: var(--muted);
       text-transform: uppercase;
@@ -359,13 +452,29 @@
       justify-content: space-between;
       align-items: flex-start;
       gap: 10px;
-      margin-bottom: 6px;
     }
-    .user-card-fio { font-size: 15px; font-weight: 700; }
-    .user-card-sub { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+    .user-card-fio {
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 5px;
+    }
+    .user-card-sub {
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    .user-sub-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
     .approve-box {
-      margin-top: 10px;
-      padding-top: 10px;
+      margin-top: 11px;
+      padding-top: 11px;
       border-top: 1px solid var(--border);
       display: flex;
       flex-direction: column;
@@ -374,23 +483,28 @@
     .btn-row { display: flex; gap: 8px; }
     .btn-row > * { flex: 1; }
 
-    /* Empty state */
+    /* Empty State */
     .empty-state {
       text-align: center;
       padding: 36px 16px;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 13.5px;
       background: var(--surface);
       border: 1px dashed var(--border);
       border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
     }
+    .empty-state .fi { font-size: 26px; color: #475569; }
 
     /* FAB */
     .fab {
       position: fixed;
       right: 16px;
       bottom: 18px;
-      background: var(--accent);
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
       color: #fff;
       border: none;
       border-radius: 99px;
@@ -398,19 +512,21 @@
       font-size: 14px;
       font-weight: 700;
       font-family: inherit;
-      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.45);
       cursor: pointer;
       display: none;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       z-index: 40;
     }
+    .fab:active { transform: scale(0.96); }
 
     /* Modal */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(2, 6, 23, 0.75);
+      background: rgba(2, 6, 23, 0.78);
+      backdrop-filter: blur(3px);
       display: none;
       align-items: flex-end;
       justify-content: center;
@@ -434,7 +550,14 @@
       align-items: center;
       margin-bottom: 14px;
     }
-    .modal-title { font-size: 17px; font-weight: 700; margin: 0; }
+    .modal-title {
+      font-size: 17px;
+      font-weight: 700;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
     .toggle-row {
@@ -443,8 +566,8 @@
       justify-content: space-between;
       background: var(--bg);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 12px;
+      border-radius: 11px;
+      padding: 9px 12px;
     }
     .switch {
       position: relative;
@@ -463,8 +586,10 @@
     .slider::before {
       content: '';
       position: absolute;
-      width: 18px; height: 18px;
-      left: 3px; top: 3px;
+      width: 18px;
+      height: 18px;
+      left: 3px;
+      top: 3px;
       background: #fff;
       border-radius: 50%;
       transition: 0.2s;
@@ -478,11 +603,11 @@
       top: 14px;
       left: 50%;
       transform: translateX(-50%) translateY(-20px);
-      background: #0b1220;
+      background: #0f172a;
       border: 1px solid var(--border);
       color: var(--text);
       padding: 10px 16px;
-      border-radius: 10px;
+      border-radius: 11px;
       font-size: 13px;
       font-weight: 600;
       opacity: 0;
@@ -491,8 +616,14 @@
       z-index: 120;
       max-width: 90vw;
       text-align: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    #mainContent {
+      min-height: 55vh;
+      touch-action: pan-y;
+    }
   </style>
 </head>
 <body>
@@ -510,28 +641,28 @@
   <!-- 2. REGISTRATION SCREEN -->
   <div id="screen-register" class="screen">
     <div class="card" style="margin-top:16px;">
-      <h1 class="title-lg">📝 Ro‘yxatdan o‘tish</h1>
+      <h1 class="title-lg"><i class="fi fi-rr-user-add" style="color:var(--accent);"></i> Ro‘yxatdan o‘tish</h1>
       <p class="subtitle">Tizimdan foydalanish uchun to‘liq ism-sharifingizni kiriting va Telegram telefon raqamingizni yuboring.</p>
 
       <div class="field">
-        <label for="regFio">To‘liq ism-sharifingiz (F.I.Sh)</label>
+        <label for="regFio"><i class="fi fi-rr-user"></i> To‘liq ism-sharifingiz (F.I.Sh)</label>
         <input id="regFio" type="text" class="input" placeholder="Masalan: Aliyev Sardor Karimovich" autocomplete="name" />
       </div>
 
       <div class="field">
-        <label>Telefon raqamingiz</label>
+        <label><i class="fi fi-rr-phone-call"></i> Telefon raqamingiz</label>
         <button id="btnSharePhone" type="button" class="btn btn-outline btn-block" onclick="requestUserPhone()">
-          📱 Raqamni yuborish
+          <i class="fi fi-rr-phone-call"></i> Raqamni yuborish
         </button>
         <div id="phoneVerifiedBox" class="phone-verified-box">
           <span id="phoneVerifiedText">+998...</span>
-          <span>✓ Tasdiqlandi</span>
+          <span style="display:inline-flex; align-items:center; gap:5px;"><i class="fi fi-rr-check"></i> Tasdiqlandi</span>
         </div>
-        <div id="phoneHelpNote" style="display:none; margin-top:8px; font-size:12px; color:#fcd34d; line-height:1.4;"></div>
+        <div id="phoneHelpNote" style="display:none; margin-top:8px; font-size:12px; color:#fcd34d; line-height:1.45;"></div>
       </div>
 
       <button id="btnRegSubmit" type="button" class="btn btn-primary btn-block" onclick="submitRegistration()" disabled>
-        Ro‘yxatdan o‘tish
+        <i class="fi fi-rr-check"></i> Ro‘yxatdan o‘tish
       </button>
     </div>
   </div>
@@ -539,20 +670,28 @@
   <!-- 3. PENDING SCREEN -->
   <div id="screen-pending" class="screen">
     <div class="card" style="margin-top:24px; text-align:center;">
-      <div style="font-size:40px; margin-bottom:10px;">⏳</div>
-      <h2 class="title-lg">Tasdiqlash kutilmoqda</h2>
+      <div class="state-icon-circle state-icon-pending">
+        <i class="fi fi-rr-clock"></i>
+      </div>
+      <h2 class="title-lg title-center">Tasdiqlash kutilmoqda</h2>
       <p class="subtitle" id="pendingDesc">So‘rovingiz Adminga yuborildi. Admin sizni jadvaldagi ismingizga bog‘lab tasdiqlashi bilan tizim ochiladi.</p>
-      <button type="button" class="btn btn-outline" onclick="loadAppData(true)">🔄 Holatni tekshirish</button>
+      <button type="button" class="btn btn-outline" onclick="loadAppData(true)">
+        <i class="fi fi-rr-refresh" id="pendingRefreshIcon"></i> Holatni tekshirish
+      </button>
     </div>
   </div>
 
   <!-- 4. REJECTED SCREEN -->
   <div id="screen-rejected" class="screen">
     <div class="card" style="margin-top:24px; text-align:center;">
-      <div style="font-size:40px; margin-bottom:10px;">❌</div>
-      <h2 class="title-lg">So‘rov rad etilgan</h2>
+      <div class="state-icon-circle state-icon-rejected">
+        <i class="fi fi-rr-cross-small"></i>
+      </div>
+      <h2 class="title-lg title-center">So‘rov rad etilgan</h2>
       <p class="subtitle">Ma’lumotlaringizni tekshirib, qaytadan ro‘yxatdan o‘tish so‘rovini yuborishingiz mumkin.</p>
-      <button type="button" class="btn btn-primary" onclick="showScreen('screen-register')">Qayta ro‘yxatdan o‘tish</button>
+      <button type="button" class="btn btn-primary" onclick="showScreen('screen-register')">
+        <i class="fi fi-rr-user-add"></i> Qayta ro‘yxatdan o‘tish
+      </button>
     </div>
   </div>
 
@@ -561,10 +700,14 @@
     <div class="app-header">
       <div class="user-meta">
         <div class="user-name" id="hdrName">Foydalanuvchi</div>
-        <div class="user-role-pill" id="hdrBadge">Xodim</div>
+        <div class="user-role-pill" id="hdrBadge">
+          <i class="fi fi-rr-user"></i> <span>Xodim</span>
+        </div>
       </div>
       <div class="header-actions">
-        <button class="icon-btn" title="Yangilash" onclick="loadAppData(true)">🔄</button>
+        <button id="refreshBtn" class="icon-btn" title="Yangilash" onclick="loadAppData(true)">
+          <i id="refreshIcon" class="fi fi-rr-refresh"></i>
+        </button>
       </div>
     </div>
 
@@ -574,13 +717,16 @@
     <!-- Filters (Tasks tabs) -->
     <div id="filtersBox" class="filters-box">
       <div class="search-wrap">
+        <i class="fi fi-rr-search search-icon"></i>
         <input id="searchInput" type="text" class="input" placeholder="Vazifa yoki ijrochi qidirish..." oninput="onSearchInput()" />
-        <button id="searchClearBtn" class="search-clear" type="button" onclick="clearSearch()">✕</button>
+        <button id="searchClearBtn" class="search-clear" type="button" onclick="clearSearch()">
+          <i class="fi fi-rr-cross-small"></i>
+        </button>
       </div>
 
       <div id="adminPositionFilterWrap" style="display:none;">
         <select id="adminPositionFilter" class="select" onchange="renderCurrentTab()">
-          <option value="">👥 Barcha xodimlar</option>
+          <option value="">Barcha xodimlar</option>
         </select>
       </div>
 
@@ -589,7 +735,9 @@
         <button class="chip" data-st="Yangi" onclick="setStatusFilter('Yangi', this)">Yangi</button>
         <button class="chip" data-st="Jarayonda" onclick="setStatusFilter('Jarayonda', this)">Jarayonda</button>
         <button class="chip" data-st="Bajarildi" onclick="setStatusFilter('Bajarildi', this)">Bajarildi</button>
-        <button id="prioFilterChip" class="chip" onclick="togglePrioFilter()">🔥 Muhim</button>
+        <button id="prioFilterChip" class="chip" onclick="togglePrioFilter()">
+          <i class="fi fi-rr-flame"></i> Muhim
+        </button>
       </div>
     </div>
 
@@ -598,53 +746,57 @@
   </div>
 
   <!-- Floating + Yangi vazifa Button -->
-  <button id="fabAddTask" class="fab" type="button" onclick="openTaskModal()">＋ Yangi vazifa</button>
+  <button id="fabAddTask" class="fab" type="button" onclick="openTaskModal()">
+    <i class="fi fi-rr-plus"></i> Yangi vazifa
+  </button>
 
   <!-- MODAL: + YANGI VAZIFA -->
   <div id="taskModal" class="modal-backdrop" onclick="if(event.target===this) closeTaskModal()">
     <div class="modal-sheet">
       <div class="modal-head">
-        <h3 class="modal-title">＋ Yangi vazifa qo‘shish</h3>
-        <button class="icon-btn" type="button" onclick="closeTaskModal()">✕</button>
+        <h3 class="modal-title"><i class="fi fi-rr-plus" style="color:var(--accent);"></i> Yangi vazifa qo‘shish</h3>
+        <button class="icon-btn" type="button" onclick="closeTaskModal()">
+          <i class="fi fi-rr-cross-small"></i>
+        </button>
       </div>
 
       <div class="field">
-        <label for="mPosition">Ijrochi (Kimga)</label>
+        <label for="mPosition"><i class="fi fi-rr-user"></i> Ijrochi (Kimga)</label>
         <select id="mPosition" class="select"></select>
       </div>
 
       <div class="field" id="mManualPosWrap" style="display:none;">
-        <label for="mManualPos">Yoki yangi ijrochi ismi (ixtiyoriy)</label>
+        <label for="mManualPos"><i class="fi fi-rr-edit"></i> Yoki yangi ijrochi ismi (ixtiyoriy)</label>
         <input id="mManualPos" type="text" class="input" placeholder="Ro‘yxatda bo‘lmasa yozing..." />
       </div>
 
       <div class="field">
-        <label for="mTask">Vazifa matni</label>
+        <label for="mTask"><i class="fi fi-rr-list-check"></i> Vazifa matni</label>
         <textarea id="mTask" class="textarea" placeholder="Nima qilinishi kerakligini yozing..."></textarea>
       </div>
 
       <div class="grid-2">
         <div class="field">
-          <label for="mStart">Boshlash sanasi</label>
+          <label for="mStart"><i class="fi fi-rr-calendar"></i> Boshlash sanasi</label>
           <input id="mStart" type="date" class="input" />
         </div>
         <div class="field">
-          <label for="mDeadline">Tugatish muddati</label>
+          <label for="mDeadline"><i class="fi fi-rr-calendar"></i> Tugatish muddati</label>
           <input id="mDeadline" type="date" class="input" />
         </div>
       </div>
 
       <div class="grid-2">
         <div class="field">
-          <label for="mHours">Soat (ixtiyoriy)</label>
+          <label for="mHours"><i class="fi fi-rr-clock"></i> Soat (ixtiyoriy)</label>
           <input id="mHours" type="number" step="0.5" min="0" class="input" placeholder="Masalan: 2" />
         </div>
         <div class="field">
-          <label>Muhimlik</label>
+          <label><i class="fi fi-rr-flame"></i> Muhimlik</label>
           <div class="toggle-row">
-            <span id="mPrioLabel" style="font-size:13px; font-weight:600;">Oddiy</span>
+            <span id="mPrioLabel" style="font-size:13px; font-weight:600; display:inline-flex; align-items:center; gap:5px;">Oddiy</span>
             <label class="switch">
-              <input id="mPriority" type="checkbox" onchange="document.getElementById('mPrioLabel').innerText = this.checked ? '🔥 Muhim' : 'Oddiy'" />
+              <input id="mPriority" type="checkbox" onchange="updateModalPrioLabel(this.checked)" />
               <span class="slider"></span>
             </label>
           </div>
@@ -652,7 +804,7 @@
       </div>
 
       <button id="btnSaveTask" type="button" class="btn btn-primary btn-block" onclick="submitNewTask()">
-        Saqlash va yuborish
+        <i class="fi fi-rr-paper-plane"></i> Saqlash va yuborish
       </button>
     </div>
   </div>
@@ -660,11 +812,15 @@
   <!-- MODAL: CONFIRM -->
   <div id="confirmModal" class="modal-backdrop" onclick="if(event.target===this) closeConfirm()">
     <div class="modal-sheet">
-      <h3 class="modal-title" style="margin-bottom:8px;">Tasdiqlang</h3>
+      <h3 class="modal-title" style="margin-bottom:8px;">
+        <i class="fi fi-rr-exclamation" style="color:var(--red);"></i> Tasdiqlang
+      </h3>
       <p id="confirmText" class="subtitle" style="margin-bottom:16px;"></p>
       <div class="btn-row">
         <button class="btn btn-outline" type="button" onclick="closeConfirm()">Bekor qilish</button>
-        <button id="confirmOkBtn" class="btn btn-danger" type="button">O‘chirish</button>
+        <button id="confirmOkBtn" class="btn btn-danger" type="button">
+          <i class="fi fi-rr-trash"></i> O‘chirish
+        </button>
       </div>
     </div>
   </div>
@@ -693,13 +849,16 @@
       tasks: [],
       pendingUsers: [],
       approvedUsers: [],
+      tabsList: [],
       activeTab: '',
       statusFilter: '',
       prioOnly: false,
       searchQuery: ''
     };
 
+    let currentRenderedTasks = [];
     let confirmCallback = null;
+    let isRefreshing = false;
 
     function escHtml(s) {
       return String(s || '')
@@ -708,6 +867,10 @@
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
+    }
+
+    function escAttr(s) {
+      return String(s || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, ' ');
     }
 
     function normStr(s) {
@@ -720,6 +883,16 @@
       el.classList.add('show');
       clearTimeout(el._t);
       el._t = setTimeout(() => el.classList.remove('show'), 2800);
+    }
+
+    function setRefreshSpinning(active) {
+      isRefreshing = active;
+      const icon = document.getElementById('refreshIcon');
+      const pendIcon = document.getElementById('pendingRefreshIcon');
+      const btn = document.getElementById('refreshBtn');
+      if (icon) icon.classList.toggle('spinning', active);
+      if (pendIcon) pendIcon.classList.toggle('spinning', active);
+      if (btn) btn.disabled = active;
     }
 
     function showScreen(id) {
@@ -736,7 +909,6 @@
     }
 
     async function apiPost(payload) {
-      // text/plain CORS preflight (OPTIONS) so'rovisiz to'g'ridan-to'g'ri Apps Script ga ishlaydi
       const res = await fetch(SCRIPT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -746,12 +918,16 @@
     }
 
     async function loadAppData(silent) {
+      if (silent && isRefreshing) return;
       if (!CHAT_ID) {
         showScreen('screen-register');
         showToast('Telegram ichidan oching (Chat ID topilmadi).');
         return;
       }
-      if (!silent) showScreen('screen-loading');
+
+      const startedAt = Date.now();
+      if (silent) setRefreshSpinning(true);
+      else showScreen('screen-loading');
 
       try {
         const data = await apiGet({ action: 'INIT_APP', chatId: CHAT_ID });
@@ -769,7 +945,7 @@
         state.approvedUsers = data.approvedUsers || [];
 
         if (state.isAdmin || (state.user && state.user.status === 'Tasdiqlangan')) {
-          setupMainApp();
+          setupMainApp(!silent);
           showScreen('screen-main');
           if (silent) showToast('Yangilandi');
         } else if (state.user && state.user.status === 'Kutilmoqda') {
@@ -786,6 +962,12 @@
       } catch (err) {
         showToast('Xatolik: ' + err.message);
         if (!silent) showScreen('screen-register');
+      } finally {
+        if (silent) {
+          const elapsed = Date.now() - startedAt;
+          const wait = Math.max(0, 500 - elapsed);
+          setTimeout(() => setRefreshSpinning(false), wait);
+        }
       }
     }
 
@@ -832,13 +1014,11 @@
             showToast('Telefon raqam qabul qilindi!');
             return;
           }
-          // Webhook orqali saqlangan raqamni tekshirib olamiz
           pollVerifiedPhone(0);
         });
       } else {
-        // Eski Telegram versiyalari uchun bot chatiga raqam yuborish tugmasini jo'natamiz
         apiPost({ action: 'SEND_CONTACT_PROMPT', chatId: CHAT_ID }).catch(() => {});
-        noteEl.innerText = 'Bot chatiga «📱 Telefon raqamni yuborish» tugmasi yuborildi. Raqamingizni yuborib, shu oynaga qayting.';
+        noteEl.innerText = 'Bot chatiga «Telefon raqamni yuborish» tugmasi yuborildi. Raqamingizni yuborib, shu oynaga qayting.';
         noteEl.style.display = 'block';
         pollVerifiedPhone(0);
       }
@@ -876,7 +1056,7 @@
 
       const btn = document.getElementById('btnRegSubmit');
       btn.disabled = true;
-      btn.innerText = 'Yuborilmoqda...';
+      btn.innerHTML = '<i class="fi fi-rr-refresh spinning"></i> Yuborilmoqda...';
 
       try {
         const res = await apiPost({
@@ -893,69 +1073,150 @@
         showToast(err.message);
       } finally {
         btn.disabled = false;
-        btn.innerText = 'Ro‘yxatdan o‘tish';
+        btn.innerHTML = '<i class="fi fi-rr-check"></i> Ro‘yxatdan o‘tish';
       }
     }
 
-    // ==================== ASOSIY OYNA VA TABLAR ====================
-    function setupMainApp() {
+    // ==================== ASOSIY OYNA, TABLAR VA MARKAZLASHTIRISH ====================
+    function setupMainApp(instantCenter) {
       document.getElementById('hdrName').innerText = state.user ? state.user.fio : 'Foydalanuvchi';
-      const roleText = state.isAdmin
-        ? ('🛡 Admin' + (state.user && state.user.position ? ' • ' + state.user.position : ''))
-        : ('👤 ' + (state.user && state.user.position ? state.user.position : 'Xodim'));
-      document.getElementById('hdrBadge').innerText = roleText;
+      const badgeEl = document.getElementById('hdrBadge');
+      if (state.isAdmin) {
+        const posSuffix = (state.user && state.user.position) ? ' • ' + escHtml(state.user.position) : '';
+        badgeEl.innerHTML = `<i class="fi fi-rr-shield-check"></i><span>Admin${posSuffix}</span>`;
+      } else {
+        badgeEl.innerHTML = `<i class="fi fi-rr-user"></i><span>${escHtml((state.user && state.user.position) || 'Xodim')}</span>`;
+      }
 
-      // Admin uchun xodim filtri ro'yxatini to'ldirish
+      // Admin xodim filtri ro'yxati
       const posSel = document.getElementById('adminPositionFilter');
       const prevFilter = posSel.value;
       const uniquePositions = Array.from(new Set([
+        ...state.planPositions,
         ...state.assignablePositions,
         ...state.tasks.map(t => t.position).filter(Boolean)
       ])).sort((a, b) => a.localeCompare(b));
 
-      posSel.innerHTML = '<option value="">👥 Barcha xodimlar</option>' +
+      posSel.innerHTML = '<option value="">Barcha xodimlar</option>' +
         uniquePositions.map(p => `<option value="${escHtml(p)}">${escHtml(p)}</option>`).join('');
       if (uniquePositions.includes(prevFilter)) posSel.value = prevFilter;
 
-      // Tablarni yig'ish
-      const tabs = [];
+      // Yuqori menyular tartibi: Menga kelgan -> Yuborilgan -> Barcha vazifalar -> Foydalanuvchilar
+      const tabs = [
+        { id: 'mine', label: 'Menga kelgan', icon: 'fi-rr-list-check', count: getMineTasks().length },
+        { id: 'sent', label: 'Yuborilgan', icon: 'fi-rr-paper-plane', count: getSentTasks().length }
+      ];
+
       if (state.isAdmin) {
-        tabs.push({ id: 'all', label: 'Barcha vazifalar', count: state.tasks.length });
-        if (state.user && state.user.position) {
-          tabs.push({ id: 'mine', label: 'Menga kelgan', count: getMineTasks().length });
-        }
-        tabs.push({ id: 'sent', label: 'Yuborganlarim', count: getSentTasks().length });
+        tabs.push({ id: 'all', label: 'Barcha vazifalar', icon: 'fi-rr-apps', count: state.tasks.length });
         tabs.push({
           id: 'users',
           label: 'Foydalanuvchilar',
+          icon: 'fi-rr-users',
           count: state.pendingUsers.length > 0 ? state.pendingUsers.length : state.approvedUsers.length,
           alert: state.pendingUsers.length > 0
         });
-      } else {
-        tabs.push({ id: 'mine', label: 'Menga kelgan', count: getMineTasks().length });
-        tabs.push({ id: 'sent', label: 'Yuborganlarim', count: getSentTasks().length });
       }
 
+      state.tabsList = tabs;
       if (!state.activeTab || !tabs.some(t => t.id === state.activeTab)) {
         state.activeTab = tabs[0].id;
       }
 
       const tabsEl = document.getElementById('topTabs');
+      const prevScroll = tabsEl.scrollLeft;
+
       tabsEl.innerHTML = tabs.map(t => `
-        <button class="tab-btn ${state.activeTab === t.id ? 'active' : ''}" onclick="switchTab('${t.id}')">
+        <button type="button" class="tab-btn ${state.activeTab === t.id ? 'active' : ''}" data-tab="${t.id}" onclick="switchTab('${t.id}')">
+          <i class="fi ${t.icon}"></i>
           <span>${t.label}</span>
           <span class="badge ${t.alert ? 'badge-alert' : ''}">${t.count}</span>
         </button>
       `).join('');
 
+      tabsEl.scrollLeft = prevScroll;
       renderCurrentTab();
+      centerActiveTab(!instantCenter);
     }
 
     function switchTab(tabId) {
+      if (state.activeTab === tabId) {
+        centerActiveTab(true);
+        return;
+      }
       state.activeTab = tabId;
-      setupMainApp();
+
+      document.querySelectorAll('#topTabs .tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
+      });
+
+      renderCurrentTab();
+      centerActiveTab(true);
     }
 
+    function centerActiveTab(smooth) {
+      requestAnimationFrame(() => {
+        const tabsEl = document.getElementById('topTabs');
+        if (!tabsEl) return;
+        const activeBtn = tabsEl.querySelector('.tab-btn.active');
+        if (!activeBtn) return;
+
+        const targetScroll = activeBtn.offsetLeft - (tabsEl.clientWidth / 2) + (activeBtn.offsetWidth / 2);
+        const maxScroll = Math.max(0, tabsEl.scrollWidth - tabsEl.clientWidth);
+        const clamped = Math.max(0, Math.min(targetScroll, maxScroll));
+
+        tabsEl.scrollTo({
+          left: clamped,
+          behavior: smooth ? 'smooth' : 'auto'
+        });
+      });
+    }
+
+    // ==================== YONGA SVAYP (SWIPE) ====================
+    (function initTabSwipe() {
+      let startX = 0;
+      let startY = 0;
+      let tracking = false;
+
+      const mainEl = document.getElementById('screen-main');
+
+      mainEl.addEventListener('touchstart', (e) => {
+        if (!e.touches || e.touches.length !== 1) return;
+        // Modal ochiq bo'lsa yoki gorizontal scroll qilinadigan qismdan boshlansa svaypni o'tkazib yuboramiz
+        if (document.querySelector('.modal-backdrop.open')) return;
+        const t = e.target;
+        if (t.closest('.tabs') || t.closest('.filter-row') || t.closest('input, textarea, select')) {
+          tracking = false;
+          return;
+        }
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        tracking = true;
+      }, { passive: true });
+
+      mainEl.addEventListener('touchend', (e) => {
+        if (!tracking || !e.changedTouches || !e.changedTouches.length) return;
+        tracking = false;
+
+        const dx = e.changedTouches[0].clientX - startX;
+        const dy = e.changedTouches[0].clientY - startY;
+
+        // Yetarlicha uzun va aniq gorizontal harakat bo'lgandagina menyu almashadi
+        if (Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy) * 1.4) return;
+        if (!state.tabsList || state.tabsList.length < 2) return;
+
+        const curIdx = state.tabsList.findIndex(t => t.id === state.activeTab);
+        if (curIdx === -1) return;
+
+        if (dx < 0 && curIdx < state.tabsList.length - 1) {
+          switchTab(state.tabsList[curIdx + 1].id);
+        } else if (dx > 0 && curIdx > 0) {
+          switchTab(state.tabsList[curIdx - 1].id);
+        }
+      }, { passive: true });
+    })();
+
+    // ==================== FILTRLAR VA VAZIFALAR RO'YXATI ====================
     function getMineTasks() {
       const myPos = state.user && state.user.position ? normStr(state.user.position) : '';
       if (!myPos) return [];
@@ -974,7 +1235,7 @@
     function onSearchInput() {
       const val = document.getElementById('searchInput').value;
       state.searchQuery = val;
-      document.getElementById('searchClearBtn').style.display = val ? 'block' : 'none';
+      document.getElementById('searchClearBtn').style.display = val ? 'inline-flex' : 'none';
       renderCurrentTab();
     }
 
@@ -1010,17 +1271,15 @@
       }
 
       let list = [];
-      if (state.activeTab === 'all') list = state.tasks.slice();
-      else if (state.activeTab === 'mine') list = getMineTasks();
+      if (state.activeTab === 'mine') list = getMineTasks();
       else if (state.activeTab === 'sent') list = getSentTasks();
+      else if (state.activeTab === 'all') list = state.tasks.slice();
 
-      // Admin xodim filtri
       if (state.isAdmin && state.activeTab === 'all') {
         const selPos = document.getElementById('adminPositionFilter').value;
         if (selPos) list = list.filter(t => normStr(t.position) === normStr(selPos));
       }
 
-      // Status va Priority filtri
       if (state.statusFilter) {
         list = list.filter(t => t.status === state.statusFilter);
       }
@@ -1028,7 +1287,6 @@
         list = list.filter(t => t.priority);
       }
 
-      // Qidiruv
       const q = normStr(state.searchQuery);
       if (q) {
         list = list.filter(t =>
@@ -1038,9 +1296,16 @@
         );
       }
 
+      currentRenderedTasks = list;
       const container = document.getElementById('mainContent');
+
       if (!list.length) {
-        container.innerHTML = '<div class="empty-state">Hozircha bu bo‘limda vazifalar yo‘q.</div>';
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fi fi-rr-list-check"></i>
+            <span>Hozircha bu bo‘limda vazifalar yo‘q.</span>
+          </div>
+        `;
         return;
       }
 
@@ -1054,16 +1319,22 @@
         const canChangeStatus = state.isAdmin || (myPos && normStr(t.position) === myPos);
 
         const dateLine = (t.startDate || t.deadline)
-          ? `<span>📅 <strong>${escHtml(t.startDate || '—')}</strong>${t.deadline ? ' → <strong>' + escHtml(t.deadline) + '</strong>' : ''}</span>`
+          ? `<span class="meta-item"><i class="fi fi-rr-calendar"></i> <strong>${escHtml(t.startDate || '—')}</strong>${t.deadline ? ' → <strong>' + escHtml(t.deadline) + '</strong>' : ''}</span>`
           : '';
-        const hoursLine = t.hours ? `<span>⏱ <strong>${escHtml(t.hours)} soat</strong></span>` : '';
-        const senderLine = t.senderName ? `<span>📤 Kimdan: <strong>${escHtml(t.senderName)}</strong></span>` : '';
+        const hoursLine = t.hours
+          ? `<span class="meta-item"><i class="fi fi-rr-clock"></i> <strong>${escHtml(t.hours)} soat</strong></span>`
+          : '';
+        const senderLine = t.senderName
+          ? `<span class="meta-item"><i class="fi fi-rr-paper-plane"></i> Kimdan: <strong>${escHtml(t.senderName)}</strong></span>`
+          : '';
 
         return `
-          <div class="task-card ${cardExtra}" id="task-${t.rowIndex}-${idx}">
+          <div class="task-card ${cardExtra}">
             <div class="task-top">
               <div class="tag-group">
-                ${t.priority ? '<span class="tag tag-prio">🔥 Muhim</span>' : '<span class="tag tag-normal">Oddiy</span>'}
+                ${t.priority
+                  ? '<span class="tag tag-prio"><i class="fi fi-rr-flame"></i> Muhim</span>'
+                  : '<span class="tag tag-normal"><i class="fi fi-rr-tag"></i> Oddiy</span>'}
                 <span class="tag ${stClass}">${escHtml(t.status)}</span>
               </div>
               <span style="font-size:11.5px; color:var(--muted);">#${t.rowIndex}</span>
@@ -1072,7 +1343,7 @@
             <div class="task-text">${escHtml(t.task)}</div>
 
             <div class="task-meta">
-              <span>👤 Ijrochi: <strong>${escHtml(t.position || '—')}</strong></span>
+              <span class="meta-item"><i class="fi fi-rr-user"></i> Ijrochi: <strong>${escHtml(t.position || '—')}</strong></span>
               ${senderLine}
               ${dateLine}
               ${hoursLine}
@@ -1081,11 +1352,11 @@
             ${canChangeStatus ? `
               <div class="status-switch">
                 <button type="button" class="st-btn ${t.status === 'Yangi' ? 'active-yangi' : ''}"
-                  onclick="changeTaskStatus(${t.rowIndex}, '${escAttr(t.position)}', '${escAttr(t.task)}', 'Yangi')">Yangi</button>
+                  onclick="changeTaskStatusByIdx(${idx}, 'Yangi')">Yangi</button>
                 <button type="button" class="st-btn ${t.status === 'Jarayonda' ? 'active-jarayonda' : ''}"
-                  onclick="changeTaskStatus(${t.rowIndex}, '${escAttr(t.position)}', '${escAttr(t.task)}', 'Jarayonda')">Jarayonda</button>
+                  onclick="changeTaskStatusByIdx(${idx}, 'Jarayonda')">Jarayonda</button>
                 <button type="button" class="st-btn ${t.status === 'Bajarildi' ? 'active-bajarildi' : ''}"
-                  onclick="changeTaskStatus(${t.rowIndex}, '${escAttr(t.position)}', '${escAttr(t.task)}', 'Bajarildi')">Bajarildi</button>
+                  onclick="changeTaskStatusByIdx(${idx}, 'Bajarildi')"><i class="fi fi-rr-check"></i> Bajarildi</button>
               </div>
             ` : ''}
           </div>
@@ -1093,12 +1364,8 @@
       }).join('');
     }
 
-    function escAttr(s) {
-      return String(s || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, ' ');
-    }
-
-    async function changeTaskStatus(rowIndex, position, taskText, newStatus) {
-      const target = state.tasks.find(t => t.rowIndex === rowIndex && normStr(t.task) === normStr(taskText));
+    async function changeTaskStatusByIdx(idx, newStatus) {
+      const target = currentRenderedTasks[idx];
       if (!target || target.status === newStatus) return;
 
       const prevStatus = target.status;
@@ -1109,9 +1376,9 @@
         const res = await apiPost({
           action: 'UPDATE_TASK_STATUS',
           chatId: CHAT_ID,
-          rowIndex: rowIndex,
-          position: position,
-          task: taskText,
+          rowIndex: target.rowIndex,
+          position: target.position,
+          task: target.task,
           status: newStatus
         });
         if (!res.ok) throw new Error(res.error || 'Holatni yangilab bo‘lmadi');
@@ -1128,10 +1395,9 @@
       const container = document.getElementById('mainContent');
       let html = '';
 
-      // 1. Tasdiqlash kutilmoqda
-      html += `<div class="section-title">⏳ Tasdiqlash kutilmoqda (${state.pendingUsers.length})</div>`;
+      html += `<div class="section-title"><i class="fi fi-rr-clock" style="color:var(--amber);"></i> Tasdiqlash kutilmoqda (${state.pendingUsers.length})</div>`;
       if (!state.pendingUsers.length) {
-        html += `<div class="empty-state" style="padding:18px;">Yangi so‘rovlar yo‘q.</div>`;
+        html += `<div class="empty-state" style="padding:18px;"><span>Yangi so‘rovlar yo‘q.</span></div>`;
       } else {
         const posOptions = '<option value="">— Plan jadvalidan ism tanlang —</option>' +
           state.planPositions.map(p => `<option value="${escHtml(p)}">${escHtml(p)}</option>`).join('');
@@ -1140,10 +1406,13 @@
           <div class="user-card" id="pend-${idx}">
             <div class="user-card-head">
               <div>
-                <div class="user-card-fio">${escHtml(u.fio)}</div>
+                <div class="user-card-fio"><i class="fi fi-rr-user" style="color:var(--accent);"></i> ${escHtml(u.fio)}</div>
                 <div class="user-card-sub">
-                  📞 +${escHtml(u.phone)} ${u.username ? ' • ' + escHtml(u.username) : ''}<br/>
-                  🕒 ${escHtml(u.date)}
+                  <div class="user-sub-row">
+                    <span><i class="fi fi-rr-phone-call"></i> +${escHtml(u.phone)}</span>
+                    ${u.username ? `<span>• ${escHtml(u.username)}</span>` : ''}
+                  </div>
+                  <div class="user-sub-row"><i class="fi fi-rr-calendar"></i> ${escHtml(u.date)}</div>
                 </div>
               </div>
             </div>
@@ -1151,30 +1420,38 @@
               <select id="pendSel-${idx}" class="select">${posOptions}</select>
               <input id="pendManual-${idx}" type="text" class="input" placeholder="Yoki ro‘yxatda bo‘lmasa ismni qo‘lda yozing..." />
               <div class="btn-row">
-                <button type="button" class="btn btn-success btn-sm" onclick="decideUser('${escAttr(u.chatId)}', ${idx}, 'APPROVE')">✅ Tasdiqlash</button>
-                <button type="button" class="btn btn-danger btn-sm" onclick="decideUser('${escAttr(u.chatId)}', ${idx}, 'REJECT')">❌ Rad etish</button>
+                <button type="button" class="btn btn-success btn-sm" onclick="decideUser('${escAttr(u.chatId)}', ${idx}, 'APPROVE')">
+                  <i class="fi fi-rr-check"></i> Tasdiqlash
+                </button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="decideUser('${escAttr(u.chatId)}', ${idx}, 'REJECT')">
+                  <i class="fi fi-rr-cross-small"></i> Rad etish
+                </button>
               </div>
             </div>
           </div>
         `).join('');
       }
 
-      // 2. Tasdiqlangan foydalanuvchilar
-      html += `<div class="section-title">👥 Faol foydalanuvchilar (${state.approvedUsers.length})</div>`;
+      html += `<div class="section-title"><i class="fi fi-rr-users" style="color:var(--accent);"></i> Faol foydalanuvchilar (${state.approvedUsers.length})</div>`;
       if (!state.approvedUsers.length) {
-        html += `<div class="empty-state" style="padding:18px;">Tasdiqlangan foydalanuvchilar hali yo‘q.</div>`;
+        html += `<div class="empty-state" style="padding:18px;"><span>Tasdiqlangan foydalanuvchilar hali yo‘q.</span></div>`;
       } else {
         html += state.approvedUsers.map(u => `
           <div class="user-card">
             <div class="user-card-head">
               <div>
-                <div class="user-card-fio">${escHtml(u.fio)}</div>
+                <div class="user-card-fio"><i class="fi fi-rr-user" style="color:var(--green);"></i> ${escHtml(u.fio)}</div>
                 <div class="user-card-sub">
-                  🏷 Jadvaldagi ismi: <strong style="color:#93c5fd;">${escHtml(u.position)}</strong><br/>
-                  📞 +${escHtml(u.phone)} ${u.username ? ' • ' + escHtml(u.username) : ''}
+                  <div class="user-sub-row"><i class="fi fi-rr-briefcase"></i> Jadvaldagi ismi: <strong style="color:#93c5fd;">${escHtml(u.position)}</strong></div>
+                  <div class="user-sub-row">
+                    <span><i class="fi fi-rr-phone-call"></i> +${escHtml(u.phone)}</span>
+                    ${u.username ? `<span>• ${escHtml(u.username)}</span>` : ''}
+                  </div>
                 </div>
               </div>
-              <button type="button" class="btn btn-danger btn-sm" onclick="askDeleteUser('${escAttr(u.chatId)}', '${escAttr(u.fio)}')">🗑 O‘chirish</button>
+              <button type="button" class="btn btn-danger btn-sm" onclick="askDeleteUser('${escAttr(u.chatId)}', '${escAttr(u.fio)}')">
+                <i class="fi fi-rr-trash"></i> O‘chirish
+              </button>
             </div>
           </div>
         `).join('');
@@ -1243,13 +1520,21 @@
     }
 
     // ==================== + YANGI VAZIFA MODALI ====================
+    function updateModalPrioLabel(checked) {
+      const el = document.getElementById('mPrioLabel');
+      el.innerHTML = checked
+        ? '<i class="fi fi-rr-flame" style="color:var(--red);"></i> Muhim'
+        : 'Oddiy';
+    }
+
     function openTaskModal() {
       const sel = document.getElementById('mPosition');
       const myPos = (state.user && state.user.position) ? state.user.position : '';
       const names = Array.from(new Set([
+        ...state.planPositions,
         ...state.assignablePositions,
         ...(myPos ? [myPos] : [])
-      ])).sort((a, b) => a.localeCompare(b));
+      ])).filter(Boolean).sort((a, b) => a.localeCompare(b));
 
       sel.innerHTML = names.map(n =>
         `<option value="${escHtml(n)}" ${normStr(n) === normStr(myPos) ? 'selected' : ''}>${escHtml(n)}</option>`
@@ -1262,7 +1547,7 @@
       document.getElementById('mDeadline').value = '';
       document.getElementById('mHours').value = '';
       document.getElementById('mPriority').checked = false;
-      document.getElementById('mPrioLabel').innerText = 'Oddiy';
+      updateModalPrioLabel(false);
 
       document.getElementById('taskModal').classList.add('open');
     }
@@ -1287,7 +1572,7 @@
 
       const btn = document.getElementById('btnSaveTask');
       btn.disabled = true;
-      btn.innerText = 'Saqlanmoqda...';
+      btn.innerHTML = '<i class="fi fi-rr-refresh spinning"></i> Saqlanmoqda...';
 
       try {
         const res = await apiPost({
@@ -1308,7 +1593,7 @@
         showToast('Xatolik: ' + err.message);
       } finally {
         btn.disabled = false;
-        btn.innerText = 'Saqlash va yuborish';
+        btn.innerHTML = '<i class="fi fi-rr-paper-plane"></i> Saqlash va yuborish';
       }
     }
 
