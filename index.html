@@ -767,6 +767,10 @@
 
     function togglePrioFilter(el) {
       state.prioOnly = !state.prioOnly;
+      if (state.prioOnly && state.statusFilter) {
+        state.statusFilter = '';
+        document.querySelectorAll('.filter-row .chip[data-st]').forEach(c => c.classList.toggle('active', c.getAttribute('data-st') === ''));
+      }
       const chip = el || document.getElementById('prioFilterChip');
       chip.classList.toggle('prio-active', state.prioOnly);
       centerElementInRow(document.getElementById('statusFilterRow'), chip, true);
@@ -863,10 +867,9 @@
 
     function renderUsersTab() {
       const container = document.getElementById('mainContent');
-      let html = `<div class="section-title"><i class="fi fi-rr-clock" style="color:var(--amber);"></i> Tasdiqlash kutilmoqda (${state.pendingUsers.length})</div>`;
-      if (!state.pendingUsers.length) {
-        html += '<div class="empty-state" style="padding:18px;"><span>Yangi so‘rovlar yo‘q.</span></div>';
-      } else {
+      let html = '';
+      if (state.pendingUsers.length > 0) {
+        html += `<div class="section-title"><i class="fi fi-rr-clock" style="color:var(--amber);"></i> Tasdiqlash kutilmoqda (${state.pendingUsers.length})</div>`;
         const opts = '<option value="">— Plan jadvalidan ism tanlang —</option>' + state.planPositions.map(p => `<option value="${escHtml(p)}">${escHtml(p)}</option>`).join('');
         html += state.pendingUsers.map((u, idx) => `
           <div class="user-card" id="pend-${idx}">
