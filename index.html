@@ -25,629 +25,289 @@
       --amber-soft: rgba(245, 158, 11, 0.16);
       --red: #ef4444;
       --red-soft: rgba(239, 68, 68, 0.16);
-      --radius: 14px;
+      --radius: 13px;
     }
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-    .fi {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 1;
-      vertical-align: middle;
-    }
+    .fi { display: inline-flex; align-items: center; justify-content: center; line-height: 1; vertical-align: middle; }
 
     body {
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding-bottom: 88px;
-      overflow-x: hidden;
+      background: var(--bg); color: var(--text);
+      min-height: 100vh; padding-bottom: 82px; overflow-x: hidden;
     }
 
-    .screen { display: none; padding: 14px; max-width: 680px; margin: 0 auto; }
+    .screen { display: none; padding: 10px 12px; max-width: 680px; margin: 0 auto; }
     .screen.active { display: block; }
 
-    /* Loading */
     .loader-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 75vh;
-      gap: 14px;
-      color: var(--muted);
-      font-size: 14px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 75vh; gap: 14px; color: var(--muted); font-size: 14px;
     }
     .spinner {
-      width: 34px;
-      height: 34px;
-      border: 3px solid rgba(59, 130, 246, 0.2);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 0.75s linear infinite;
+      width: 34px; height: 34px;
+      border: 3px solid rgba(59, 130, 246, 0.2); border-top-color: var(--accent);
+      border-radius: 50%; animation: spin 0.75s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+    .spinning { animation: spin 0.75s linear infinite; }
 
-    .spinning {
-      animation: spin 0.75s linear infinite;
-    }
-
-    /* Cards */
     .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px 16px;
-      margin-bottom: 12px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 16px; margin-bottom: 12px;
       box-shadow: 0 6px 20px rgba(2, 6, 23, 0.28);
     }
-
     .state-icon-circle {
-      width: 62px;
-      height: 62px;
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 26px;
-      margin-bottom: 12px;
+      width: 58px; height: 58px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 12px;
     }
-    .state-icon-pending { background: var(--amber-soft); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.3); }
-    .state-icon-rejected { background: var(--red-soft); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .state-icon-pending { background: var(--amber-soft); color: #fcd34d; border: 1px solid rgba(245,158,11,0.3); }
+    .state-icon-rejected { background: var(--red-soft); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
 
-    .title-lg {
-      font-size: 19px;
-      font-weight: 700;
-      margin: 0 0 6px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .title-lg { font-size: 18px; font-weight: 700; margin: 0 0 6px; display: flex; align-items: center; gap: 8px; }
     .title-center { justify-content: center; }
-    .subtitle { font-size: 13px; color: var(--muted); margin: 0 0 18px; line-height: 1.5; }
+    .subtitle { font-size: 13px; color: var(--muted); margin: 0 0 16px; line-height: 1.5; }
 
-    /* Form Controls */
-    .field { margin-bottom: 14px; }
+    .field { margin-bottom: 13px; }
     .field label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11.5px;
-      font-weight: 600;
-      color: var(--muted);
-      margin-bottom: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.35px;
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 600; color: var(--muted);
+      margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.35px;
     }
     .input, .select, .textarea {
-      width: 100%;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      border-radius: 11px;
-      padding: 11px 12px;
-      font-size: 14px;
-      font-family: inherit;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%; background: var(--bg); border: 1px solid var(--border);
+      color: var(--text); border-radius: 10px; padding: 10px 12px;
+      font-size: 14px; font-family: inherit; outline: none; transition: border-color 0.2s;
     }
-    .input:focus, .select:focus, .textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.14);
-    }
-    .textarea { min-height: 86px; resize: vertical; }
+    .input:focus, .select:focus, .textarea:focus { border-color: var(--accent); }
+    .textarea { min-height: 82px; resize: vertical; }
 
-    /* Buttons */
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      border: none;
-      border-radius: 11px;
-      padding: 11px 15px;
-      font-size: 14px;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-      transition: opacity 0.15s, transform 0.1s, background 0.15s;
+      display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+      border: none; border-radius: 10px; padding: 10px 14px;
+      font-size: 13.5px; font-weight: 600; font-family: inherit; cursor: pointer;
     }
     .btn:active { transform: scale(0.98); }
     .btn:disabled { opacity: 0.45; cursor: not-allowed; }
     .btn-block { width: 100%; }
     .btn-primary { background: var(--accent); color: #fff; }
     .btn-success { background: var(--green); color: #fff; }
-    .btn-danger { background: var(--red-soft); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .btn-danger { background: var(--red-soft); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
     .btn-outline { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); }
-    .btn-sm { padding: 7px 11px; font-size: 12.5px; border-radius: 9px; }
+    .btn-sm { padding: 6px 10px; font-size: 12px; border-radius: 8px; }
 
     .phone-verified-box {
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--green-soft);
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      color: #6ee7b7;
-      padding: 11px 13px;
-      border-radius: 11px;
-      font-size: 14px;
-      font-weight: 600;
+      display: none; align-items: center; justify-content: space-between;
+      background: var(--green-soft); border: 1px solid rgba(16,185,129,0.35);
+      color: #6ee7b7; padding: 10px 12px; border-radius: 10px; font-size: 14px; font-weight: 600;
     }
 
-    /* Header */
+    /* Ixcham yuqori Admin paneli */
     .app-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 12px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 11px 13px;
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      margin-bottom: 8px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 11px; padding: 6px 10px;
     }
-    .user-meta { min-width: 0; }
-    .user-name {
-      font-size: 15.5px;
-      font-weight: 700;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    .user-meta { display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1; }
+    .user-name { font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .user-role-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      margin-top: 4px;
-      font-size: 11.5px;
-      font-weight: 600;
-      color: #93c5fd;
-      background: var(--accent-soft);
-      padding: 3px 9px;
-      border-radius: 99px;
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 11px; font-weight: 600; color: #93c5fd; background: var(--accent-soft);
+      padding: 2px 7px; border-radius: 99px; flex-shrink: 0;
     }
-    .header-actions { display: flex; gap: 8px; flex-shrink: 0; }
     .icon-btn {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      color: var(--text);
-      width: 38px;
-      height: 38px;
-      border-radius: 11px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background 0.15s, border-color 0.15s;
+      background: var(--surface-2); border: 1px solid var(--border); color: var(--text);
+      width: 30px; height: 30px; border-radius: 8px;
+      display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 14px; flex-shrink: 0;
     }
-    .icon-btn:active { transform: scale(0.95); }
+    .icon-btn:active { transform: scale(0.94); }
 
-    /* Top Tabs */
+    /* Ixcham yuqori menyular */
     .tabs {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding: 2px 2px 6px;
-      margin-bottom: 10px;
-      scrollbar-width: none;
-      scroll-behavior: smooth;
+      display: flex; gap: 6px; overflow-x: auto; padding: 1px 1px 4px;
+      margin-bottom: 8px; scrollbar-width: none; scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
     }
     .tabs::-webkit-scrollbar { display: none; }
     .tab-btn {
-      flex-shrink: 0;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 9px 13px;
-      border-radius: 11px;
-      font-size: 13px;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      transition: background 0.2s, border-color 0.2s, color 0.2s;
+      flex-shrink: 0; background: var(--surface); border: 1px solid var(--border);
+      color: var(--muted); padding: 6px 10px; border-radius: 9px;
+      font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px;
     }
-    .tab-btn .fi { font-size: 14px; }
-    .tab-btn.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.32);
-    }
-    .badge {
-      background: rgba(255, 255, 255, 0.15);
-      padding: 2px 7px;
-      border-radius: 99px;
-      font-size: 11px;
-      font-weight: 700;
-    }
-    .badge-alert {
-      background: var(--red);
-      color: #fff;
-    }
+    .tab-btn .fi { font-size: 13px; }
+    .tab-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 3px 10px rgba(59,130,246,0.28); }
+    .badge { background: rgba(255,255,255,0.16); padding: 1px 6px; border-radius: 99px; font-size: 10.5px; font-weight: 700; }
+    .badge-alert { background: var(--red); color: #fff; }
 
-    /* Filters */
-    .filters-box {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
+    /* Filtrlar */
+    .filters-box { display: flex; flex-direction: column; gap: 7px; margin-bottom: 10px; }
     .search-wrap { position: relative; }
     .search-icon {
-      position: absolute;
-      left: 11px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-      font-size: 13px;
-      pointer-events: none;
+      position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+      color: var(--muted); font-size: 12.5px; pointer-events: none;
     }
     .search-wrap .input {
-      padding: 7px 32px 7px 32px;
-      font-size: 13px;
-      border-radius: 9px;
-      background: var(--surface);
-      line-height: 1.3;
+      padding: 6px 30px 6px 30px; font-size: 13px; border-radius: 9px;
+      background: var(--surface); line-height: 1.3;
     }
     .search-clear {
-      position: absolute;
-      right: 4px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      color: var(--muted);
-      font-size: 15px;
-      cursor: pointer;
-      display: none;
-      width: 26px;
-      height: 26px;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
+      position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: var(--muted); font-size: 15px; cursor: pointer;
+      display: none; width: 24px; height: 24px; align-items: center; justify-content: center;
     }
+    #adminPositionFilterWrap .select { padding: 7px 10px; font-size: 13px; background: var(--surface); }
+
     .filter-row {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      scrollbar-width: none;
-      padding-bottom: 2px;
-      scroll-behavior: smooth;
+      display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
+      padding-bottom: 2px; scroll-behavior: smooth;
     }
     .filter-row::-webkit-scrollbar { display: none; }
     .chip {
-      flex-shrink: 0;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 5px 10px;
-      border-radius: 99px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
+      flex-shrink: 0; background: var(--surface); border: 1px solid var(--border);
+      color: var(--muted); padding: 5px 9px; border-radius: 99px;
+      font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit;
+      display: inline-flex; align-items: center; gap: 5px;
     }
     .chip-count {
-      font-size: 10px;
-      font-weight: 700;
-      background: rgba(148, 163, 184, 0.16);
-      color: var(--muted);
-      padding: 1px 5px;
-      border-radius: 99px;
-      min-width: 16px;
-      text-align: center;
-      line-height: 1.35;
+      font-size: 10px; font-weight: 700; background: rgba(148,163,184,0.16);
+      color: var(--muted); padding: 1px 5px; border-radius: 99px;
+      min-width: 16px; text-align: center; line-height: 1.35;
     }
     .chip.active { background: var(--accent-soft); border-color: var(--accent); color: #93c5fd; }
-    .chip.active .chip-count { background: rgba(59, 130, 246, 0.3); color: #dbeafe; }
+    .chip.active .chip-count { background: rgba(59,130,246,0.3); color: #dbeafe; }
     .chip.prio-active { background: var(--red-soft); border-color: var(--red); color: #fca5a5; }
-    .chip.prio-active .chip-count { background: rgba(239, 68, 68, 0.3); color: #fee2e2; }
+    .chip.prio-active .chip-count { background: rgba(239,68,68,0.3); color: #fee2e2; }
 
-    /* Task Cards */
+    /* Vazifa kartochkalari */
     .task-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--accent);
-      border-radius: var(--radius);
-      padding: 13px 14px;
-      margin-bottom: 10px;
-      transition: opacity 0.2s, border-left-color 0.2s;
+      background: var(--surface); border: 1px solid var(--border);
+      border-left: 3px solid var(--accent); border-radius: var(--radius);
+      padding: 12px 13px; margin-bottom: 9px;
     }
     .task-card.is-priority { border-left-color: var(--red); }
     .task-card.is-inprogress { border-left-color: var(--amber); }
     .task-card.is-done { border-left-color: var(--green); opacity: 0.82; }
 
-    .task-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 8px;
-      flex-wrap: wrap;
-    }
-    .tag-group { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 3px 8px;
-      border-radius: 7px;
-    }
+    .task-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 7px; flex-wrap: wrap; }
+    .tag-group { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; }
+    .task-top-right { display: flex; align-items: center; gap: 6px; }
+    .tag { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 7px; }
     .tag-prio { background: var(--red-soft); color: #fca5a5; }
-    .tag-normal { background: rgba(148, 163, 184, 0.14); color: var(--muted); }
+    .tag-normal { background: rgba(148,163,184,0.14); color: var(--muted); }
     .tag-st-yangi { background: var(--accent-soft); color: #93c5fd; }
     .tag-st-jarayonda { background: var(--amber-soft); color: #fcd34d; }
     .tag-st-bajarildi { background: var(--green-soft); color: #6ee7b7; }
 
-    .task-text {
-      font-size: 14.5px;
-      font-weight: 600;
-      line-height: 1.45;
-      margin-bottom: 10px;
-      word-break: break-word;
+    .edit-pill-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--surface-2); border: 1px solid var(--border); color: #cbd5e1;
+      padding: 3px 8px; border-radius: 7px; font-size: 11px; font-weight: 600;
+      font-family: inherit; cursor: pointer;
     }
+    .edit-pill-btn:active { transform: scale(0.96); }
+    .edit-time-left { color: var(--muted); font-weight: 500; font-size: 10px; }
+
+    .task-text { font-size: 14px; font-weight: 600; line-height: 1.42; margin-bottom: 9px; word-break: break-word; }
     .task-card.is-done .task-text { text-decoration: line-through; color: var(--muted); }
 
-    .task-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px 14px;
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-    .meta-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .meta-item .fi { font-size: 12.5px; color: #64748b; }
+    .task-meta { display: flex; flex-wrap: wrap; gap: 6px 13px; font-size: 12px; color: var(--muted); margin-bottom: 9px; }
+    .meta-item { display: inline-flex; align-items: center; gap: 5px; }
+    .meta-item .fi { font-size: 12px; color: #64748b; }
     .meta-item strong { color: #e2e8f0; font-weight: 600; }
 
     .status-switch {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-      padding-top: 9px;
-      border-top: 1px solid var(--border);
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+      padding-top: 8px; border-top: 1px solid var(--border);
     }
     .st-btn {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 7px 6px;
-      border-radius: 9px;
-      font-size: 12px;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
+      background: var(--bg); border: 1px solid var(--border); color: var(--muted);
+      padding: 7px 6px; border-radius: 8px; font-size: 12px; font-weight: 600;
+      font-family: inherit; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 5px;
     }
     .st-btn.active-yangi { background: var(--accent-soft); border-color: var(--accent); color: #93c5fd; }
     .st-btn.active-jarayonda { background: var(--amber-soft); border-color: var(--amber); color: #fcd34d; }
     .st-btn.active-bajarildi { background: var(--green-soft); border-color: var(--green); color: #6ee7b7; }
 
-    /* Users Admin */
+    /* Foydalanuvchilar (Admin) */
     .section-title {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 12.5px;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      margin: 14px 0 8px;
+      display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700;
+      color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; margin: 12px 0 7px;
     }
-    .user-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 13px 14px;
-      margin-bottom: 10px;
-    }
-    .user-card-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 10px;
-    }
-    .user-card-fio {
-      font-size: 15px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 5px;
-    }
-    .user-card-sub {
-      font-size: 12.5px;
-      color: var(--muted);
-      line-height: 1.65;
-    }
-    .user-sub-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .approve-box {
-      margin-top: 11px;
-      padding-top: 11px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+    .user-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 13px; margin-bottom: 9px; }
+    .user-card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+    .user-card-fio { font-size: 14.5px; font-weight: 700; display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+    .user-card-sub { font-size: 12px; color: var(--muted); line-height: 1.6; }
+    .user-sub-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .approve-box { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
     .btn-row { display: flex; gap: 8px; }
     .btn-row > * { flex: 1; }
 
-    /* Empty State */
     .empty-state {
-      text-align: center;
-      padding: 36px 16px;
-      color: var(--muted);
-      font-size: 13.5px;
-      background: var(--surface);
-      border: 1px dashed var(--border);
-      border-radius: var(--radius);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
+      text-align: center; padding: 32px 16px; color: var(--muted); font-size: 13px;
+      background: var(--surface); border: 1px dashed var(--border); border-radius: var(--radius);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
     }
-    .empty-state .fi { font-size: 26px; color: #475569; }
+    .empty-state .fi { font-size: 24px; color: #475569; }
 
-    /* FAB */
     .fab {
-      position: fixed;
-      right: 16px;
-      bottom: 18px;
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
-      color: #fff;
-      border: none;
-      border-radius: 99px;
-      padding: 13px 18px;
-      font-size: 14px;
-      font-weight: 700;
-      font-family: inherit;
-      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.45);
-      cursor: pointer;
-      display: none;
-      align-items: center;
-      gap: 7px;
-      z-index: 40;
+      position: fixed; right: 14px; bottom: 16px;
+      background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff;
+      border: none; border-radius: 99px; padding: 11px 16px;
+      font-size: 13.5px; font-weight: 700; font-family: inherit;
+      box-shadow: 0 8px 24px rgba(37,99,235,0.45); cursor: pointer;
+      display: none; align-items: center; gap: 7px; z-index: 40;
     }
     .fab:active { transform: scale(0.96); }
 
     /* Modal */
     .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(2, 6, 23, 0.78);
-      backdrop-filter: blur(3px);
-      display: none;
-      align-items: flex-end;
-      justify-content: center;
-      z-index: 80;
-      padding: 12px;
+      position: fixed; inset: 0; background: rgba(2,6,23,0.78); backdrop-filter: blur(3px);
+      display: none; align-items: flex-end; justify-content: center; z-index: 80; padding: 12px;
     }
     .modal-backdrop.open { display: flex; }
     .modal-sheet {
-      width: 100%;
-      max-width: 560px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 18px 16px;
-      max-height: 90vh;
-      overflow-y: auto;
+      width: 100%; max-width: 560px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 18px; padding: 16px 15px; max-height: 90vh; overflow-y: auto;
     }
-    .modal-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-    }
-    .modal-title {
-      font-size: 17px;
-      font-weight: 700;
-      margin: 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 13px; }
+    .modal-title { font-size: 16px; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 8px; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
     .toggle-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      padding: 9px 12px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 8px 11px;
     }
-    .switch {
-      position: relative;
-      width: 44px;
-      height: 24px;
-    }
+    .switch { position: relative; width: 42px; height: 23px; }
     .switch input { opacity: 0; width: 0; height: 0; }
-    .slider {
-      position: absolute;
-      inset: 0;
-      background: #475569;
-      border-radius: 99px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+    .slider { position: absolute; inset: 0; background: #475569; border-radius: 99px; cursor: pointer; transition: 0.2s; }
     .slider::before {
-      content: '';
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      left: 3px;
-      top: 3px;
-      background: #fff;
-      border-radius: 50%;
-      transition: 0.2s;
+      content: ''; position: absolute; width: 17px; height: 17px; left: 3px; top: 3px;
+      background: #fff; border-radius: 50%; transition: 0.2s;
     }
     .switch input:checked + .slider { background: var(--red); }
-    .switch input:checked + .slider::before { transform: translateX(20px); }
+    .switch input:checked + .slider::before { transform: translateX(19px); }
 
-    /* Toast */
     .toast {
-      position: fixed;
-      top: 14px;
-      left: 50%;
-      transform: translateX(-50%) translateY(-20px);
-      background: #0f172a;
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 10px 16px;
-      border-radius: 11px;
-      font-size: 13px;
-      font-weight: 600;
-      opacity: 0;
-      pointer-events: none;
-      transition: 0.25s;
-      z-index: 120;
-      max-width: 90vw;
-      text-align: center;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+      position: fixed; top: 12px; left: 50%; transform: translateX(-50%) translateY(-20px);
+      background: #0f172a; border: 1px solid var(--border); color: var(--text);
+      padding: 9px 15px; border-radius: 10px; font-size: 13px; font-weight: 600;
+      opacity: 0; pointer-events: none; transition: 0.25s; z-index: 120;
+      max-width: 90vw; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,0.45);
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    #mainContent {
-      min-height: 55vh;
-      touch-action: pan-y;
-    }
+    #mainContent { min-height: 55vh; touch-action: pan-y; }
   </style>
 </head>
 <body>
 
   <div id="toast" class="toast"></div>
 
-  <!-- 1. LOADING SCREEN -->
+  <!-- 1. LOADING -->
   <div id="screen-loading" class="screen active">
     <div class="loader-wrap">
       <div class="spinner"></div>
@@ -655,17 +315,15 @@
     </div>
   </div>
 
-  <!-- 2. REGISTRATION SCREEN -->
+  <!-- 2. REGISTRATION -->
   <div id="screen-register" class="screen">
     <div class="card" style="margin-top:16px;">
       <h1 class="title-lg"><i class="fi fi-rr-user-add" style="color:var(--accent);"></i> Ro‘yxatdan o‘tish</h1>
       <p class="subtitle">Tizimdan foydalanish uchun to‘liq ism-sharifingizni kiriting va Telegram telefon raqamingizni yuboring.</p>
-
       <div class="field">
         <label for="regFio"><i class="fi fi-rr-user"></i> To‘liq ism-sharifingiz (F.I.Sh)</label>
         <input id="regFio" type="text" class="input" placeholder="Masalan: Aliyev Sardor Karimovich" autocomplete="name" />
       </div>
-
       <div class="field">
         <label><i class="fi fi-rr-phone-call"></i> Telefon raqamingiz</label>
         <button id="btnSharePhone" type="button" class="btn btn-outline btn-block" onclick="requestUserPhone()">
@@ -677,33 +335,28 @@
         </div>
         <div id="phoneHelpNote" style="display:none; margin-top:8px; font-size:12px; color:#fcd34d; line-height:1.45;"></div>
       </div>
-
       <button id="btnRegSubmit" type="button" class="btn btn-primary btn-block" onclick="submitRegistration()" disabled>
         <i class="fi fi-rr-check"></i> Ro‘yxatdan o‘tish
       </button>
     </div>
   </div>
 
-  <!-- 3. PENDING SCREEN -->
+  <!-- 3. PENDING -->
   <div id="screen-pending" class="screen">
     <div class="card" style="margin-top:24px; text-align:center;">
-      <div class="state-icon-circle state-icon-pending">
-        <i class="fi fi-rr-clock"></i>
-      </div>
+      <div class="state-icon-circle state-icon-pending"><i class="fi fi-rr-clock"></i></div>
       <h2 class="title-lg title-center">Tasdiqlash kutilmoqda</h2>
-      <p class="subtitle" id="pendingDesc">So‘rovingiz Adminga yuborildi. Admin sizni jadvaldagi ismingizga bog‘lab tasdiqlashi bilan tizim ochiladi.</p>
+      <p class="subtitle" id="pendingDesc">So‘rovingiz Adminga yuborildi. Admin tasdiqlashi bilan tizim ochiladi.</p>
       <button type="button" class="btn btn-outline" onclick="loadAppData(true)">
         <i class="fi fi-rr-refresh" id="pendingRefreshIcon"></i> Holatni tekshirish
       </button>
     </div>
   </div>
 
-  <!-- 4. REJECTED SCREEN -->
+  <!-- 4. REJECTED -->
   <div id="screen-rejected" class="screen">
     <div class="card" style="margin-top:24px; text-align:center;">
-      <div class="state-icon-circle state-icon-rejected">
-        <i class="fi fi-rr-cross-small"></i>
-      </div>
+      <div class="state-icon-circle state-icon-rejected"><i class="fi fi-rr-cross-small"></i></div>
       <h2 class="title-lg title-center">So‘rov rad etilgan</h2>
       <p class="subtitle">Ma’lumotlaringizni tekshirib, qaytadan ro‘yxatdan o‘tish so‘rovini yuborishingiz mumkin.</p>
       <button type="button" class="btn btn-primary" onclick="showScreen('screen-register')">
@@ -712,26 +365,20 @@
     </div>
   </div>
 
-  <!-- 5. MAIN APP SCREEN -->
+  <!-- 5. MAIN APP -->
   <div id="screen-main" class="screen">
     <div class="app-header">
       <div class="user-meta">
         <div class="user-name" id="hdrName">Foydalanuvchi</div>
-        <div class="user-role-pill" id="hdrBadge">
-          <i class="fi fi-rr-user"></i> <span>Xodim</span>
-        </div>
+        <div class="user-role-pill" id="hdrBadge"><i class="fi fi-rr-user"></i> <span>Xodim</span></div>
       </div>
-      <div class="header-actions">
-        <button id="refreshBtn" class="icon-btn" title="Yangilash" onclick="loadAppData(true)">
-          <i id="refreshIcon" class="fi fi-rr-refresh"></i>
-        </button>
-      </div>
+      <button id="refreshBtn" class="icon-btn" title="Yangilash" onclick="loadAppData(true)">
+        <i id="refreshIcon" class="fi fi-rr-refresh"></i>
+      </button>
     </div>
 
-    <!-- Top Navigation Tabs -->
     <div class="tabs" id="topTabs"></div>
 
-    <!-- Filters (Tasks tabs) -->
     <div id="filtersBox" class="filters-box">
       <div id="searchWrap" class="search-wrap" style="display:none;">
         <i class="fi fi-rr-search search-icon"></i>
@@ -748,41 +395,27 @@
       </div>
 
       <div class="filter-row" id="statusFilterRow">
-        <button class="chip active" data-st="" onclick="setStatusFilter('', this)">
-          Barchasi <span id="cnt-all" class="chip-count">0</span>
-        </button>
-        <button class="chip" data-st="Yangi" onclick="setStatusFilter('Yangi', this)">
-          Yangi <span id="cnt-yangi" class="chip-count">0</span>
-        </button>
-        <button class="chip" data-st="Jarayonda" onclick="setStatusFilter('Jarayonda', this)">
-          Jarayonda <span id="cnt-jarayonda" class="chip-count">0</span>
-        </button>
-        <button class="chip" data-st="Bajarildi" onclick="setStatusFilter('Bajarildi', this)">
-          Bajarildi <span id="cnt-bajarildi" class="chip-count">0</span>
-        </button>
-        <button id="prioFilterChip" class="chip" onclick="togglePrioFilter(this)">
-          <i class="fi fi-rr-flame"></i> Muhim <span id="cnt-muhim" class="chip-count">0</span>
-        </button>
+        <button class="chip active" data-st="" onclick="setStatusFilter('', this)">Barchasi <span id="cnt-all" class="chip-count">0</span></button>
+        <button class="chip" data-st="Yangi" onclick="setStatusFilter('Yangi', this)">Yangi <span id="cnt-yangi" class="chip-count">0</span></button>
+        <button class="chip" data-st="Jarayonda" onclick="setStatusFilter('Jarayonda', this)">Jarayonda <span id="cnt-jarayonda" class="chip-count">0</span></button>
+        <button class="chip" data-st="Bajarildi" onclick="setStatusFilter('Bajarildi', this)">Bajarildi <span id="cnt-bajarildi" class="chip-count">0</span></button>
+        <button id="prioFilterChip" class="chip" onclick="togglePrioFilter(this)"><i class="fi fi-rr-flame"></i> Muhim <span id="cnt-muhim" class="chip-count">0</span></button>
       </div>
     </div>
 
-    <!-- Dynamic List Content -->
     <div id="mainContent"></div>
   </div>
 
-  <!-- Floating + Yangi vazifa Button -->
   <button id="fabAddTask" class="fab" type="button" onclick="openTaskModal()">
     <i class="fi fi-rr-plus"></i> Yangi vazifa
   </button>
 
-  <!-- MODAL: + YANGI VAZIFA -->
+  <!-- MODAL: YANGI VAZIFA / TAHRIRLASH -->
   <div id="taskModal" class="modal-backdrop" onclick="if(event.target===this) closeTaskModal()">
     <div class="modal-sheet">
       <div class="modal-head">
-        <h3 class="modal-title"><i class="fi fi-rr-plus" style="color:var(--accent);"></i> Yangi vazifa qo‘shish</h3>
-        <button class="icon-btn" type="button" onclick="closeTaskModal()">
-          <i class="fi fi-rr-cross-small"></i>
-        </button>
+        <h3 class="modal-title" id="taskModalTitle"><i class="fi fi-rr-plus" style="color:var(--accent);"></i> Yangi vazifa qo‘shish</h3>
+        <button class="icon-btn" type="button" onclick="closeTaskModal()"><i class="fi fi-rr-cross-small"></i></button>
       </div>
 
       <div class="field">
@@ -828,7 +461,7 @@
         </div>
       </div>
 
-      <button id="btnSaveTask" type="button" class="btn btn-primary btn-block" onclick="submitNewTask()">
+      <button id="btnSaveTask" type="button" class="btn btn-primary btn-block" onclick="submitTaskModal()">
         <i class="fi fi-rr-paper-plane"></i> Saqlash va yuborish
       </button>
     </div>
@@ -837,128 +470,112 @@
   <!-- MODAL: CONFIRM -->
   <div id="confirmModal" class="modal-backdrop" onclick="if(event.target===this) closeConfirm()">
     <div class="modal-sheet">
-      <h3 class="modal-title" style="margin-bottom:8px;">
-        <i class="fi fi-rr-exclamation" style="color:var(--red);"></i> Tasdiqlang
-      </h3>
+      <h3 class="modal-title" style="margin-bottom:8px;"><i class="fi fi-rr-exclamation" style="color:var(--red);"></i> Tasdiqlang</h3>
       <p id="confirmText" class="subtitle" style="margin-bottom:16px;"></p>
       <div class="btn-row">
         <button class="btn btn-outline" type="button" onclick="closeConfirm()">Bekor qilish</button>
-        <button id="confirmOkBtn" class="btn btn-danger" type="button">
-          <i class="fi fi-rr-trash"></i> O‘chirish
-        </button>
+        <button id="confirmOkBtn" class="btn btn-danger" type="button"><i class="fi fi-rr-trash"></i> O‘chirish</button>
       </div>
     </div>
   </div>
 
   <script>
-    // ==================== SOZLAMA ====================
-    // Google Apps Script Deploy qilingan Web App URL manzilini shu yerga qo'ying:
+    // Apps Script Web App (.../exec) havolangizni shu yerga qo'ying:
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzHZsxIC-JFl3HEfO8nqe9pxRa7oqKAHen1mhJ_mNzHLv9GzAhVoQZwrKCgoPqlGudzow/exec';
 
+    const SIX_HOURS_MS = 6 * 60 * 60 * 1000;
     const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
-    if (tg) {
-      tg.ready();
-      tg.expand();
-    }
+    if (tg) { tg.ready(); tg.expand(); }
 
     const tgUser = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user : {};
     const CHAT_ID = tgUser.id ? String(tgUser.id) : (new URLSearchParams(location.search).get('chatId') || '');
     const USERNAME = tgUser.username || '';
 
     let state = {
-      isAdmin: false,
-      user: null,
-      verifiedPhone: '',
-      planPositions: [],
-      assignablePositions: [],
-      tasks: [],
-      pendingUsers: [],
-      approvedUsers: [],
-      tabsList: [],
-      activeTab: '',
-      statusFilter: '',
-      prioOnly: false,
-      searchQuery: ''
+      isAdmin: false, user: null, verifiedPhone: '',
+      planPositions: [], assignablePositions: [], tasks: [],
+      pendingUsers: [], approvedUsers: [], tabsList: [],
+      activeTab: '', statusFilter: '', prioOnly: false, searchQuery: ''
     };
-
     let currentRenderedTasks = [];
+    let editingTask = null;
     let confirmCallback = null;
     let isRefreshing = false;
 
-    function escHtml(s) {
-      return String(s || '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
+    const escHtml = (s) => String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    const escAttr = (s) => String(s || '').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,' ');
+    const normStr = (s) => String(s || '').toLowerCase().trim().replace(/['`ʼʻ‘’ˈ′]/g,"'").replace(/\s+/g,' ');
+
+    function dmyToIso(str) {
+      const m = String(str || '').trim().match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+      return m ? `${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}` : '';
     }
 
-    function escAttr(s) {
-      return String(s || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, ' ');
+    function parseCreatedMsClient(t) {
+      if (t && t.createdAtMs && Number(t.createdAtMs) > 0) return Number(t.createdAtMs);
+      const m = String((t && t.createdAt) || '').trim().match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})\s+(\d{1,2}):(\d{2})/);
+      return m ? Date.UTC(Number(m[3]), Number(m[2]) - 1, Number(m[1]), Number(m[4]) - 5, Number(m[5]), 0) : 0;
     }
 
-    function normStr(s) {
-      return String(s || '').toLowerCase().trim().replace(/['`ʼʻ‘’ˈ′]/g, "'").replace(/\s+/g, ' ');
+    function canEditTask(t) {
+      if (!t || t.status === 'Bajarildi') return false;
+      const myPos = state.user && state.user.position ? normStr(state.user.position) : '';
+      const isSender = (t.senderChatId && String(t.senderChatId) === CHAT_ID) || (myPos && t.senderName && normStr(t.senderName) === myPos);
+      if (!isSender) return false;
+      const ms = parseCreatedMsClient(t);
+      if (!ms) return false;
+      const diff = Date.now() - ms;
+      return diff >= 0 && diff <= SIX_HOURS_MS;
+    }
+
+    function getEditTimeLeftLabel(t) {
+      const ms = parseCreatedMsClient(t);
+      if (!ms) return '';
+      const totalMin = Math.ceil(Math.max(0, SIX_HOURS_MS - (Date.now() - ms)) / 60000);
+      const h = Math.floor(totalMin / 60), m = totalMin % 60;
+      return h > 0 ? `${h}s ${m}d` : `${m}d`;
     }
 
     function showToast(msg) {
       const el = document.getElementById('toast');
-      el.innerText = msg;
-      el.classList.add('show');
-      clearTimeout(el._t);
-      el._t = setTimeout(() => el.classList.remove('show'), 2800);
+      el.innerText = msg; el.classList.add('show');
+      clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), 2800);
     }
 
     function setRefreshSpinning(active) {
       isRefreshing = active;
-      const icon = document.getElementById('refreshIcon');
-      const pendIcon = document.getElementById('pendingRefreshIcon');
-      const btn = document.getElementById('refreshBtn');
-      if (icon) icon.classList.toggle('spinning', active);
-      if (pendIcon) pendIcon.classList.toggle('spinning', active);
-      if (btn) btn.disabled = active;
+      ['refreshIcon','pendingRefreshIcon'].forEach(id => { const el = document.getElementById(id); if (el) el.classList.toggle('spinning', active); });
+      const btn = document.getElementById('refreshBtn'); if (btn) btn.disabled = active;
     }
 
     function showScreen(id) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      const target = document.getElementById(id);
-      if (target) target.classList.add('active');
+      const target = document.getElementById(id); if (target) target.classList.add('active');
       document.getElementById('fabAddTask').style.display = (id === 'screen-main') ? 'inline-flex' : 'none';
     }
 
     async function apiGet(params) {
-      const qs = new URLSearchParams(params).toString();
-      const res = await fetch(`${SCRIPT_URL}?${qs}`, { method: 'GET' });
+      const res = await fetch(`${SCRIPT_URL}?${new URLSearchParams(params).toString()}`, { method: 'GET' });
       return res.json();
     }
 
     async function apiPost(payload) {
       const res = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(payload)
+        method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload)
       });
       return res.json();
     }
 
     async function loadAppData(silent) {
       if (silent && isRefreshing) return;
-      if (!CHAT_ID) {
-        showScreen('screen-register');
-        showToast('Telegram ichidan oching (Chat ID topilmadi).');
-        return;
-      }
+      if (!CHAT_ID) { showScreen('screen-register'); showToast('Telegram ichidan oching.'); return; }
 
       const startedAt = Date.now();
-      if (silent) setRefreshSpinning(true);
-      else showScreen('screen-loading');
+      if (silent) setRefreshSpinning(true); else showScreen('screen-loading');
 
       try {
         const data = await apiGet({ action: 'INIT_APP', chatId: CHAT_ID });
-        if (!data || !data.ok) {
-          throw new Error((data && data.error) || 'Serverdan javob olinmadi');
-        }
+        if (!data || !data.ok) throw new Error((data && data.error) || 'Serverdan javob olinmadi');
 
         state.isAdmin = Boolean(data.isAdmin);
         state.user = data.user;
@@ -970,82 +587,51 @@
         state.approvedUsers = data.approvedUsers || [];
 
         if (state.isAdmin || (state.user && state.user.status === 'Tasdiqlangan')) {
-          setupMainApp(!silent);
-          showScreen('screen-main');
+          setupMainApp(!silent); showScreen('screen-main');
           if (silent) showToast('Yangilandi');
         } else if (state.user && state.user.status === 'Kutilmoqda') {
-          document.getElementById('pendingDesc').innerText =
-            `${state.user.fio} (+${state.user.phone}) — so‘rovingiz Adminga yuborilgan. Tasdiqlangach tizim avtomatik ochiladi.`;
+          document.getElementById('pendingDesc').innerText = `${state.user.fio} (+${state.user.phone}) — so‘rovingiz Adminga yuborilgan.`;
           showScreen('screen-pending');
         } else if (state.user && state.user.status === 'Rad etilgan') {
-          prefillRegForm();
-          showScreen('screen-rejected');
+          prefillRegForm(); showScreen('screen-rejected');
         } else {
-          prefillRegForm();
-          showScreen('screen-register');
+          prefillRegForm(); showScreen('screen-register');
         }
       } catch (err) {
         showToast('Xatolik: ' + err.message);
         if (!silent) showScreen('screen-register');
       } finally {
-        if (silent) {
-          const elapsed = Date.now() - startedAt;
-          const wait = Math.max(0, 500 - elapsed);
-          setTimeout(() => setRefreshSpinning(false), wait);
-        }
+        if (silent) setTimeout(() => setRefreshSpinning(false), Math.max(0, 500 - (Date.now() - startedAt)));
       }
     }
 
-    // ==================== RO'YXATDAN O'TISH VA TELEFON RAQAM ====================
     function prefillRegForm() {
       const fioEl = document.getElementById('regFio');
-      if (!fioEl.value && tgUser.first_name) {
-        fioEl.value = [tgUser.first_name, tgUser.last_name].filter(Boolean).join(' ');
-      }
+      if (!fioEl.value && tgUser.first_name) fioEl.value = [tgUser.first_name, tgUser.last_name].filter(Boolean).join(' ');
       updateRegPhoneUI();
     }
 
     function updateRegPhoneUI() {
-      const btnShare = document.getElementById('btnSharePhone');
-      const box = document.getElementById('phoneVerifiedBox');
-      const submitBtn = document.getElementById('btnRegSubmit');
-
-      if (state.verifiedPhone) {
-        btnShare.style.display = 'none';
-        box.style.display = 'flex';
-        document.getElementById('phoneVerifiedText').innerText = '+' + state.verifiedPhone;
-        submitBtn.disabled = false;
-      } else {
-        btnShare.style.display = 'inline-flex';
-        box.style.display = 'none';
-        submitBtn.disabled = true;
-      }
+      const ok = Boolean(state.verifiedPhone);
+      document.getElementById('btnSharePhone').style.display = ok ? 'none' : 'inline-flex';
+      document.getElementById('phoneVerifiedBox').style.display = ok ? 'flex' : 'none';
+      if (ok) document.getElementById('phoneVerifiedText').innerText = '+' + state.verifiedPhone;
+      document.getElementById('btnRegSubmit').disabled = !ok;
     }
 
     function requestUserPhone() {
-      const noteEl = document.getElementById('phoneHelpNote');
-      noteEl.style.display = 'none';
-
+      const noteEl = document.getElementById('phoneHelpNote'); noteEl.style.display = 'none';
       if (tg && typeof tg.requestContact === 'function') {
         tg.requestContact((sent, event) => {
-          if (!sent) {
-            showToast('Telefon raqam yuborilmadi.');
-            return;
-          }
-          const directPhone = event && event.responseUnsafe && event.responseUnsafe.contact && event.responseUnsafe.contact.phone_number;
-          if (directPhone) {
-            state.verifiedPhone = String(directPhone).replace(/\D/g, '');
-            updateRegPhoneUI();
-            showToast('Telefon raqam qabul qilindi!');
-            return;
-          }
+          if (!sent) { showToast('Telefon raqam yuborilmadi.'); return; }
+          const p = event && event.responseUnsafe && event.responseUnsafe.contact && event.responseUnsafe.contact.phone_number;
+          if (p) { state.verifiedPhone = String(p).replace(/\D/g, ''); updateRegPhoneUI(); showToast('Raqam qabul qilindi!'); return; }
           pollVerifiedPhone(0);
         });
       } else {
         apiPost({ action: 'SEND_CONTACT_PROMPT', chatId: CHAT_ID }).catch(() => {});
-        noteEl.innerText = 'Bot chatiga «Telefon raqamni yuborish» tugmasi yuborildi. Raqamingizni yuborib, shu oynaga qayting.';
-        noteEl.style.display = 'block';
-        pollVerifiedPhone(0);
+        noteEl.innerText = 'Bot chatiga raqam yuborish tugmasi jo‘natildi. Yuborib, shu oynaga qayting.';
+        noteEl.style.display = 'block'; pollVerifiedPhone(0);
       }
     }
 
@@ -1053,229 +639,129 @@
       if (attempt === 0) showToast('Raqam tasdiqlanmoqda...');
       try {
         const res = await apiGet({ action: 'GET_VERIFIED_PHONE', chatId: CHAT_ID });
-        if (res && res.phone) {
-          state.verifiedPhone = res.phone;
-          updateRegPhoneUI();
-          showToast('Telefon raqam tasdiqlandi!');
-          return;
-        }
+        if (res && res.phone) { state.verifiedPhone = res.phone; updateRegPhoneUI(); showToast('Raqam tasdiqlandi!'); return; }
       } catch (e) {}
-
-      if (attempt < 7) {
-        setTimeout(() => pollVerifiedPhone(attempt + 1), 1300);
-      } else {
-        showToast('Raqam hali kelmadi. Yana bir bor urinib ko‘ring.');
-      }
+      if (attempt < 7) setTimeout(() => pollVerifiedPhone(attempt + 1), 1300);
+      else showToast('Raqam hali kelmadi. Qayta urinib ko‘ring.');
     }
 
     async function submitRegistration() {
       const fio = document.getElementById('regFio').value.trim();
-      if (fio.length < 3) {
-        showToast('To‘liq ism-sharifingizni kiriting!');
-        return;
-      }
-      if (!state.verifiedPhone) {
-        showToast('Avval telefon raqamingizni yuboring!');
-        return;
-      }
-
-      const btn = document.getElementById('btnRegSubmit');
-      btn.disabled = true;
+      if (fio.length < 3) { showToast('To‘liq ism-sharifingizni kiriting!'); return; }
+      if (!state.verifiedPhone) { showToast('Avval telefon raqamingizni yuboring!'); return; }
+      const btn = document.getElementById('btnRegSubmit'); btn.disabled = true;
       btn.innerHTML = '<i class="fi fi-rr-refresh spinning"></i> Yuborilmoqda...';
-
       try {
-        const res = await apiPost({
-          action: 'REGISTER_USER',
-          chatId: CHAT_ID,
-          fio: fio,
-          phone: state.verifiedPhone,
-          username: USERNAME
-        });
-        if (!res.ok) throw new Error(res.error || 'Ro‘yxatdan o‘tishda xatolik');
-        showToast('So‘rov Adminga yuborildi!');
-        loadAppData(true);
-      } catch (err) {
-        showToast(err.message);
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fi fi-rr-check"></i> Ro‘yxatdan o‘tish';
-      }
+        const res = await apiPost({ action: 'REGISTER_USER', chatId: CHAT_ID, fio, phone: state.verifiedPhone, username: USERNAME });
+        if (!res.ok) throw new Error(res.error || 'Xatolik');
+        showToast('So‘rov Adminga yuborildi!'); loadAppData(true);
+      } catch (err) { showToast(err.message); }
+      finally { btn.disabled = false; btn.innerHTML = '<i class="fi fi-rr-check"></i> Ro‘yxatdan o‘tish'; }
     }
 
-    // ==================== ASOSIY OYNA, TABLAR VA MARKAZLASHTIRISH ====================
     function setupMainApp(instantCenter) {
       document.getElementById('hdrName').innerText = state.user ? state.user.fio : 'Foydalanuvchi';
-      const badgeEl = document.getElementById('hdrBadge');
-      if (state.isAdmin) {
-        const posSuffix = (state.user && state.user.position) ? ' • ' + escHtml(state.user.position) : '';
-        badgeEl.innerHTML = `<i class="fi fi-rr-shield-check"></i><span>Admin${posSuffix}</span>`;
-      } else {
-        badgeEl.innerHTML = `<i class="fi fi-rr-user"></i><span>${escHtml((state.user && state.user.position) || 'Xodim')}</span>`;
-      }
+      document.getElementById('hdrBadge').innerHTML = state.isAdmin
+        ? '<i class="fi fi-rr-shield-check"></i><span>Admin</span>'
+        : `<i class="fi fi-rr-user"></i><span>${escHtml((state.user && state.user.position) || 'Xodim')}</span>`;
 
       const posSel = document.getElementById('adminPositionFilter');
       const prevFilter = posSel.value;
-      const uniquePositions = Array.from(new Set([
-        ...state.planPositions,
-        ...state.assignablePositions,
-        ...state.tasks.map(t => t.position).filter(Boolean)
-      ])).sort((a, b) => a.localeCompare(b));
-
-      posSel.innerHTML = '<option value="">Barcha xodimlar</option>' +
-        uniquePositions.map(p => `<option value="${escHtml(p)}">${escHtml(p)}</option>`).join('');
+      const uniquePositions = Array.from(new Set([...state.planPositions, ...state.assignablePositions, ...state.tasks.map(t => t.position).filter(Boolean)])).sort((a,b) => a.localeCompare(b));
+      posSel.innerHTML = '<option value="">Barcha xodimlar</option>' + uniquePositions.map(p => `<option value="${escHtml(p)}">${escHtml(p)}</option>`).join('');
       if (uniquePositions.includes(prevFilter)) posSel.value = prevFilter;
 
       const tabs = [
         { id: 'mine', label: 'Menga kelgan', icon: 'fi-rr-list-check', count: getMineTasks().length },
         { id: 'sent', label: 'Yuborilgan', icon: 'fi-rr-paper-plane', count: getSentTasks().length }
       ];
-
       if (state.isAdmin) {
         tabs.push({ id: 'all', label: 'Barcha vazifalar', icon: 'fi-rr-apps', count: state.tasks.length });
-        tabs.push({
-          id: 'users',
-          label: 'Foydalanuvchilar',
-          icon: 'fi-rr-users',
-          count: state.pendingUsers.length > 0 ? state.pendingUsers.length : state.approvedUsers.length,
-          alert: state.pendingUsers.length > 0
-        });
+        tabs.push({ id: 'users', label: 'Foydalanuvchilar', icon: 'fi-rr-users', count: state.pendingUsers.length || state.approvedUsers.length, alert: state.pendingUsers.length > 0 });
       }
-
       state.tabsList = tabs;
-      if (!state.activeTab || !tabs.some(t => t.id === state.activeTab)) {
-        state.activeTab = tabs[0].id;
-      }
+      if (!state.activeTab || !tabs.some(t => t.id === state.activeTab)) state.activeTab = tabs[0].id;
 
       const tabsEl = document.getElementById('topTabs');
       const prevScroll = tabsEl.scrollLeft;
-
       tabsEl.innerHTML = tabs.map(t => `
         <button type="button" class="tab-btn ${state.activeTab === t.id ? 'active' : ''}" data-tab="${t.id}" onclick="switchTab('${t.id}')">
-          <i class="fi ${t.icon}"></i>
-          <span>${t.label}</span>
+          <i class="fi ${t.icon}"></i><span>${t.label}</span>
           <span class="badge ${t.alert ? 'badge-alert' : ''}">${t.count}</span>
         </button>
       `).join('');
-
       tabsEl.scrollLeft = prevScroll;
+
       renderCurrentTab();
       centerActiveTab(!instantCenter);
     }
 
     function switchTab(tabId) {
-      if (state.activeTab === tabId) {
-        centerActiveTab(true);
-        return;
-      }
+      if (state.activeTab === tabId) { centerActiveTab(true); return; }
       state.activeTab = tabId;
-
-      document.querySelectorAll('#topTabs .tab-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
-      });
-
-      renderCurrentTab();
-      centerActiveTab(true);
+      document.querySelectorAll('#topTabs .tab-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-tab') === tabId));
+      renderCurrentTab(); centerActiveTab(true);
     }
 
     function centerElementInRow(containerEl, itemEl, smooth) {
       if (!containerEl || !itemEl) return;
-      const targetScroll = itemEl.offsetLeft - (containerEl.clientWidth / 2) + (itemEl.offsetWidth / 2);
-      const maxScroll = Math.max(0, containerEl.scrollWidth - containerEl.clientWidth);
-      const clamped = Math.max(0, Math.min(targetScroll, maxScroll));
-      containerEl.scrollTo({
-        left: clamped,
-        behavior: smooth ? 'smooth' : 'auto'
-      });
+      const target = itemEl.offsetLeft - (containerEl.clientWidth / 2) + (itemEl.offsetWidth / 2);
+      const clamped = Math.max(0, Math.min(target, Math.max(0, containerEl.scrollWidth - containerEl.clientWidth)));
+      containerEl.scrollTo({ left: clamped, behavior: smooth ? 'smooth' : 'auto' });
     }
 
     function centerActiveTab(smooth) {
       requestAnimationFrame(() => {
         const tabsEl = document.getElementById('topTabs');
-        if (!tabsEl) return;
-        const activeBtn = tabsEl.querySelector('.tab-btn.active');
-        centerElementInRow(tabsEl, activeBtn, smooth);
+        if (tabsEl) centerElementInRow(tabsEl, tabsEl.querySelector('.tab-btn.active'), smooth);
       });
     }
 
-    // ==================== YONGA SVAYP (SWIPE) ====================
     (function initTabSwipe() {
-      let startX = 0;
-      let startY = 0;
-      let tracking = false;
-
-      const mainEl = document.getElementById('screen-main');
-
-      mainEl.addEventListener('touchstart', (e) => {
-        if (!e.touches || e.touches.length !== 1) return;
-        if (document.querySelector('.modal-backdrop.open')) return;
-        const t = e.target;
-        if (t.closest('.tabs') || t.closest('.filter-row') || t.closest('input, textarea, select')) {
-          tracking = false;
-          return;
-        }
-        startX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
-        tracking = true;
+      let sx = 0, sy = 0, track = false;
+      const el = document.getElementById('screen-main');
+      el.addEventListener('touchstart', (e) => {
+        if (!e.touches || e.touches.length !== 1 || document.querySelector('.modal-backdrop.open')) return;
+        if (e.target.closest('.tabs, .filter-row, input, textarea, select')) { track = false; return; }
+        sx = e.touches[0].clientX; sy = e.touches[0].clientY; track = true;
       }, { passive: true });
-
-      mainEl.addEventListener('touchend', (e) => {
-        if (!tracking || !e.changedTouches || !e.changedTouches.length) return;
-        tracking = false;
-
-        const dx = e.changedTouches[0].clientX - startX;
-        const dy = e.changedTouches[0].clientY - startY;
-
-        if (Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy) * 1.4) return;
-        if (!state.tabsList || state.tabsList.length < 2) return;
-
-        const curIdx = state.tabsList.findIndex(t => t.id === state.activeTab);
-        if (curIdx === -1) return;
-
-        if (dx < 0 && curIdx < state.tabsList.length - 1) {
-          switchTab(state.tabsList[curIdx + 1].id);
-        } else if (dx > 0 && curIdx > 0) {
-          switchTab(state.tabsList[curIdx - 1].id);
-        }
+      el.addEventListener('touchend', (e) => {
+        if (!track || !e.changedTouches || !e.changedTouches.length) return;
+        track = false;
+        const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+        if (Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy) * 1.4 || state.tabsList.length < 2) return;
+        const idx = state.tabsList.findIndex(t => t.id === state.activeTab);
+        if (dx < 0 && idx < state.tabsList.length - 1) switchTab(state.tabsList[idx + 1].id);
+        else if (dx > 0 && idx > 0) switchTab(state.tabsList[idx - 1].id);
       }, { passive: true });
     })();
 
-    // ==================== FILTRLAR VA VAZIFALAR RO'YXATI ====================
     function getMineTasks() {
       const myPos = state.user && state.user.position ? normStr(state.user.position) : '';
-      if (!myPos) return [];
-      return state.tasks.filter(t => normStr(t.position) === myPos);
+      return myPos ? state.tasks.filter(t => normStr(t.position) === myPos) : [];
     }
 
     function getSentTasks() {
       const myPos = state.user && state.user.position ? normStr(state.user.position) : '';
-      return state.tasks.filter(t => {
-        const isSender = (t.senderChatId === CHAT_ID) || (myPos && normStr(t.senderName) === myPos);
-        const isToOther = !myPos || normStr(t.position) !== myPos;
-        return isSender && isToOther;
-      });
+      return state.tasks.filter(t => ((t.senderChatId === CHAT_ID) || (myPos && normStr(t.senderName) === myPos)) && (!myPos || normStr(t.position) !== myPos));
     }
 
     function onSearchInput() {
-      const val = document.getElementById('searchInput').value;
-      state.searchQuery = val;
-      document.getElementById('searchClearBtn').style.display = val ? 'inline-flex' : 'none';
+      const v = document.getElementById('searchInput').value;
+      state.searchQuery = v;
+      document.getElementById('searchClearBtn').style.display = v ? 'inline-flex' : 'none';
       renderCurrentTab();
     }
 
     function clearSearch() {
-      document.getElementById('searchInput').value = '';
-      state.searchQuery = '';
-      document.getElementById('searchClearBtn').style.display = 'none';
-      renderCurrentTab();
+      document.getElementById('searchInput').value = ''; state.searchQuery = '';
+      document.getElementById('searchClearBtn').style.display = 'none'; renderCurrentTab();
     }
 
     function setStatusFilter(st, el) {
       state.statusFilter = st;
       document.querySelectorAll('.filter-row .chip[data-st]').forEach(c => c.classList.remove('active'));
-      if (el) {
-        el.classList.add('active');
-        centerElementInRow(document.getElementById('statusFilterRow'), el, true);
-      }
+      if (el) { el.classList.add('active'); centerElementInRow(document.getElementById('statusFilterRow'), el, true); }
       renderCurrentTab();
     }
 
@@ -1290,127 +776,73 @@
     function renderCurrentTab() {
       const isUsersTab = state.activeTab === 'users';
       document.getElementById('filtersBox').style.display = isUsersTab ? 'none' : 'flex';
-      document.getElementById('adminPositionFilterWrap').style.display =
-        (state.isAdmin && state.activeTab === 'all') ? 'block' : 'none';
+      document.getElementById('adminPositionFilterWrap').style.display = (state.isAdmin && state.activeTab === 'all') ? 'block' : 'none';
+      if (isUsersTab) { renderUsersTab(); return; }
 
-      if (isUsersTab) {
-        renderUsersTab();
-        return;
-      }
-
-      // 1. Joriy menyuning asosiy ro'yxati
-      let baseList = [];
-      if (state.activeTab === 'mine') baseList = getMineTasks();
-      else if (state.activeTab === 'sent') baseList = getSentTasks();
-      else if (state.activeTab === 'all') baseList = state.tasks.slice();
-
+      let baseList = state.activeTab === 'mine' ? getMineTasks() : (state.activeTab === 'sent' ? getSentTasks() : state.tasks.slice());
       if (state.isAdmin && state.activeTab === 'all') {
         const selPos = document.getElementById('adminPositionFilter').value;
         if (selPos) baseList = baseList.filter(t => normStr(t.position) === normStr(selPos));
       }
 
-      // 2. Qidirish qatori faqat vazifalar 3 tadan ko'p bo'lganda ko'rinadi
       const searchWrap = document.getElementById('searchWrap');
-      if (baseList.length > 3) {
-        searchWrap.style.display = 'block';
-      } else {
+      if (baseList.length > 3) searchWrap.style.display = 'block';
+      else {
         searchWrap.style.display = 'none';
-        if (state.searchQuery) {
-          state.searchQuery = '';
-          document.getElementById('searchInput').value = '';
-          document.getElementById('searchClearBtn').style.display = 'none';
-        }
+        if (state.searchQuery) { state.searchQuery = ''; document.getElementById('searchInput').value = ''; document.getElementById('searchClearBtn').style.display = 'none'; }
       }
 
-      // 3. Ichki menyular (Barchasi, Yangi, Jarayonda, Bajarildi, Muhim) sanagichlari
       document.getElementById('cnt-all').innerText = baseList.length;
       document.getElementById('cnt-yangi').innerText = baseList.filter(t => t.status === 'Yangi').length;
       document.getElementById('cnt-jarayonda').innerText = baseList.filter(t => t.status === 'Jarayonda').length;
       document.getElementById('cnt-bajarildi').innerText = baseList.filter(t => t.status === 'Bajarildi').length;
       document.getElementById('cnt-muhim').innerText = baseList.filter(t => t.priority).length;
 
-      // 4. Tanlangan filtrlar bo'yicha saralash
       let list = baseList.slice();
-      if (state.statusFilter) {
-        list = list.filter(t => t.status === state.statusFilter);
-      }
-      if (state.prioOnly) {
-        list = list.filter(t => t.priority);
-      }
-
+      if (state.statusFilter) list = list.filter(t => t.status === state.statusFilter);
+      if (state.prioOnly) list = list.filter(t => t.priority);
       const q = normStr(state.searchQuery);
-      if (q) {
-        list = list.filter(t =>
-          normStr(t.task).includes(q) ||
-          normStr(t.position).includes(q) ||
-          normStr(t.senderName).includes(q)
-        );
-      }
+      if (q) list = list.filter(t => normStr(t.task).includes(q) || normStr(t.position).includes(q) || normStr(t.senderName).includes(q));
 
       currentRenderedTasks = list;
       const container = document.getElementById('mainContent');
-
       if (!list.length) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <i class="fi fi-rr-list-check"></i>
-            <span>Hozircha bu bo‘limda vazifalar yo‘q.</span>
-          </div>
-        `;
+        container.innerHTML = '<div class="empty-state"><i class="fi fi-rr-list-check"></i><span>Hozircha bu bo‘limda vazifalar yo‘q.</span></div>';
         return;
       }
 
       const myPos = state.user && state.user.position ? normStr(state.user.position) : '';
-
       container.innerHTML = list.map((t, idx) => {
-        const stClass = t.status === 'Bajarildi'
-          ? 'tag-st-bajarildi'
-          : (t.status === 'Jarayonda' ? 'tag-st-jarayonda' : 'tag-st-yangi');
-        const cardExtra =
-          (t.priority ? 'is-priority ' : '') +
-          (t.status === 'Jarayonda' ? 'is-inprogress ' : '') +
-          (t.status === 'Bajarildi' ? 'is-done' : '');
-        const canChangeStatus = state.isAdmin || (myPos && normStr(t.position) === myPos);
-
-        const dateLine = (t.startDate || t.deadline)
-          ? `<span class="meta-item"><i class="fi fi-rr-calendar"></i> <strong>${escHtml(t.startDate || '—')}</strong>${t.deadline ? ' → <strong>' + escHtml(t.deadline) + '</strong>' : ''}</span>`
-          : '';
-        const hoursLine = t.hours
-          ? `<span class="meta-item"><i class="fi fi-rr-clock"></i> <strong>${escHtml(t.hours)} soat</strong></span>`
-          : '';
-        const senderLine = t.senderName
-          ? `<span class="meta-item"><i class="fi fi-rr-paper-plane"></i> Kimdan: <strong>${escHtml(t.senderName)}</strong></span>`
-          : '';
+        const stClass = t.status === 'Bajarildi' ? 'tag-st-bajarildi' : (t.status === 'Jarayonda' ? 'tag-st-jarayonda' : 'tag-st-yangi');
+        const cardExtra = (t.priority ? 'is-priority ' : '') + (t.status === 'Jarayonda' ? 'is-inprogress ' : '') + (t.status === 'Bajarildi' ? 'is-done' : '');
+        const canChange = state.isAdmin || (myPos && normStr(t.position) === myPos);
+        const editable = canEditTask(t);
+        const timeLeft = editable ? getEditTimeLeftLabel(t) : '';
 
         return `
           <div class="task-card ${cardExtra}">
             <div class="task-top">
               <div class="tag-group">
-                ${t.priority
-                  ? '<span class="tag tag-prio"><i class="fi fi-rr-flame"></i> Muhim</span>'
-                  : '<span class="tag tag-normal"><i class="fi fi-rr-tag"></i> Oddiy</span>'}
+                ${t.priority ? '<span class="tag tag-prio"><i class="fi fi-rr-flame"></i> Muhim</span>' : '<span class="tag tag-normal"><i class="fi fi-rr-tag"></i> Oddiy</span>'}
                 <span class="tag ${stClass}">${escHtml(t.status)}</span>
               </div>
-              <span style="font-size:11.5px; color:var(--muted);">#${t.rowIndex}</span>
+              <div class="task-top-right">
+                ${editable ? `<button type="button" class="edit-pill-btn" onclick="openEditTaskModal(${idx})"><i class="fi fi-rr-edit"></i> Tahrirlash <span class="edit-time-left">(${timeLeft})</span></button>` : ''}
+                <span style="font-size:11px; color:var(--muted);">#${t.rowIndex}</span>
+              </div>
             </div>
-
             <div class="task-text">${escHtml(t.task)}</div>
-
             <div class="task-meta">
               <span class="meta-item"><i class="fi fi-rr-user"></i> Ijrochi: <strong>${escHtml(t.position || '—')}</strong></span>
-              ${senderLine}
-              ${dateLine}
-              ${hoursLine}
+              ${t.senderName ? `<span class="meta-item"><i class="fi fi-rr-paper-plane"></i> Kimdan: <strong>${escHtml(t.senderName)}</strong></span>` : ''}
+              ${(t.startDate || t.deadline) ? `<span class="meta-item"><i class="fi fi-rr-calendar"></i> <strong>${escHtml(t.startDate || '—')}</strong>${t.deadline ? ' → <strong>' + escHtml(t.deadline) + '</strong>' : ''}</span>` : ''}
+              ${t.hours ? `<span class="meta-item"><i class="fi fi-rr-clock"></i> <strong>${escHtml(t.hours)} soat</strong></span>` : ''}
             </div>
-
-            ${canChangeStatus ? `
+            ${canChange ? `
               <div class="status-switch">
-                <button type="button" class="st-btn ${t.status === 'Yangi' ? 'active-yangi' : ''}"
-                  onclick="changeTaskStatusByIdx(${idx}, 'Yangi')">Yangi</button>
-                <button type="button" class="st-btn ${t.status === 'Jarayonda' ? 'active-jarayonda' : ''}"
-                  onclick="changeTaskStatusByIdx(${idx}, 'Jarayonda')">Jarayonda</button>
-                <button type="button" class="st-btn ${t.status === 'Bajarildi' ? 'active-bajarildi' : ''}"
-                  onclick="changeTaskStatusByIdx(${idx}, 'Bajarildi')"><i class="fi fi-rr-check"></i> Bajarildi</button>
+                <button type="button" class="st-btn ${t.status === 'Yangi' ? 'active-yangi' : ''}" onclick="changeTaskStatusByIdx(${idx}, 'Yangi')">Yangi</button>
+                <button type="button" class="st-btn ${t.status === 'Jarayonda' ? 'active-jarayonda' : ''}" onclick="changeTaskStatusByIdx(${idx}, 'Jarayonda')">Jarayonda</button>
+                <button type="button" class="st-btn ${t.status === 'Bajarildi' ? 'active-bajarildi' : ''}" onclick="changeTaskStatusByIdx(${idx}, 'Bajarildi')"><i class="fi fi-rr-check"></i> Bajarildi</button>
               </div>
             ` : ''}
           </div>
@@ -1419,67 +851,36 @@
     }
 
     async function changeTaskStatusByIdx(idx, newStatus) {
-      const target = currentRenderedTasks[idx];
-      if (!target || target.status === newStatus) return;
-
-      const prevStatus = target.status;
-      target.status = newStatus;
-      renderCurrentTab();
-
+      const t = currentRenderedTasks[idx];
+      if (!t || t.status === newStatus) return;
+      const prev = t.status; t.status = newStatus; renderCurrentTab();
       try {
-        const res = await apiPost({
-          action: 'UPDATE_TASK_STATUS',
-          chatId: CHAT_ID,
-          rowIndex: target.rowIndex,
-          position: target.position,
-          task: target.task,
-          status: newStatus
-        });
-        if (!res.ok) throw new Error(res.error || 'Holatni yangilab bo‘lmadi');
+        const res = await apiPost({ action: 'UPDATE_TASK_STATUS', chatId: CHAT_ID, rowIndex: t.rowIndex, position: t.position, task: t.task, status: newStatus });
+        if (!res.ok) throw new Error(res.error || 'Yangilab bo‘lmadi');
         showToast(`Holat: ${newStatus}`);
-      } catch (err) {
-        target.status = prevStatus;
-        renderCurrentTab();
-        showToast('Xatolik: ' + err.message);
-      }
+      } catch (err) { t.status = prev; renderCurrentTab(); showToast('Xatolik: ' + err.message); }
     }
 
-    // ==================== ADMIN: FOYDALANUVCHILAR BO'LIMI ====================
     function renderUsersTab() {
       const container = document.getElementById('mainContent');
-      let html = '';
-
-      html += `<div class="section-title"><i class="fi fi-rr-clock" style="color:var(--amber);"></i> Tasdiqlash kutilmoqda (${state.pendingUsers.length})</div>`;
+      let html = `<div class="section-title"><i class="fi fi-rr-clock" style="color:var(--amber);"></i> Tasdiqlash kutilmoqda (${state.pendingUsers.length})</div>`;
       if (!state.pendingUsers.length) {
-        html += `<div class="empty-state" style="padding:18px;"><span>Yangi so‘rovlar yo‘q.</span></div>`;
+        html += '<div class="empty-state" style="padding:18px;"><span>Yangi so‘rovlar yo‘q.</span></div>';
       } else {
-        const posOptions = '<option value="">— Plan jadvalidan ism tanlang —</option>' +
-          state.planPositions.map(p => `<option value="${escHtml(p)}">${escHtml(p)}</option>`).join('');
-
+        const opts = '<option value="">— Plan jadvalidan ism tanlang —</option>' + state.planPositions.map(p => `<option value="${escHtml(p)}">${escHtml(p)}</option>`).join('');
         html += state.pendingUsers.map((u, idx) => `
           <div class="user-card" id="pend-${idx}">
-            <div class="user-card-head">
-              <div>
-                <div class="user-card-fio"><i class="fi fi-rr-user" style="color:var(--accent);"></i> ${escHtml(u.fio)}</div>
-                <div class="user-card-sub">
-                  <div class="user-sub-row">
-                    <span><i class="fi fi-rr-phone-call"></i> +${escHtml(u.phone)}</span>
-                    ${u.username ? `<span>• ${escHtml(u.username)}</span>` : ''}
-                  </div>
-                  <div class="user-sub-row"><i class="fi fi-rr-calendar"></i> ${escHtml(u.date)}</div>
-                </div>
-              </div>
+            <div class="user-card-fio"><i class="fi fi-rr-user" style="color:var(--accent);"></i> ${escHtml(u.fio)}</div>
+            <div class="user-card-sub">
+              <div class="user-sub-row"><span><i class="fi fi-rr-phone-call"></i> +${escHtml(u.phone)}</span>${u.username ? `<span>• ${escHtml(u.username)}</span>` : ''}</div>
+              <div class="user-sub-row"><i class="fi fi-rr-calendar"></i> ${escHtml(u.date)}</div>
             </div>
             <div class="approve-box">
-              <select id="pendSel-${idx}" class="select">${posOptions}</select>
+              <select id="pendSel-${idx}" class="select">${opts}</select>
               <input id="pendManual-${idx}" type="text" class="input" placeholder="Yoki ro‘yxatda bo‘lmasa ismni qo‘lda yozing..." />
               <div class="btn-row">
-                <button type="button" class="btn btn-success btn-sm" onclick="decideUser('${escAttr(u.chatId)}', ${idx}, 'APPROVE')">
-                  <i class="fi fi-rr-check"></i> Tasdiqlash
-                </button>
-                <button type="button" class="btn btn-danger btn-sm" onclick="decideUser('${escAttr(u.chatId)}', ${idx}, 'REJECT')">
-                  <i class="fi fi-rr-cross-small"></i> Rad etish
-                </button>
+                <button type="button" class="btn btn-success btn-sm" onclick="decideUser('${escAttr(u.chatId)}', ${idx}, 'APPROVE')"><i class="fi fi-rr-check"></i> Tasdiqlash</button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="decideUser('${escAttr(u.chatId)}', ${idx}, 'REJECT')"><i class="fi fi-rr-cross-small"></i> Rad etish</button>
               </div>
             </div>
           </div>
@@ -1488,7 +889,7 @@
 
       html += `<div class="section-title"><i class="fi fi-rr-users" style="color:var(--accent);"></i> Faol foydalanuvchilar (${state.approvedUsers.length})</div>`;
       if (!state.approvedUsers.length) {
-        html += `<div class="empty-state" style="padding:18px;"><span>Tasdiqlangan foydalanuvchilar hali yo‘q.</span></div>`;
+        html += '<div class="empty-state" style="padding:18px;"><span>Tasdiqlangan foydalanuvchilar hali yo‘q.</span></div>';
       } else {
         html += state.approvedUsers.map(u => `
           <div class="user-card">
@@ -1497,49 +898,29 @@
                 <div class="user-card-fio"><i class="fi fi-rr-user" style="color:var(--green);"></i> ${escHtml(u.fio)}</div>
                 <div class="user-card-sub">
                   <div class="user-sub-row"><i class="fi fi-rr-briefcase"></i> Jadvaldagi ismi: <strong style="color:#93c5fd;">${escHtml(u.position)}</strong></div>
-                  <div class="user-sub-row">
-                    <span><i class="fi fi-rr-phone-call"></i> +${escHtml(u.phone)}</span>
-                    ${u.username ? `<span>• ${escHtml(u.username)}</span>` : ''}
-                  </div>
+                  <div class="user-sub-row"><span><i class="fi fi-rr-phone-call"></i> +${escHtml(u.phone)}</span>${u.username ? `<span>• ${escHtml(u.username)}</span>` : ''}</div>
                 </div>
               </div>
-              <button type="button" class="btn btn-danger btn-sm" onclick="askDeleteUser('${escAttr(u.chatId)}', '${escAttr(u.fio)}')">
-                <i class="fi fi-rr-trash"></i> O‘chirish
-              </button>
+              <button type="button" class="btn btn-danger btn-sm" onclick="askDeleteUser('${escAttr(u.chatId)}', '${escAttr(u.fio)}')"><i class="fi fi-rr-trash"></i> O‘chirish</button>
             </div>
           </div>
         `).join('');
       }
-
       container.innerHTML = html;
     }
 
     async function decideUser(targetChatId, idx, decision) {
-      let assignedPos = '';
+      let pos = '';
       if (decision === 'APPROVE') {
-        const manualVal = document.getElementById('pendManual-' + idx).value.trim();
-        const selectVal = document.getElementById('pendSel-' + idx).value.trim();
-        assignedPos = manualVal || selectVal;
-        if (!assignedPos) {
-          showToast('Ismni ro‘yxatdan tanlang yoki qo‘lda yozing!');
-          return;
-        }
+        pos = document.getElementById('pendManual-' + idx).value.trim() || document.getElementById('pendSel-' + idx).value.trim();
+        if (!pos) { showToast('Ismni tanlang yoki qo‘lda yozing!'); return; }
       }
-
       const card = document.getElementById('pend-' + idx);
       if (card) { card.style.opacity = '0.45'; card.style.pointerEvents = 'none'; }
-
       try {
-        const res = await apiPost({
-          action: 'USER_DECISION',
-          adminChatId: CHAT_ID,
-          targetChatId: targetChatId,
-          decision: decision,
-          position: assignedPos
-        });
+        const res = await apiPost({ action: 'USER_DECISION', adminChatId: CHAT_ID, targetChatId, decision, position: pos });
         if (!res.ok) throw new Error(res.error || 'Amal bajarilmadi');
-        showToast(decision === 'APPROVE' ? 'Foydalanuvchi tasdiqlandi!' : 'So‘rov rad etildi');
-        loadAppData(true);
+        showToast(decision === 'APPROVE' ? 'Tasdiqlandi!' : 'Rad etildi'); loadAppData(true);
       } catch (err) {
         if (card) { card.style.opacity = '1'; card.style.pointerEvents = 'auto'; }
         showToast('Xatolik: ' + err.message);
@@ -1547,53 +928,38 @@
     }
 
     function askDeleteUser(targetChatId, fio) {
-      document.getElementById('confirmText').innerText =
-        `«${fio}» foydalanuvchisini tizimdan o‘chirib yuborishni tasdiqlaysizmi?`;
+      document.getElementById('confirmText').innerText = `«${fio}» foydalanuvchisini tizimdan o‘chirib yuborishni tasdiqlaysizmi?`;
       confirmCallback = async () => {
         closeConfirm();
         try {
-          const res = await apiPost({
-            action: 'DELETE_USER',
-            adminChatId: CHAT_ID,
-            targetChatId: targetChatId
-          });
+          const res = await apiPost({ action: 'DELETE_USER', adminChatId: CHAT_ID, targetChatId });
           if (!res.ok) throw new Error(res.error || 'O‘chirib bo‘lmadi');
-          showToast('Foydalanuvchi o‘chirildi');
-          loadAppData(true);
-        } catch (err) {
-          showToast('Xatolik: ' + err.message);
-        }
+          showToast('Foydalanuvchi o‘chirildi'); loadAppData(true);
+        } catch (err) { showToast('Xatolik: ' + err.message); }
       };
       document.getElementById('confirmOkBtn').onclick = () => confirmCallback && confirmCallback();
       document.getElementById('confirmModal').classList.add('open');
     }
 
-    function closeConfirm() {
-      document.getElementById('confirmModal').classList.remove('open');
-      confirmCallback = null;
+    function closeConfirm() { document.getElementById('confirmModal').classList.remove('open'); confirmCallback = null; }
+
+    function updateModalPrioLabel(checked) {
+      document.getElementById('mPrioLabel').innerHTML = checked ? '<i class="fi fi-rr-flame" style="color:var(--red);"></i> Muhim' : 'Oddiy';
     }
 
-    // ==================== + YANGI VAZIFA MODALI ====================
-    function updateModalPrioLabel(checked) {
-      const el = document.getElementById('mPrioLabel');
-      el.innerHTML = checked
-        ? '<i class="fi fi-rr-flame" style="color:var(--red);"></i> Muhim'
-        : 'Oddiy';
+    function fillPositionSelect(selectedPos) {
+      const sel = document.getElementById('mPosition');
+      const myPos = (state.user && state.user.position) ? state.user.position : '';
+      const names = Array.from(new Set([...state.planPositions, ...state.assignablePositions, ...(myPos ? [myPos] : []), ...(selectedPos ? [selectedPos] : [])])).filter(Boolean).sort((a,b) => a.localeCompare(b));
+      sel.innerHTML = names.map(n => `<option value="${escHtml(n)}" ${normStr(n) === normStr(selectedPos) ? 'selected' : ''}>${escHtml(n)}</option>`).join('');
     }
 
     function openTaskModal() {
-      const sel = document.getElementById('mPosition');
+      editingTask = null;
       const myPos = (state.user && state.user.position) ? state.user.position : '';
-      const names = Array.from(new Set([
-        ...state.planPositions,
-        ...state.assignablePositions,
-        ...(myPos ? [myPos] : [])
-      ])).filter(Boolean).sort((a, b) => a.localeCompare(b));
-
-      sel.innerHTML = names.map(n =>
-        `<option value="${escHtml(n)}" ${normStr(n) === normStr(myPos) ? 'selected' : ''}>${escHtml(n)}</option>`
-      ).join('');
-
+      fillPositionSelect(myPos);
+      document.getElementById('taskModalTitle').innerHTML = '<i class="fi fi-rr-plus" style="color:var(--accent);"></i> Yangi vazifa qo‘shish';
+      document.getElementById('btnSaveTask').innerHTML = '<i class="fi fi-rr-paper-plane"></i> Saqlash va yuborish';
       document.getElementById('mManualPosWrap').style.display = state.isAdmin ? 'block' : 'none';
       document.getElementById('mManualPos').value = '';
       document.getElementById('mTask').value = '';
@@ -1602,15 +968,30 @@
       document.getElementById('mHours').value = '';
       document.getElementById('mPriority').checked = false;
       updateModalPrioLabel(false);
-
       document.getElementById('taskModal').classList.add('open');
     }
 
-    function closeTaskModal() {
-      document.getElementById('taskModal').classList.remove('open');
+    function openEditTaskModal(idx) {
+      const t = currentRenderedTasks[idx];
+      if (!t || !canEditTask(t)) { showToast('Tahrirlash muddati (6 soat) tugagan yoki vazifa bajarilgan.'); return; }
+      editingTask = { rowIndex: t.rowIndex, origPosition: t.position, origTask: t.task };
+      fillPositionSelect(t.position);
+      document.getElementById('taskModalTitle').innerHTML = '<i class="fi fi-rr-edit" style="color:var(--amber);"></i> Vazifani tahrirlash';
+      document.getElementById('btnSaveTask').innerHTML = '<i class="fi fi-rr-check"></i> O‘zgarishlarni saqlash';
+      document.getElementById('mManualPosWrap').style.display = state.isAdmin ? 'block' : 'none';
+      document.getElementById('mManualPos').value = '';
+      document.getElementById('mTask').value = t.task || '';
+      document.getElementById('mStart').value = dmyToIso(t.startDate);
+      document.getElementById('mDeadline').value = dmyToIso(t.deadline);
+      document.getElementById('mHours').value = t.hours || '';
+      document.getElementById('mPriority').checked = Boolean(t.priority);
+      updateModalPrioLabel(Boolean(t.priority));
+      document.getElementById('taskModal').classList.add('open');
     }
 
-    async function submitNewTask() {
+    function closeTaskModal() { editingTask = null; document.getElementById('taskModal').classList.remove('open'); }
+
+    async function submitTaskModal() {
       const manualPos = state.isAdmin ? document.getElementById('mManualPos').value.trim() : '';
       const position = manualPos || document.getElementById('mPosition').value.trim();
       const task = document.getElementById('mTask').value.trim();
@@ -1619,39 +1000,30 @@
       const hours = document.getElementById('mHours').value.trim();
       const priority = document.getElementById('mPriority').checked;
 
-      if (!task) {
-        showToast('Vazifa matnini kiriting!');
-        return;
-      }
+      if (!task) { showToast('Vazifa matnini kiriting!'); return; }
 
+      const isEdit = Boolean(editingTask);
       const btn = document.getElementById('btnSaveTask');
       btn.disabled = true;
       btn.innerHTML = '<i class="fi fi-rr-refresh spinning"></i> Saqlanmoqda...';
 
       try {
-        const res = await apiPost({
-          action: 'CREATE_TASK',
-          chatId: CHAT_ID,
-          position: position,
-          task: task,
-          startDate: startDate,
-          deadline: deadline,
-          hours: hours,
-          priority: priority
-        });
+        const payload = isEdit
+          ? { action: 'EDIT_TASK', chatId: CHAT_ID, rowIndex: editingTask.rowIndex, origPosition: editingTask.origPosition, origTask: editingTask.origTask, position, task, startDate, deadline, hours, priority }
+          : { action: 'CREATE_TASK', chatId: CHAT_ID, position, task, startDate, deadline, hours, priority };
+        const res = await apiPost(payload);
         if (!res.ok) throw new Error(res.error || 'Saqlashda xatolik');
         closeTaskModal();
-        showToast('Vazifa qo‘shildi!');
+        showToast(isEdit ? 'Vazifa yangilandi!' : 'Vazifa qo‘shildi!');
         loadAppData(true);
       } catch (err) {
         showToast('Xatolik: ' + err.message);
       } finally {
         btn.disabled = false;
-        btn.innerHTML = '<i class="fi fi-rr-paper-plane"></i> Saqlash va yuborish';
+        btn.innerHTML = isEdit ? '<i class="fi fi-rr-check"></i> O‘zgarishlarni saqlash' : '<i class="fi fi-rr-paper-plane"></i> Saqlash va yuborish';
       }
     }
 
-    // Dasturni ishga tushirish
     loadAppData(false);
   </script>
 </body>
