@@ -108,7 +108,11 @@
     .app-header {
       display: flex; align-items: center; justify-content: space-between; gap: 8px;
       margin-bottom: 8px; background: var(--surface); border: 1px solid var(--border);
-      border-radius: 11px; padding: 6px 10px;
+      border-radius: 11px; padding: 6px 10px; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .app-header.has-pending {
+      border-color: rgba(239, 68, 68, 0.55);
+      box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.2);
     }
     .user-meta { display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1; }
     .user-name { font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -116,10 +120,6 @@
       display: inline-flex; align-items: center; gap: 4px;
       font-size: 11px; font-weight: 600; color: #93c5fd; background: var(--accent-soft);
       padding: 2px 7px; border-radius: 99px; flex-shrink: 0;
-    }
-    .app-header.has-pending {
-      border-color: rgba(239, 68, 68, 0.55);
-      box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.2);
     }
     .header-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
     .pending-alert-btn {
@@ -145,7 +145,7 @@
     }
     .icon-btn:active { transform: scale(0.94); }
 
-    /* Ixcham yuqori menyular */
+    /* Yuqori menyular */
     .tabs {
       display: flex; gap: 6px; overflow-x: auto; padding: 1px 1px 4px;
       margin-bottom: 8px; scrollbar-width: none; scroll-behavior: smooth;
@@ -163,23 +163,47 @@
     .badge { background: rgba(255,255,255,0.16); padding: 1px 6px; border-radius: 99px; font-size: 10.5px; font-weight: 700; }
     .badge-alert { background: var(--red); color: #fff; }
 
-    /* Filtrlar */
+    /* Filtrlar: Chapda kengayadigan qidiruv + O'ngda xodimlar saralashi */
     .filters-box { display: flex; flex-direction: column; gap: 7px; margin-bottom: 10px; }
-    .search-wrap { position: relative; }
+    .search-filter-row {
+      display: flex; align-items: center; gap: 7px; width: 100%;
+    }
+    .search-wrap {
+      position: relative;
+      flex: 0 0 116px;
+      min-width: 104px;
+      transition: flex-basis 0.25s ease, flex-grow 0.25s ease;
+    }
+    .emp-filter-wrap {
+      flex: 1 1 auto;
+      min-width: 96px;
+      transition: flex-basis 0.25s ease, flex-grow 0.25s ease, max-width 0.25s ease;
+    }
+    .search-filter-row.search-expanded .search-wrap {
+      flex: 1 1 68%;
+    }
+    .search-filter-row.search-expanded .emp-filter-wrap {
+      flex: 0 0 108px;
+      max-width: 112px;
+    }
     .search-icon {
-      position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+      position: absolute; left: 9px; top: 50%; transform: translateY(-50%);
       color: var(--muted); font-size: 12.5px; pointer-events: none;
     }
     .search-wrap .input {
-      padding: 6px 30px 6px 30px; font-size: 13px; border-radius: 9px;
-      background: var(--surface); line-height: 1.3;
+      padding: 7px 26px 7px 28px; font-size: 13px; border-radius: 9px;
+      background: var(--surface); line-height: 1.3; height: 34px;
     }
     .search-clear {
-      position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+      position: absolute; right: 3px; top: 50%; transform: translateY(-50%);
       background: none; border: none; color: var(--muted); font-size: 15px; cursor: pointer;
       display: none; width: 24px; height: 24px; align-items: center; justify-content: center;
     }
-    #adminPositionFilterWrap .select { padding: 7px 10px; font-size: 13px; background: var(--surface); }
+    .emp-filter-wrap .select {
+      padding: 6px 8px; font-size: 13px; border-radius: 9px;
+      background: var(--surface); height: 34px;
+      text-overflow: ellipsis;
+    }
 
     .filter-row {
       display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
@@ -210,7 +234,7 @@
     }
     .task-card.is-priority { border-left-color: var(--red); }
     .task-card.is-inprogress { border-left-color: var(--amber); }
-    .task-card.is-done { border-left-color: var(--green); opacity: 0.82; }
+    .task-card.is-done { border-left-color: var(--green); opacity: 0.86; }
 
     .task-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 7px; flex-wrap: wrap; }
     .tag-group { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; }
@@ -230,6 +254,14 @@
     }
     .edit-pill-btn:active { transform: scale(0.96); }
     .edit-time-left { color: var(--muted); font-weight: 500; font-size: 10px; }
+
+    .archive-pill-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--amber-soft); border: 1px solid rgba(245, 158, 11, 0.45); color: #fcd34d;
+      padding: 3px 9px; border-radius: 7px; font-size: 11px; font-weight: 600;
+      font-family: inherit; cursor: pointer;
+    }
+    .archive-pill-btn:active { transform: scale(0.96); }
 
     .task-text { font-size: 14px; font-weight: 600; line-height: 1.42; margin-bottom: 9px; word-break: break-word; }
     .task-card.is-done .task-text { text-decoration: line-through; color: var(--muted); }
@@ -386,7 +418,8 @@
   </div>
 
   <!-- 5. MAIN APP -->
-  <div class="app-header" id="appHeader">
+  <div id="screen-main" class="screen">
+    <div class="app-header" id="appHeader">
       <div class="user-meta">
         <div class="user-name" id="hdrName">Foydalanuvchi</div>
         <div class="user-role-pill" id="hdrBadge"><i class="fi fi-rr-user"></i> <span>Xodim</span></div>
@@ -406,18 +439,20 @@
     <div class="tabs" id="topTabs"></div>
 
     <div id="filtersBox" class="filters-box">
-      <div id="searchWrap" class="search-wrap" style="display:none;">
-        <i class="fi fi-rr-search search-icon"></i>
-        <input id="searchInput" type="text" class="input" placeholder="Vazifa yoki ijrochi qidirish..." oninput="onSearchInput()" />
-        <button id="searchClearBtn" class="search-clear" type="button" onclick="clearSearch()">
-          <i class="fi fi-rr-cross-small"></i>
-        </button>
-      </div>
+      <div id="searchFilterRow" class="search-filter-row">
+        <div id="searchWrap" class="search-wrap">
+          <i class="fi fi-rr-search search-icon"></i>
+          <input id="searchInput" type="text" class="input" placeholder="Qidirish..." onfocus="onSearchFocus()" onblur="onSearchBlur()" oninput="onSearchInput()" />
+          <button id="searchClearBtn" class="search-clear" type="button" onmousedown="event.preventDefault()" onclick="clearSearch()">
+            <i class="fi fi-rr-cross-small"></i>
+          </button>
+        </div>
 
-      <div id="adminPositionFilterWrap" style="display:none;">
-        <select id="adminPositionFilter" class="select" onchange="renderCurrentTab()">
-          <option value="">Barcha xodimlar</option>
-        </select>
+        <div class="emp-filter-wrap">
+          <select id="employeeFilter" class="select" onchange="renderCurrentTab()">
+            <option value="">Barcha xodimlar</option>
+          </select>
+        </div>
       </div>
 
       <div class="filter-row" id="statusFilterRow">
@@ -506,10 +541,11 @@
   </div>
 
   <script>
-    // Apps Script Web App (.../exec) havolangizni shu yerga qo'ying:
+    // Apps Script Web App (.../exec) havolangiz:
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxI-ztWM6ZxPqROKISOvO4eRWsuFYpTsq3l_nwNrhSy0BkdeQJJYGcOOt_5sW8MVmp9/exec';
 
     const SIX_HOURS_MS = 6 * 60 * 60 * 1000;
+    const TWELVE_HOURS_MS = 12 * 60 * 60 * 1000;
     const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
     if (tg) { tg.ready(); tg.expand(); }
 
@@ -537,10 +573,30 @@
       return m ? `${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}` : '';
     }
 
+    function parseDMYHMClient(str) {
+      const s = String(str || '').trim();
+      let m = s.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})\s+(\d{1,2}):(\d{2})/);
+      if (m) return Date.UTC(Number(m[3]), Number(m[2]) - 1, Number(m[1]), Number(m[4]) - 5, Number(m[5]), 0);
+      m = s.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+      if (m) return Date.UTC(Number(m[3]), Number(m[2]) - 1, Number(m[1]), -5, 0, 0);
+      return 0;
+    }
+
     function parseCreatedMsClient(t) {
       if (t && t.createdAtMs && Number(t.createdAtMs) > 0) return Number(t.createdAtMs);
-      const m = String((t && t.createdAt) || '').trim().match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})\s+(\d{1,2}):(\d{2})/);
-      return m ? Date.UTC(Number(m[3]), Number(m[2]) - 1, Number(m[1]), Number(m[4]) - 5, Number(m[5]), 0) : 0;
+      return parseDMYHMClient(t && t.createdAt);
+    }
+
+    function parseCompletedMsClient(t) {
+      if (t && t.completedAtMs && Number(t.completedAtMs) > 0) return Number(t.completedAtMs);
+      return parseDMYHMClient(t && t.completedAt);
+    }
+
+    function isTaskArchived(t) {
+      if (!t || t.status !== 'Bajarildi') return false;
+      if (t.archived || t.isArchived) return true;
+      const ms = parseCompletedMsClient(t);
+      return ms > 0 && (Date.now() - ms) >= TWELVE_HOURS_MS;
     }
 
     function canEditTask(t) {
@@ -552,6 +608,15 @@
       if (!ms) return false;
       const diff = Date.now() - ms;
       return diff >= 0 && diff <= SIX_HOURS_MS;
+    }
+
+    function canArchiveTask(t) {
+      if (!t || t.status !== 'Bajarildi' || isTaskArchived(t)) return false;
+      if (state.isAdmin) return true;
+      const myPos = state.user && state.user.position ? normStr(state.user.position) : '';
+      return (myPos && normStr(t.position) === myPos) ||
+        (t.senderChatId && String(t.senderChatId) === CHAT_ID) ||
+        (myPos && t.senderName && normStr(t.senderName) === myPos);
     }
 
     function getEditTimeLeftLabel(t) {
@@ -685,6 +750,59 @@
       finally { btn.disabled = false; btn.innerHTML = '<i class="fi fi-rr-check"></i> Ro‘yxatdan o‘tish'; }
     }
 
+    function getMineTasks() {
+      const myPos = state.user && state.user.position ? normStr(state.user.position) : '';
+      return myPos ? state.tasks.filter(t => !isTaskArchived(t) && normStr(t.position) === myPos) : [];
+    }
+
+    function getSentTasks() {
+      const myPos = state.user && state.user.position ? normStr(state.user.position) : '';
+      return state.tasks.filter(t =>
+        !isTaskArchived(t) &&
+        ((t.senderChatId === CHAT_ID) || (myPos && normStr(t.senderName) === myPos)) &&
+        (!myPos || normStr(t.position) !== myPos)
+      );
+    }
+
+    function getArchivedTasks() {
+      return state.tasks.filter(t => isTaskArchived(t));
+    }
+
+    function getEmployeeFilterPlaceholder() {
+      if (state.activeTab === 'mine') return 'Kimdan: Barchasi';
+      if (state.activeTab === 'sent') return 'Kimga: Barchasi';
+      return 'Barcha xodimlar';
+    }
+
+    function populateEmployeeFilter() {
+      const empSel = document.getElementById('employeeFilter');
+      if (!empSel) return;
+      const prevVal = empSel.value;
+      const uniqueNames = Array.from(new Set([
+        ...state.planPositions,
+        ...state.assignablePositions,
+        ...state.tasks.map(t => t.position).filter(Boolean),
+        ...state.tasks.map(t => t.senderName).filter(Boolean)
+      ])).sort((a, b) => a.localeCompare(b));
+
+      empSel.innerHTML = `<option value="">${escHtml(getEmployeeFilterPlaceholder())}</option>` +
+        uniqueNames.map(p => `<option value="${escHtml(p)}">${escHtml(p)}</option>`).join('');
+      if (uniqueNames.includes(prevVal)) empSel.value = prevVal;
+    }
+
+    function updateTabCounts() {
+      const counts = {
+        mine: getMineTasks().length,
+        sent: getSentTasks().length,
+        users: state.pendingUsers.length || state.approvedUsers.length,
+        archive: getArchivedTasks().length
+      };
+      Object.keys(counts).forEach(tabId => {
+        const badge = document.querySelector(`#topTabs .tab-btn[data-tab="${tabId}"] .badge`);
+        if (badge) badge.innerText = counts[tabId];
+      });
+    }
+
     function setupMainApp(instantCenter) {
       document.getElementById('hdrName').innerText = state.user ? state.user.fio : 'Foydalanuvchi';
       document.getElementById('hdrBadge').innerHTML = state.isAdmin
@@ -699,23 +817,20 @@
         hdrPendingBtn.style.display = pendCount > 0 ? 'inline-flex' : 'none';
         document.getElementById('hdrPendingText').innerText = `${pendCount} so‘rov`;
       }
-      
-      const posSel = document.getElementById('adminPositionFilter');
-      const prevFilter = posSel.value;
-      const uniquePositions = Array.from(new Set([...state.planPositions, ...state.assignablePositions, ...state.tasks.map(t => t.position).filter(Boolean)])).sort((a,b) => a.localeCompare(b));
-      posSel.innerHTML = '<option value="">Barcha xodimlar</option>' + uniquePositions.map(p => `<option value="${escHtml(p)}">${escHtml(p)}</option>`).join('');
-      if (uniquePositions.includes(prevFilter)) posSel.value = prevFilter;
 
       const tabs = [
         { id: 'mine', label: 'Menga kelgan', icon: 'fi-rr-list-check', count: getMineTasks().length },
         { id: 'sent', label: 'Yuborilgan', icon: 'fi-rr-paper-plane', count: getSentTasks().length }
       ];
       if (state.isAdmin) {
-        tabs.push({ id: 'all', label: 'Barcha vazifalar', icon: 'fi-rr-apps', count: state.tasks.length });
         tabs.push({ id: 'users', label: 'Foydalanuvchilar', icon: 'fi-rr-users', count: state.pendingUsers.length || state.approvedUsers.length, alert: state.pendingUsers.length > 0 });
       }
+      tabs.push({ id: 'archive', label: 'Arxiv', icon: 'fi-rr-box', count: getArchivedTasks().length });
+
       state.tabsList = tabs;
       if (!state.activeTab || !tabs.some(t => t.id === state.activeTab)) state.activeTab = tabs[0].id;
+
+      populateEmployeeFilter();
 
       const tabsEl = document.getElementById('topTabs');
       const prevScroll = tabsEl.scrollLeft;
@@ -734,8 +849,14 @@
     function switchTab(tabId) {
       if (state.activeTab === tabId) { centerActiveTab(true); return; }
       state.activeTab = tabId;
+      if (tabId === 'archive' && state.statusFilter) {
+        state.statusFilter = '';
+        document.querySelectorAll('.filter-row .chip[data-st]').forEach(c => c.classList.toggle('active', c.getAttribute('data-st') === ''));
+      }
+      populateEmployeeFilter();
       document.querySelectorAll('#topTabs .tab-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-tab') === tabId));
-      renderCurrentTab(); centerActiveTab(true);
+      renderCurrentTab();
+      centerActiveTab(true);
     }
 
     function centerElementInRow(containerEl, itemEl, smooth) {
@@ -771,26 +892,40 @@
       }, { passive: true });
     })();
 
-    function getMineTasks() {
-      const myPos = state.user && state.user.position ? normStr(state.user.position) : '';
-      return myPos ? state.tasks.filter(t => normStr(t.position) === myPos) : [];
+    function onSearchFocus() {
+      const row = document.getElementById('searchFilterRow');
+      if (row) row.classList.add('search-expanded');
     }
 
-    function getSentTasks() {
-      const myPos = state.user && state.user.position ? normStr(state.user.position) : '';
-      return state.tasks.filter(t => ((t.senderChatId === CHAT_ID) || (myPos && normStr(t.senderName) === myPos)) && (!myPos || normStr(t.position) !== myPos));
+    function onSearchBlur() {
+      setTimeout(() => {
+        const inp = document.getElementById('searchInput');
+        const row = document.getElementById('searchFilterRow');
+        if (!inp || !row) return;
+        if (document.activeElement !== inp && !inp.value.trim()) {
+          row.classList.remove('search-expanded');
+        }
+      }, 120);
     }
 
     function onSearchInput() {
-      const v = document.getElementById('searchInput').value;
+      const inp = document.getElementById('searchInput');
+      const v = inp ? inp.value : '';
       state.searchQuery = v;
       document.getElementById('searchClearBtn').style.display = v ? 'inline-flex' : 'none';
+      const row = document.getElementById('searchFilterRow');
+      if (row && v.trim()) row.classList.add('search-expanded');
       renderCurrentTab();
     }
 
     function clearSearch() {
-      document.getElementById('searchInput').value = ''; state.searchQuery = '';
-      document.getElementById('searchClearBtn').style.display = 'none'; renderCurrentTab();
+      const inp = document.getElementById('searchInput');
+      if (inp) { inp.value = ''; inp.blur(); }
+      state.searchQuery = '';
+      document.getElementById('searchClearBtn').style.display = 'none';
+      const row = document.getElementById('searchFilterRow');
+      if (row) row.classList.remove('search-expanded');
+      renderCurrentTab();
     }
 
     function setStatusFilter(st, el) {
@@ -814,21 +949,30 @@
 
     function renderCurrentTab() {
       const isUsersTab = state.activeTab === 'users';
+      const isArchiveTab = state.activeTab === 'archive';
       document.getElementById('filtersBox').style.display = isUsersTab ? 'none' : 'flex';
-      document.getElementById('adminPositionFilterWrap').style.display = (state.isAdmin && state.activeTab === 'all') ? 'block' : 'none';
       if (isUsersTab) { renderUsersTab(); return; }
 
-      let baseList = state.activeTab === 'mine' ? getMineTasks() : (state.activeTab === 'sent' ? getSentTasks() : state.tasks.slice());
-      if (state.isAdmin && state.activeTab === 'all') {
-        const selPos = document.getElementById('adminPositionFilter').value;
-        if (selPos) baseList = baseList.filter(t => normStr(t.position) === normStr(selPos));
-      }
+      // Arxiv menyusida faqat Barchasi va Muhim filtrlari ko'rinadi
+      document.querySelectorAll('#statusFilterRow .chip[data-st]').forEach(chip => {
+        const stVal = chip.getAttribute('data-st');
+        if (stVal) chip.style.display = isArchiveTab ? 'none' : 'inline-flex';
+      });
 
-      const searchWrap = document.getElementById('searchWrap');
-      if (baseList.length > 3) searchWrap.style.display = 'block';
-      else {
-        searchWrap.style.display = 'none';
-        if (state.searchQuery) { state.searchQuery = ''; document.getElementById('searchInput').value = ''; document.getElementById('searchClearBtn').style.display = 'none'; }
+      let baseList = state.activeTab === 'mine'
+        ? getMineTasks()
+        : (state.activeTab === 'sent' ? getSentTasks() : getArchivedTasks());
+
+      const selEmp = document.getElementById('employeeFilter').value;
+      if (selEmp) {
+        const selNorm = normStr(selEmp);
+        if (state.activeTab === 'mine') {
+          baseList = baseList.filter(t => normStr(t.senderName) === selNorm);
+        } else if (state.activeTab === 'sent') {
+          baseList = baseList.filter(t => normStr(t.position) === selNorm);
+        } else {
+          baseList = baseList.filter(t => normStr(t.position) === selNorm || normStr(t.senderName) === selNorm);
+        }
       }
 
       document.getElementById('cnt-all').innerText = baseList.length;
@@ -838,7 +982,7 @@
       document.getElementById('cnt-muhim').innerText = baseList.filter(t => t.priority).length;
 
       let list = baseList.slice();
-      if (state.statusFilter) list = list.filter(t => t.status === state.statusFilter);
+      if (!isArchiveTab && state.statusFilter) list = list.filter(t => t.status === state.statusFilter);
       if (state.prioOnly) list = list.filter(t => t.priority);
       const q = normStr(state.searchQuery);
       if (q) list = list.filter(t => normStr(t.task).includes(q) || normStr(t.position).includes(q) || normStr(t.senderName).includes(q));
@@ -846,7 +990,8 @@
       currentRenderedTasks = list;
       const container = document.getElementById('mainContent');
       if (!list.length) {
-        container.innerHTML = '<div class="empty-state"><i class="fi fi-rr-list-check"></i><span>Hozircha bu bo‘limda vazifalar yo‘q.</span></div>';
+        const emptyText = isArchiveTab ? 'Arxivda hozircha vazifalar yo‘q.' : 'Hozircha bu bo‘limda vazifalar yo‘q.';
+        container.innerHTML = `<div class="empty-state"><i class="fi ${isArchiveTab ? 'fi-rr-box' : 'fi-rr-list-check'}"></i><span>${emptyText}</span></div>`;
         return;
       }
 
@@ -856,6 +1001,7 @@
         const cardExtra = (t.priority ? 'is-priority ' : '') + (t.status === 'Jarayonda' ? 'is-inprogress ' : '') + (t.status === 'Bajarildi' ? 'is-done' : '');
         const canChange = state.isAdmin || (myPos && normStr(t.position) === myPos);
         const editable = canEditTask(t);
+        const archivable = canArchiveTask(t);
         const timeLeft = editable ? getEditTimeLeftLabel(t) : '';
 
         return `
@@ -866,7 +1012,9 @@
                 <span class="tag ${stClass}">${escHtml(t.status)}</span>
               </div>
               <div class="task-top-right">
-                ${editable ? `<button type="button" class="edit-pill-btn" onclick="openEditTaskModal(${idx})"><i class="fi fi-rr-edit"></i> Tahrirlash <span class="edit-time-left">(${timeLeft})</span></button>` : ''}
+                ${state.activeTab !== 'archive' && t.status === 'Bajarildi' ? `<button type="button" class="archive-pill-btn" onclick="archiveTaskByIdx(${idx})"><i class="fi fi-rr-box"></i> Arxivlash</button>` : ''}
+                ${state.activeTab === 'archive' ? `<button type="button" class="edit-pill-btn" onclick="unarchiveTaskByIdx(${idx})"><i class="fi fi-rr-undo"></i> Qaytarish</button>` : ''}
+                ${editable && state.activeTab !== 'archive' ? `<button type="button" class="edit-pill-btn" onclick="openEditTaskModal(${idx})"><i class="fi fi-rr-edit"></i> Tahrirlash <span class="edit-time-left">(${timeLeft})</span></button>` : ''}
                 <span style="font-size:11px; color:var(--muted);">#${t.rowIndex}</span>
               </div>
             </div>
@@ -876,8 +1024,9 @@
               ${t.senderName ? `<span class="meta-item"><i class="fi fi-rr-paper-plane"></i> Kimdan: <strong>${escHtml(t.senderName)}</strong></span>` : ''}
               ${(t.startDate || t.deadline) ? `<span class="meta-item"><i class="fi fi-rr-calendar"></i> <strong>${escHtml(t.startDate || '—')}</strong>${t.deadline ? ' → <strong>' + escHtml(t.deadline) + '</strong>' : ''}</span>` : ''}
               ${t.hours ? `<span class="meta-item"><i class="fi fi-rr-clock"></i> <strong>${escHtml(t.hours)} soat</strong></span>` : ''}
+              ${t.status === 'Bajarildi' && t.completedAt ? `<span class="meta-item"><i class="fi fi-rr-check-circle"></i> Bajarildi: <strong>${escHtml(t.completedAt)}</strong></span>` : ''}
             </div>
-            ${canChange ? `
+            ${canChange && state.activeTab !== 'archive' ? `
               <div class="status-switch">
                 <button type="button" class="st-btn ${t.status === 'Yangi' ? 'active-yangi' : ''}" onclick="changeTaskStatusByIdx(${idx}, 'Yangi')">Yangi</button>
                 <button type="button" class="st-btn ${t.status === 'Jarayonda' ? 'active-jarayonda' : ''}" onclick="changeTaskStatusByIdx(${idx}, 'Jarayonda')">Jarayonda</button>
@@ -889,15 +1038,51 @@
       }).join('');
     }
 
+    function archiveTaskByIdx(idx) {
+      const t = currentRenderedTasks[idx];
+      if (!t || t.status !== 'Bajarildi') return;
+      setTaskArchiveState(t, 'archived');
+      refreshTabCounts();
+      renderCurrentTab();
+      showToast('Arxivga o‘tkazildi');
+    }
+
+    function unarchiveTaskByIdx(idx) {
+      const t = currentRenderedTasks[idx];
+      if (!t) return;
+      setTaskArchiveState(t, 'active');
+      refreshTabCounts();
+      renderCurrentTab();
+      showToast('Arxivdan chiqarildi');
+    }
+
     async function changeTaskStatusByIdx(idx, newStatus) {
       const t = currentRenderedTasks[idx];
       if (!t || t.status === newStatus) return;
-      const prev = t.status; t.status = newStatus; renderCurrentTab();
+      const prev = t.status;
+      const prevCompleted = t.completedAt;
+      t.status = newStatus;
+      if (newStatus !== 'Bajarildi') {
+        t.completedAt = '';
+        clearTaskArchiveState(t);
+      }
+      refreshTabCounts();
+      renderCurrentTab();
       try {
         const res = await apiPost({ action: 'UPDATE_TASK_STATUS', chatId: CHAT_ID, rowIndex: t.rowIndex, position: t.position, task: t.task, status: newStatus });
         if (!res.ok) throw new Error(res.error || 'Yangilab bo‘lmadi');
+        if (newStatus === 'Bajarildi' && res.updatedAt) {
+          t.completedAt = res.updatedAt;
+          renderCurrentTab();
+        }
         showToast(`Holat: ${newStatus}`);
-      } catch (err) { t.status = prev; renderCurrentTab(); showToast('Xatolik: ' + err.message); }
+      } catch (err) {
+        t.status = prev;
+        t.completedAt = prevCompleted;
+        refreshTabCounts();
+        renderCurrentTab();
+        showToast('Xatolik: ' + err.message);
+      }
     }
 
     function renderUsersTab() {
@@ -905,7 +1090,7 @@
       let html = '';
       if (state.pendingUsers.length > 0) {
         html += `<div class="section-title"><i class="fi fi-rr-clock" style="color:var(--amber);"></i> Tasdiqlash kutilmoqda (${state.pendingUsers.length})</div>`;
-        const opts = '<option value="">— Plan jadvalidan ism tanlang —</option>' + state.planPositions.map(p => `<option value="${escHtml(p)}">${escHtml(p)}</option>`).join('');
+        const opts = '<option value="">— Tasks jadvalidan ism tanlang —</option>' + state.planPositions.map(p => `<option value="${escHtml(p)}">${escHtml(p)}</option>`).join('');
         html += state.pendingUsers.map((u, idx) => `
           <div class="user-card" id="pend-${idx}">
             <div class="user-card-fio"><i class="fi fi-rr-user" style="color:var(--accent);"></i> ${escHtml(u.fio)}</div>
