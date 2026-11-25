@@ -1074,6 +1074,8 @@
       showToast('Arxivdan chiqarildi');
     }
 
+    const statusFlushTimers = {};
+
     async function changeTaskStatusByIdx(idx, newStatus) {
       const t = currentRenderedTasks[idx];
       if (!t || t.status === newStatus) return;
@@ -1093,6 +1095,16 @@
           t.completedAt = res.updatedAt;
           renderCurrentTab();
         }
+
+        const timerKey = String(t.rowIndex);
+        clearTimeout(statusFlushTimers[timerKey]);
+        if (newStatus === 'Jarayonda' || newStatus === 'Bajarildi') {
+          statusFlushTimers[timerKey] = setTimeout(() => {
+            delete statusFlushTimers[timerKey];
+            apiPost({ action: 'FLUSH_STATUS_NOTIFY', chatId: CHAT_ID }).catch(() => {});
+          }, 10500);
+        }
+
         showToast(`Holat: ${newStatus}`);
       } catch (err) {
         t.status = prev;
