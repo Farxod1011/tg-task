@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css" />
   <style>
     :root {
+      color-scheme: dark;
       --bg: #0b1220;
       --surface: #151f32;
       --surface-2: #1e2c44;
@@ -36,6 +37,7 @@
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg); color: var(--text);
       min-height: 100vh; padding-bottom: 82px; overflow-x: hidden;
+      transition: background-color 0.2s, color 0.2s;
     }
 
     .screen { display: none; padding: 10px 12px; max-width: 680px; margin: 0 auto; }
@@ -227,7 +229,7 @@
 
     .task-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 7px; flex-wrap: wrap; }
     .tag-group { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; }
-    .task-top-right { display: flex; align-items: center; gap: 6px; }
+    .task-top-right { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
     .tag { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 7px; }
     .tag-prio { background: var(--red-soft); color: #fca5a5; }
     .tag-normal { background: rgba(148,163,184,0.14); color: var(--muted); }
@@ -251,6 +253,14 @@
       font-family: inherit; cursor: pointer;
     }
     .archive-pill-btn:active { transform: scale(0.96); }
+
+    .delete-pill-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--red-soft); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5;
+      padding: 3px 8px; border-radius: 7px; font-size: 11px; font-weight: 600;
+      font-family: inherit; cursor: pointer;
+    }
+    .delete-pill-btn:active { transform: scale(0.96); }
 
     .task-text { font-size: 14px; font-weight: 600; line-height: 1.42; margin-bottom: 9px; word-break: break-word; }
     .task-card.is-done .task-text { text-decoration: line-through; color: var(--muted); }
@@ -342,6 +352,57 @@
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
     #mainContent { min-height: 55vh; touch-action: pan-y; }
+
+    /* Oq tema (Light Theme) */
+    body.theme-light {
+      color-scheme: light;
+      --bg: #f1f5f9;
+      --surface: #ffffff;
+      --surface-2: #e2e8f0;
+      --border: rgba(15, 23, 42, 0.12);
+      --text: #0f172a;
+      --muted: #64748b;
+      --accent: #2563eb;
+      --accent-soft: rgba(37, 99, 235, 0.12);
+      --green: #059669;
+      --green-soft: rgba(5, 150, 105, 0.12);
+      --amber: #d97706;
+      --amber-soft: rgba(217, 119, 6, 0.13);
+      --red: #dc2626;
+      --red-soft: rgba(220, 38, 38, 0.12);
+    }
+    body.theme-light .card,
+    body.theme-light .task-card,
+    body.theme-light .user-card,
+    body.theme-light .app-header { box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06); }
+    body.theme-light .tab-btn:not(.active) .badge:not(.badge-alert) { background: rgba(15, 23, 42, 0.08); color: #475569; }
+    body.theme-light .chip-count { background: rgba(15, 23, 42, 0.08); color: #475569; }
+    body.theme-light .state-icon-pending,
+    body.theme-light .tag-st-jarayonda,
+    body.theme-light .archive-pill-btn,
+    body.theme-light .st-btn.active-jarayonda { color: #b45309; }
+    body.theme-light .state-icon-rejected,
+    body.theme-light .btn-danger,
+    body.theme-light .pending-alert-btn,
+    body.theme-light .chip.prio-active,
+    body.theme-light .tag-prio,
+    body.theme-light .delete-pill-btn { color: #dc2626; }
+    body.theme-light .chip.prio-active .chip-count { background: rgba(220, 38, 38, 0.16); color: #991b1b; }
+    body.theme-light .phone-verified-box,
+    body.theme-light .tag-st-bajarildi,
+    body.theme-light .st-btn.active-bajarildi { color: #047857; }
+    body.theme-light .user-role-pill,
+    body.theme-light .chip.active,
+    body.theme-light .tag-st-yangi,
+    body.theme-light .st-btn.active-yangi { color: #1d4ed8; }
+    body.theme-light .chip.active .chip-count { background: rgba(37, 99, 235, 0.16); color: #1e40af; }
+    body.theme-light .edit-pill-btn { color: #334155; }
+    body.theme-light .meta-item strong { color: #0f172a; }
+    body.theme-light .empty-state .fi { color: #94a3b8; }
+    body.theme-light .modal-backdrop { background: rgba(15, 23, 42, 0.45); }
+    body.theme-light .toast { background: #1e293b; color: #f8fafc; }
+    body.theme-light #phoneHelpNote { color: #b45309 !important; }
+    body.theme-light .user-sub-row strong { color: #1d4ed8 !important; }
   </style>
 </head>
 <body>
@@ -418,6 +479,9 @@
           <span class="pending-dot"></span>
           <i class="fi fi-rr-user-add"></i>
           <span id="hdrPendingText">0</span>
+        </button>
+        <button id="themeToggleBtn" class="icon-btn" type="button" title="Mavzuni almashtirish" onclick="toggleTheme()">
+          <i id="themeIcon" class="fi fi-rr-sun"></i>
         </button>
         <button id="refreshBtn" class="icon-btn" title="Yangilash" onclick="loadAppData(true)">
           <i id="refreshIcon" class="fi fi-rr-refresh"></i>
@@ -519,11 +583,11 @@
   <!-- MODAL: CONFIRM -->
   <div id="confirmModal" class="modal-backdrop" onclick="if(event.target===this) closeConfirm()">
     <div class="modal-sheet">
-      <h3 class="modal-title" style="margin-bottom:8px;"><i class="fi fi-rr-exclamation" style="color:var(--red);"></i> Tasdiqlang</h3>
+      <h3 class="modal-title" id="confirmTitle" style="margin-bottom:8px;"><i class="fi fi-rr-exclamation" style="color:var(--red);"></i> Tasdiqlang</h3>
       <p id="confirmText" class="subtitle" style="margin-bottom:16px;"></p>
       <div class="btn-row">
-        <button class="btn btn-outline" type="button" onclick="closeConfirm()">Bekor qilish</button>
-        <button id="confirmOkBtn" class="btn btn-danger" type="button"><i class="fi fi-rr-trash"></i> O‘chirish</button>
+        <button id="confirmCancelBtn" class="btn btn-outline" type="button" onclick="closeConfirm()">Yo‘q</button>
+        <button id="confirmOkBtn" class="btn btn-danger" type="button"><i class="fi fi-rr-trash"></i> Ha</button>
       </div>
     </div>
   </div>
@@ -534,8 +598,42 @@
 
     const SIX_HOURS_MS = 6 * 60 * 60 * 1000;
     const TWELVE_HOURS_MS = 12 * 60 * 60 * 1000;
+    const THEME_STORAGE_KEY = 'tt_theme_v1';
+
     const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
     if (tg) { tg.ready(); tg.expand(); }
+
+    function applyTheme(theme) {
+      const isLight = theme === 'light';
+      document.body.classList.toggle('theme-light', isLight);
+      const icon = document.getElementById('themeIcon');
+      if (icon) icon.className = isLight ? 'fi fi-rr-moon' : 'fi fi-rr-sun';
+      if (tg) {
+        try {
+          if (typeof tg.setHeaderColor === 'function') tg.setHeaderColor(isLight ? '#f1f5f9' : '#0b1220');
+          if (typeof tg.setBackgroundColor === 'function') tg.setBackgroundColor(isLight ? '#f1f5f9' : '#0b1220');
+        } catch (e) {}
+      }
+    }
+
+    function initTheme() {
+      let saved = '';
+      try { saved = localStorage.getItem(THEME_STORAGE_KEY) || ''; } catch (e) {}
+      if (saved === 'light' || saved === 'dark') {
+        applyTheme(saved);
+      } else {
+        const tgScheme = (tg && tg.colorScheme === 'light') ? 'light' : 'dark';
+        applyTheme(tgScheme);
+      }
+    }
+
+    function toggleTheme() {
+      const next = document.body.classList.contains('theme-light') ? 'dark' : 'light';
+      try { localStorage.setItem(THEME_STORAGE_KEY, next); } catch (e) {}
+      applyTheme(next);
+    }
+
+    initTheme();
 
     const tgUser = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user : {};
     const CHAT_ID = tgUser.id ? String(tgUser.id) : (new URLSearchParams(location.search).get('chatId') || '');
@@ -617,15 +715,25 @@
       return ms > 0 && (Date.now() - ms) >= TWELVE_HOURS_MS;
     }
 
+    function isTaskSender(t) {
+      if (!t) return false;
+      const myPos = state.user && state.user.position ? normStr(state.user.position) : '';
+      if (t.senderChatId) return String(t.senderChatId) === CHAT_ID;
+      return Boolean(myPos && t.senderName && normStr(t.senderName) === myPos);
+    }
+
     function canEditTask(t) {
       if (!t || t.status === 'Bajarildi') return false;
-      const myPos = state.user && state.user.position ? normStr(state.user.position) : '';
-      const isSender = (t.senderChatId && String(t.senderChatId) === CHAT_ID) || (myPos && t.senderName && normStr(t.senderName) === myPos);
-      if (!isSender) return false;
+      if (!isTaskSender(t)) return false;
       const ms = parseCreatedMsClient(t);
       if (!ms) return false;
       const diff = Date.now() - ms;
       return diff >= 0 && diff <= SIX_HOURS_MS;
+    }
+
+    function canDeleteTask(t) {
+      if (!t || t.status === 'Bajarildi') return false;
+      return isTaskSender(t);
     }
 
     function getEditTimeLeftLabel(t) {
@@ -1020,6 +1128,7 @@
         const cardExtra = (t.priority ? 'is-priority ' : '') + (t.status === 'Jarayonda' ? 'is-inprogress ' : '') + (t.status === 'Bajarildi' ? 'is-done' : '');
         const canChange = state.isAdmin || (myPos && normStr(t.position) === myPos);
         const editable = canEditTask(t);
+        const deletable = canDeleteTask(t);
         const timeLeft = editable ? getEditTimeLeftLabel(t) : '';
 
         return `
@@ -1033,6 +1142,7 @@
                 ${state.activeTab !== 'archive' && t.status === 'Bajarildi' ? `<button type="button" class="archive-pill-btn" onclick="archiveTaskByIdx(${idx})"><i class="fi fi-rr-box"></i> Arxivlash</button>` : ''}
                 ${state.activeTab === 'archive' ? `<button type="button" class="edit-pill-btn" onclick="unarchiveTaskByIdx(${idx})"><i class="fi fi-rr-undo"></i> Qaytarish</button>` : ''}
                 ${editable && state.activeTab !== 'archive' ? `<button type="button" class="edit-pill-btn" onclick="openEditTaskModal(${idx})"><i class="fi fi-rr-edit"></i> Tahrirlash <span class="edit-time-left">(${timeLeft})</span></button>` : ''}
+                ${deletable && state.activeTab !== 'archive' ? `<button type="button" class="delete-pill-btn" onclick="askDeleteTask(${idx})"><i class="fi fi-rr-trash"></i> O‘chirish</button>` : ''}
                 <span style="font-size:11px; color:var(--muted);">#${t.rowIndex}</span>
               </div>
             </div>
@@ -1180,8 +1290,48 @@
       }
     }
 
+    function askDeleteTask(idx) {
+      const t = currentRenderedTasks[idx];
+      if (!t || !canDeleteTask(t)) {
+        showToast('Bu vazifani o‘chirib bo‘lmaydi.');
+        return;
+      }
+      document.getElementById('confirmTitle').innerHTML = '<i class="fi fi-rr-exclamation" style="color:var(--red);"></i> Vazifani o‘chirish';
+      document.getElementById('confirmText').innerText = `«${t.task}» vazifasini jadvaldan va tizimdan butunlay o‘chirishni tasdiqlaysizmi?`;
+      document.getElementById('confirmCancelBtn').innerText = 'Yo‘q';
+      document.getElementById('confirmOkBtn').innerHTML = '<i class="fi fi-rr-trash"></i> Ha';
+
+      confirmCallback = async () => {
+        closeConfirm();
+        showToast('O‘chirilmoqda...');
+        try {
+          const res = await apiPost({
+            action: 'DELETE_TASK',
+            chatId: CHAT_ID,
+            rowIndex: t.rowIndex,
+            position: t.position,
+            task: t.task
+          });
+          if (!res.ok) throw new Error(res.error || 'O‘chirib bo‘lmadi');
+          clearTaskArchiveState(t);
+          state.tasks = state.tasks.filter(item => item !== t);
+          refreshTabCounts();
+          renderCurrentTab();
+          showToast('Vazifa butunlay o‘chirildi');
+        } catch (err) {
+          showToast('Xatolik: ' + err.message);
+        }
+      };
+      document.getElementById('confirmOkBtn').onclick = () => confirmCallback && confirmCallback();
+      document.getElementById('confirmModal').classList.add('open');
+    }
+
     function askDeleteUser(targetChatId, fio) {
+      document.getElementById('confirmTitle').innerHTML = '<i class="fi fi-rr-exclamation" style="color:var(--red);"></i> Tasdiqlang';
       document.getElementById('confirmText').innerText = `«${fio}» foydalanuvchisini tizimdan o‘chirib yuborishni tasdiqlaysizmi?`;
+      document.getElementById('confirmCancelBtn').innerText = 'Yo‘q';
+      document.getElementById('confirmOkBtn').innerHTML = '<i class="fi fi-rr-trash"></i> Ha';
+
       confirmCallback = async () => {
         closeConfirm();
         try {
