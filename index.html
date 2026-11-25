@@ -117,6 +117,26 @@
       font-size: 11px; font-weight: 600; color: #93c5fd; background: var(--accent-soft);
       padding: 2px 7px; border-radius: 99px; flex-shrink: 0;
     }
+    .app-header.has-pending {
+      border-color: rgba(239, 68, 68, 0.55);
+      box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.2);
+    }
+    .header-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .pending-alert-btn {
+      display: none; align-items: center; gap: 5px;
+      background: var(--red-soft); border: 1px solid rgba(239, 68, 68, 0.6);
+      color: #fecaca; padding: 4px 9px; border-radius: 99px;
+      font-size: 11.5px; font-weight: 700; font-family: inherit; cursor: pointer;
+      animation: pulseRed 1.8s infinite;
+    }
+    .pending-alert-btn .pending-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--red); flex-shrink: 0;
+    }
+    .pending-alert-btn:active { transform: scale(0.95); }
+    @keyframes pulseRed {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.45); }
+      50% { box-shadow: 0 0 0 5px rgba(239, 68, 68, 0); }
+    }
     .icon-btn {
       background: var(--surface-2); border: 1px solid var(--border); color: var(--text);
       width: 30px; height: 30px; border-radius: 8px;
@@ -366,15 +386,21 @@
   </div>
 
   <!-- 5. MAIN APP -->
-  <div id="screen-main" class="screen">
-    <div class="app-header">
+  <div class="app-header" id="appHeader">
       <div class="user-meta">
         <div class="user-name" id="hdrName">Foydalanuvchi</div>
         <div class="user-role-pill" id="hdrBadge"><i class="fi fi-rr-user"></i> <span>Xodim</span></div>
       </div>
-      <button id="refreshBtn" class="icon-btn" title="Yangilash" onclick="loadAppData(true)">
-        <i id="refreshIcon" class="fi fi-rr-refresh"></i>
-      </button>
+      <div class="header-actions">
+        <button id="hdrPendingBtn" class="pending-alert-btn" type="button" onclick="switchTab('users')" title="Tasdiqlash kutilmoqda">
+          <span class="pending-dot"></span>
+          <i class="fi fi-rr-user-add"></i>
+          <span id="hdrPendingText">0</span>
+        </button>
+        <button id="refreshBtn" class="icon-btn" title="Yangilash" onclick="loadAppData(true)">
+          <i id="refreshIcon" class="fi fi-rr-refresh"></i>
+        </button>
+      </div>
     </div>
 
     <div class="tabs" id="topTabs"></div>
@@ -665,6 +691,15 @@
         ? '<i class="fi fi-rr-shield-check"></i><span>Admin</span>'
         : `<i class="fi fi-rr-user"></i><span>${escHtml((state.user && state.user.position) || 'Xodim')}</span>`;
 
+      const pendCount = state.isAdmin ? state.pendingUsers.length : 0;
+      const appHeaderEl = document.getElementById('appHeader');
+      const hdrPendingBtn = document.getElementById('hdrPendingBtn');
+      if (appHeaderEl) appHeaderEl.classList.toggle('has-pending', pendCount > 0);
+      if (hdrPendingBtn) {
+        hdrPendingBtn.style.display = pendCount > 0 ? 'inline-flex' : 'none';
+        document.getElementById('hdrPendingText').innerText = `${pendCount} so‘rov`;
+      }
+      
       const posSel = document.getElementById('adminPositionFilter');
       const prevFilter = posSel.value;
       const uniquePositions = Array.from(new Set([...state.planPositions, ...state.assignablePositions, ...state.tasks.map(t => t.position).filter(Boolean)])).sort((a,b) => a.localeCompare(b));
