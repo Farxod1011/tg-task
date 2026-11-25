@@ -164,47 +164,44 @@
     .badge-alert { background: var(--red); color: #fff; }
 
     /* Filtrlar: Chapda kengayadigan qidiruv + O'ngda xodimlar saralashi */
+    /* Filtrlar: chapda ixcham/kengayadigan qidiruv + o'ngda xodim filtri */
     .filters-box { display: flex; flex-direction: column; gap: 7px; margin-bottom: 10px; }
-    .search-filter-row {
-      display: flex; align-items: center; gap: 7px; width: 100%;
-    }
+    .filter-toolbar { display: flex; align-items: center; gap: 7px; width: 100%; }
     .search-wrap {
-      position: relative;
-      flex: 0 0 116px;
-      min-width: 104px;
-      transition: flex-basis 0.25s ease, flex-grow 0.25s ease;
+      position: relative; flex: 0 0 112px; min-width: 96px;
+      transition: flex-basis 0.22s ease, flex-grow 0.22s ease;
     }
-    .emp-filter-wrap {
-      flex: 1 1 auto;
-      min-width: 96px;
-      transition: flex-basis 0.25s ease, flex-grow 0.25s ease, max-width 0.25s ease;
+    .filter-toolbar.search-expanded .search-wrap { flex: 1 1 65%; }
+    .pos-filter-wrap {
+      flex: 1 1 auto; min-width: 0;
+      transition: flex-basis 0.22s ease, flex-grow 0.22s ease;
     }
-    .search-filter-row.search-expanded .search-wrap {
-      flex: 1 1 68%;
-    }
-    .search-filter-row.search-expanded .emp-filter-wrap {
-      flex: 0 0 108px;
-      max-width: 112px;
-    }
+    .filter-toolbar.search-expanded .pos-filter-wrap { flex: 0 0 112px; }
     .search-icon {
-      position: absolute; left: 9px; top: 50%; transform: translateY(-50%);
+      position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
       color: var(--muted); font-size: 12.5px; pointer-events: none;
     }
     .search-wrap .input {
-      padding: 7px 26px 7px 28px; font-size: 13px; border-radius: 9px;
-      background: var(--surface); line-height: 1.3; height: 34px;
+      padding: 6px 26px 6px 28px; font-size: 12.5px; border-radius: 9px;
+      background: var(--surface); line-height: 1.35; height: 34px;
     }
     .search-clear {
       position: absolute; right: 3px; top: 50%; transform: translateY(-50%);
       background: none; border: none; color: var(--muted); font-size: 15px; cursor: pointer;
-      display: none; width: 24px; height: 24px; align-items: center; justify-content: center;
+      display: none; width: 22px; height: 22px; align-items: center; justify-content: center;
     }
-    .emp-filter-wrap .select {
-      padding: 6px 8px; font-size: 13px; border-radius: 9px;
+    .pos-filter-wrap .select {
+      padding: 6px 9px; font-size: 12.5px; border-radius: 9px;
       background: var(--surface); height: 34px;
-      text-overflow: ellipsis;
     }
-
+    .archive-pill-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--green-soft); border: 1px solid rgba(16,185,129,0.4); color: #6ee7b7;
+      padding: 3px 8px; border-radius: 7px; font-size: 11px; font-weight: 600;
+      font-family: inherit; cursor: pointer;
+    }
+    .archive-pill-btn:active { transform: scale(0.96); }
+    
     .filter-row {
       display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
       padding-bottom: 2px; scroll-behavior: smooth;
@@ -439,17 +436,16 @@
     <div class="tabs" id="topTabs"></div>
 
     <div id="filtersBox" class="filters-box">
-      <div id="searchFilterRow" class="search-filter-row">
+      <div class="filter-toolbar" id="filterToolbar">
         <div id="searchWrap" class="search-wrap">
           <i class="fi fi-rr-search search-icon"></i>
-          <input id="searchInput" type="text" class="input" placeholder="Qidirish..." onfocus="onSearchFocus()" onblur="onSearchBlur()" oninput="onSearchInput()" />
-          <button id="searchClearBtn" class="search-clear" type="button" onmousedown="event.preventDefault()" onclick="clearSearch()">
+          <input id="searchInput" type="text" class="input" placeholder="Qidirish..." onfocus="setSearchExpanded(true)" onblur="setSearchExpanded(false)" oninput="onSearchInput()" />
+          <button id="searchClearBtn" class="search-clear" type="button" onclick="clearSearch()">
             <i class="fi fi-rr-cross-small"></i>
           </button>
         </div>
-
-        <div class="emp-filter-wrap">
-          <select id="employeeFilter" class="select" onchange="renderCurrentTab()">
+        <div id="positionFilterWrap" class="pos-filter-wrap">
+          <select id="positionFilter" class="select" onchange="onPositionFilterChange()">
             <option value="">Barcha xodimlar</option>
           </select>
         </div>
