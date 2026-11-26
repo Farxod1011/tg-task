@@ -26,6 +26,8 @@
       --amber-soft: rgba(245, 158, 11, 0.16);
       --red: #ef4444;
       --red-soft: rgba(239, 68, 68, 0.16);
+      --grey: #64748b;
+      --grey-soft: rgba(148, 163, 184, 0.22);
       --radius: 13px;
     }
 
@@ -106,7 +108,7 @@
       color: #6ee7b7; padding: 10px 12px; border-radius: 10px; font-size: 14px; font-weight: 600;
     }
 
-    /* Ixcham yuqori Admin paneli */
+    /* Ixcham yuqori panel */
     .app-header {
       display: flex; align-items: center; justify-content: space-between; gap: 8px;
       margin-bottom: 8px; background: var(--surface); border: 1px solid var(--border);
@@ -225,7 +227,14 @@
     }
     .task-card.is-priority { border-left-color: var(--red); }
     .task-card.is-inprogress { border-left-color: var(--amber); }
+    .task-card.is-waiting-confirm { border-left-color: var(--grey); }
+    .task-card.is-pending-confirm {
+      border-color: rgba(239, 68, 68, 0.55);
+      border-left: 3px solid var(--red);
+      box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.16);
+    }
     .task-card.is-done { border-left-color: var(--green); opacity: 0.86; }
+    .task-card.is-cancelled { border-left-color: var(--red); opacity: 0.78; }
 
     .task-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 7px; flex-wrap: wrap; }
     .tag-group { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; }
@@ -235,7 +244,10 @@
     .tag-normal { background: rgba(148,163,184,0.14); color: var(--muted); }
     .tag-st-yangi { background: var(--accent-soft); color: #93c5fd; }
     .tag-st-jarayonda { background: var(--amber-soft); color: #fcd34d; }
+    .tag-st-pending { background: var(--grey-soft); color: #cbd5e1; }
+    .tag-st-confirm { background: var(--red-soft); color: #fca5a5; }
     .tag-st-bajarildi { background: var(--green-soft); color: #6ee7b7; }
+    .tag-st-cancelled { background: var(--red-soft); color: #fca5a5; }
 
     .edit-pill-btn {
       display: inline-flex; align-items: center; gap: 4px;
@@ -254,16 +266,17 @@
     }
     .archive-pill-btn:active { transform: scale(0.96); }
 
-    .delete-pill-btn {
+    .cancel-pill-btn {
       display: inline-flex; align-items: center; gap: 4px;
       background: var(--red-soft); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5;
       padding: 3px 8px; border-radius: 7px; font-size: 11px; font-weight: 600;
       font-family: inherit; cursor: pointer;
     }
-    .delete-pill-btn:active { transform: scale(0.96); }
+    .cancel-pill-btn:active { transform: scale(0.96); }
 
     .task-text { font-size: 14px; font-weight: 600; line-height: 1.42; margin-bottom: 9px; word-break: break-word; }
-    .task-card.is-done .task-text { text-decoration: line-through; color: var(--muted); }
+    .task-card.is-done .task-text,
+    .task-card.is-cancelled .task-text { text-decoration: line-through; color: var(--muted); }
 
     .task-meta { display: flex; flex-wrap: wrap; gap: 6px 13px; font-size: 12px; color: var(--muted); margin-bottom: 9px; }
     .meta-item { display: inline-flex; align-items: center; gap: 5px; }
@@ -282,6 +295,26 @@
     .st-btn.active-yangi { background: var(--accent-soft); border-color: var(--accent); color: #93c5fd; }
     .st-btn.active-jarayonda { background: var(--amber-soft); border-color: var(--amber); color: #fcd34d; }
     .st-btn.active-bajarildi { background: var(--green-soft); border-color: var(--green); color: #6ee7b7; }
+    /* Bajaruvchi Bajarildi bosganda seriy (kulrang) Jarayonda/Kutilmoqda holati */
+    .st-btn.active-pending {
+      background: var(--grey-soft); border-color: rgba(148, 163, 184, 0.48); color: #cbd5e1;
+    }
+    .st-btn.pending-locked {
+      background: var(--grey-soft); border-color: rgba(148, 163, 184, 0.35); color: #94a3b8;
+      cursor: default; opacity: 0.85;
+    }
+
+    /* Yuboruvchiga qizil tasdiqlash so'rovi bloki */
+    .confirm-req-box {
+      margin-top: 8px; padding: 9px 10px; border-radius: 10px;
+      background: var(--red-soft); border: 1px solid rgba(239, 68, 68, 0.45);
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .confirm-req-text {
+      display: flex; align-items: flex-start; gap: 7px;
+      font-size: 12.5px; font-weight: 600; color: #fecaca; line-height: 1.4;
+    }
+    .confirm-req-text .fi { font-size: 14px; color: var(--red); margin-top: 1px; flex-shrink: 0; }
 
     /* Foydalanuvchilar (Admin) */
     .section-title {
@@ -369,7 +402,9 @@
       --amber: #d97706;
       --amber-soft: rgba(217, 119, 6, 0.13);
       --red: #dc2626;
-      --red-soft: rgba(220, 38, 38, 0.12);
+      --red-soft: rgba(220, 38, 38, 0.11);
+      --grey: #64748b;
+      --grey-soft: rgba(100, 116, 139, 0.16);
     }
     body.theme-light .card,
     body.theme-light .task-card,
@@ -386,7 +421,10 @@
     body.theme-light .pending-alert-btn,
     body.theme-light .chip.prio-active,
     body.theme-light .tag-prio,
-    body.theme-light .delete-pill-btn { color: #dc2626; }
+    body.theme-light .tag-st-confirm,
+    body.theme-light .tag-st-cancelled,
+    body.theme-light .cancel-pill-btn,
+    body.theme-light .confirm-req-text { color: #b91c1c; }
     body.theme-light .chip.prio-active .chip-count { background: rgba(220, 38, 38, 0.16); color: #991b1b; }
     body.theme-light .phone-verified-box,
     body.theme-light .tag-st-bajarildi,
@@ -396,6 +434,9 @@
     body.theme-light .tag-st-yangi,
     body.theme-light .st-btn.active-yangi { color: #1d4ed8; }
     body.theme-light .chip.active .chip-count { background: rgba(37, 99, 235, 0.16); color: #1e40af; }
+    body.theme-light .tag-st-pending,
+    body.theme-light .st-btn.active-pending { color: #334155; border-color: rgba(100, 116, 139, 0.45); }
+    body.theme-light .st-btn.pending-locked { color: #64748b; border-color: rgba(100, 116, 139, 0.3); }
     body.theme-light .edit-pill-btn { color: #334155; }
     body.theme-light .meta-item strong { color: #0f172a; }
     body.theme-light .empty-state .fi { color: #94a3b8; }
@@ -475,7 +516,12 @@
         <div class="user-role-pill" id="hdrBadge"><i class="fi fi-rr-user"></i> <span>Xodim</span></div>
       </div>
       <div class="header-actions">
-        <button id="hdrPendingBtn" class="pending-alert-btn" type="button" onclick="switchTab('users')" title="Tasdiqlash kutilmoqda">
+        <button id="hdrConfirmBtn" class="pending-alert-btn" type="button" onclick="openPendingConfirmations()" title="Tasdiqlash kutilayotgan vazifalar">
+          <span class="pending-dot"></span>
+          <i class="fi fi-rr-check-circle"></i>
+          <span id="hdrConfirmText">0</span>
+        </button>
+        <button id="hdrPendingBtn" class="pending-alert-btn" type="button" onclick="switchTab('users')" title="Yangi foydalanuvchi so‘rovlari">
           <span class="pending-dot"></span>
           <i class="fi fi-rr-user-add"></i>
           <span id="hdrPendingText">0</span>
@@ -587,7 +633,7 @@
       <p id="confirmText" class="subtitle" style="margin-bottom:16px;"></p>
       <div class="btn-row">
         <button id="confirmCancelBtn" class="btn btn-outline" type="button" onclick="closeConfirm()">Yo‘q</button>
-        <button id="confirmOkBtn" class="btn btn-danger" type="button"><i class="fi fi-rr-trash"></i> Ha</button>
+        <button id="confirmOkBtn" class="btn btn-danger" type="button"><i class="fi fi-rr-ban"></i> Ha</button>
       </div>
     </div>
   </div>
@@ -679,7 +725,7 @@
       return parseDMYHMClient(t && t.completedAt);
     }
 
-    // ==================== MINI APP ARXIV (FAQAT LOCALSTORAGE, TASKS GA TEGMAYDI) ====================
+    // ==================== MINI APP ARXIV ====================
     function getArchiveMap() {
       try { return JSON.parse(localStorage.getItem(ARCHIVE_STORAGE_KEY) || '{}') || {}; }
       catch (e) { return {}; }
@@ -706,7 +752,10 @@
     }
 
     function isTaskArchived(t) {
-      if (!t || t.status !== 'Bajarildi') return false;
+      if (!t) return false;
+      if (t.status === 'Bekor qilingan') return true;
+      if (t.status !== 'Bajarildi') return false;
+      if (typeof t.isArchived === 'boolean') return t.isArchived;
       const map = getArchiveMap();
       const override = map[getTaskArchiveKey(t)];
       if (override === 'archived') return true;
@@ -722,8 +771,21 @@
       return Boolean(myPos && t.senderName && normStr(t.senderName) === myPos);
     }
 
+    function canConfirmTask(t) {
+      if (!t || t.status !== 'Tasdiqlashda') return false;
+      if (isTaskSender(t)) return true;
+      return Boolean(state.isAdmin && !t.senderChatId && !t.senderName);
+    }
+
+    function needsCompletionApproval(t) {
+      if (!t) return false;
+      if (isTaskSender(t)) return false;
+      if (!t.senderChatId && !t.senderName && state.isAdmin) return false;
+      return true;
+    }
+
     function canEditTask(t) {
-      if (!t || t.status === 'Bajarildi') return false;
+      if (!t || t.status === 'Bajarildi' || t.status === 'Bekor qilingan') return false;
       if (!isTaskSender(t)) return false;
       const ms = parseCreatedMsClient(t);
       if (!ms) return false;
@@ -731,8 +793,8 @@
       return diff >= 0 && diff <= SIX_HOURS_MS;
     }
 
-    function canDeleteTask(t) {
-      if (!t || t.status === 'Bajarildi') return false;
+    function canCancelTask(t) {
+      if (!t || t.status === 'Bajarildi' || t.status === 'Bekor qilingan') return false;
       return isTaskSender(t);
     }
 
@@ -875,20 +937,54 @@
     function getSentTasks() {
       const myPos = state.user && state.user.position ? normStr(state.user.position) : '';
       return state.tasks.filter(t =>
-        !isTaskArchived(t) &&
-        ((t.senderChatId === CHAT_ID) || (myPos && normStr(t.senderName) === myPos)) &&
-        (!myPos || normStr(t.position) !== myPos)
+        !isTaskArchived(t) && (
+          (((t.senderChatId === CHAT_ID) || (myPos && normStr(t.senderName) === myPos)) && (!myPos || normStr(t.position) !== myPos)) ||
+          (state.isAdmin && !t.senderChatId && !t.senderName && t.status === 'Tasdiqlashda')
+        )
       );
+    }
+
+    function getPendingConfirmTasks() {
+      return getSentTasks().filter(t => canConfirmTask(t));
     }
 
     function getArchivedTasks() {
       return state.tasks.filter(t => isTaskArchived(t));
     }
 
+    function updateHeaderAlerts() {
+      const pendUserCount = state.isAdmin ? state.pendingUsers.length : 0;
+      const pendConfirmCount = getPendingConfirmTasks().length;
+      const appHeaderEl = document.getElementById('appHeader');
+      const hdrPendingBtn = document.getElementById('hdrPendingBtn');
+      const hdrConfirmBtn = document.getElementById('hdrConfirmBtn');
+
+      if (appHeaderEl) appHeaderEl.classList.toggle('has-pending', pendUserCount > 0 || pendConfirmCount > 0);
+      if (hdrPendingBtn) {
+        hdrPendingBtn.style.display = pendUserCount > 0 ? 'inline-flex' : 'none';
+        document.getElementById('hdrPendingText').innerText = `${pendUserCount} so‘rov`;
+      }
+      if (hdrConfirmBtn) {
+        hdrConfirmBtn.style.display = pendConfirmCount > 0 ? 'inline-flex' : 'none';
+        document.getElementById('hdrConfirmText').innerText = `${pendConfirmCount} tasdiqlash`;
+      }
+    }
+
+    function openPendingConfirmations() {
+      state.statusFilter = '';
+      state.prioOnly = false;
+      document.querySelectorAll('.filter-row .chip[data-st]').forEach(c => c.classList.toggle('active', c.getAttribute('data-st') === ''));
+      const prioChip = document.getElementById('prioFilterChip');
+      if (prioChip) prioChip.classList.remove('prio-active');
+      switchTab('sent');
+    }
+
     function buildTabsList() {
+      const sentTasks = getSentTasks();
+      const pendingConfirmCount = sentTasks.filter(t => canConfirmTask(t)).length;
       const tabs = [
         { id: 'mine', label: 'Menga kelgan', icon: 'fi-rr-list-check', count: getMineTasks().length },
-        { id: 'sent', label: 'Yuborilgan', icon: 'fi-rr-paper-plane', count: getSentTasks().length }
+        { id: 'sent', label: 'Yuborilgan', icon: 'fi-rr-paper-plane', count: sentTasks.length, alert: pendingConfirmCount > 0 }
       ];
       if (state.isAdmin) {
         tabs.push({ id: 'users', label: 'Foydalanuvchilar', icon: 'fi-rr-users', count: state.pendingUsers.length || state.approvedUsers.length, alert: state.pendingUsers.length > 0 });
@@ -906,6 +1002,7 @@
           badge.classList.toggle('badge-alert', Boolean(t.alert));
         }
       });
+      updateHeaderAlerts();
     }
 
     function setupMainApp(instantCenter) {
@@ -914,14 +1011,7 @@
         ? '<i class="fi fi-rr-shield-check"></i><span>Admin</span>'
         : `<i class="fi fi-rr-user"></i><span>${escHtml((state.user && state.user.position) || 'Xodim')}</span>`;
 
-      const pendCount = state.isAdmin ? state.pendingUsers.length : 0;
-      const appHeaderEl = document.getElementById('appHeader');
-      const hdrPendingBtn = document.getElementById('hdrPendingBtn');
-      if (appHeaderEl) appHeaderEl.classList.toggle('has-pending', pendCount > 0);
-      if (hdrPendingBtn) {
-        hdrPendingBtn.style.display = pendCount > 0 ? 'inline-flex' : 'none';
-        document.getElementById('hdrPendingText').innerText = `${pendCount} so‘rov`;
-      }
+      updateHeaderAlerts();
 
       state.tabsList = buildTabsList();
       if (!state.activeTab || !state.tabsList.some(t => t.id === state.activeTab)) state.activeTab = state.tabsList[0].id;
@@ -1057,7 +1147,6 @@
       document.getElementById('filtersBox').style.display = isUsersTab ? 'none' : 'flex';
       if (isUsersTab) { renderUsersTab(); return; }
 
-      // Arxiv menyusida faqat Barchasi va Muhim filtrlari ko'rinadi
       document.querySelectorAll('#statusFilterRow .chip[data-st]').forEach(chip => {
         const stVal = chip.getAttribute('data-st');
         if (stVal) chip.style.display = isArchiveTab ? 'none' : 'inline-flex';
@@ -1067,7 +1156,6 @@
         ? getMineTasks()
         : (state.activeTab === 'sent' ? getSentTasks() : getArchivedTasks());
 
-      // O'ng tarafdagi xodimlar ro'yxatini joriy menyuga moslab A-Z tartibda to'ldiramiz
       const posSel = document.getElementById('positionFilter');
       if (posSel) {
         const namesSet = new Set();
@@ -1104,15 +1192,26 @@
 
       document.getElementById('cnt-all').innerText = baseList.length;
       document.getElementById('cnt-yangi').innerText = baseList.filter(t => t.status === 'Yangi').length;
-      document.getElementById('cnt-jarayonda').innerText = baseList.filter(t => t.status === 'Jarayonda').length;
+      document.getElementById('cnt-jarayonda').innerText = baseList.filter(t => t.status === 'Jarayonda' || t.status === 'Tasdiqlashda').length;
       document.getElementById('cnt-bajarildi').innerText = baseList.filter(t => t.status === 'Bajarildi').length;
       document.getElementById('cnt-muhim').innerText = baseList.filter(t => t.priority).length;
 
       let list = baseList.slice();
-      if (!isArchiveTab && state.statusFilter) list = list.filter(t => t.status === state.statusFilter);
+      if (!isArchiveTab && state.statusFilter) {
+        if (state.statusFilter === 'Jarayonda') {
+          list = list.filter(t => t.status === 'Jarayonda' || t.status === 'Tasdiqlashda');
+        } else {
+          list = list.filter(t => t.status === state.statusFilter);
+        }
+      }
       if (state.prioOnly) list = list.filter(t => t.priority);
       const q = normStr(state.searchQuery);
       if (q) list = list.filter(t => normStr(t.task).includes(q) || normStr(t.position).includes(q) || normStr(t.senderName).includes(q));
+
+      // Yuborilgan bo'limida tasdiqlash kutilayotgan vazifalar eng yuqorida ko'rinsin
+      if (state.activeTab === 'sent') {
+        list.sort((a, b) => (canConfirmTask(b) ? 1 : 0) - (canConfirmTask(a) ? 1 : 0));
+      }
 
       currentRenderedTasks = list;
       const container = document.getElementById('mainContent');
@@ -1124,11 +1223,41 @@
 
       const myPos = state.user && state.user.position ? normStr(state.user.position) : '';
       container.innerHTML = list.map((t, idx) => {
-        const stClass = t.status === 'Bajarildi' ? 'tag-st-bajarildi' : (t.status === 'Jarayonda' ? 'tag-st-jarayonda' : 'tag-st-yangi');
-        const cardExtra = (t.priority ? 'is-priority ' : '') + (t.status === 'Jarayonda' ? 'is-inprogress ' : '') + (t.status === 'Bajarildi' ? 'is-done' : '');
-        const canChange = state.isAdmin || (myPos && normStr(t.position) === myPos);
+        const isPendingConfirm = t.status === 'Tasdiqlashda';
+        const isCancelled = t.status === 'Bekor qilingan';
+        const showConfirmBox = canConfirmTask(t) && state.activeTab !== 'archive';
+        const isWaitingAssignee = isPendingConfirm && !showConfirmBox;
+
+        let stClass = 'tag-st-yangi';
+        let stLabel = escHtml(t.status);
+        if (t.status === 'Bajarildi') {
+          stClass = 'tag-st-bajarildi';
+        } else if (t.status === 'Jarayonda') {
+          stClass = 'tag-st-jarayonda';
+        } else if (isCancelled) {
+          stClass = 'tag-st-cancelled';
+          stLabel = '<i class="fi fi-rr-ban"></i> Bekor qilingan';
+        } else if (showConfirmBox) {
+          stClass = 'tag-st-confirm';
+          stLabel = '<i class="fi fi-rr-bell"></i> Tasdiqlash kutilmoqda';
+        } else if (isWaitingAssignee) {
+          stClass = 'tag-st-pending';
+          stLabel = '<i class="fi fi-rr-clock"></i> Jarayonda (tasdiqlashda)';
+        }
+
+        let cardExtra = '';
+        if (isCancelled) cardExtra = 'is-cancelled';
+        else if (showConfirmBox) cardExtra = 'is-pending-confirm';
+        else if (isWaitingAssignee) cardExtra = 'is-waiting-confirm';
+        else {
+          cardExtra = (t.priority ? 'is-priority ' : '') +
+            (t.status === 'Jarayonda' ? 'is-inprogress ' : '') +
+            (t.status === 'Bajarildi' ? 'is-done' : '');
+        }
+
+        const canChange = !isCancelled && (state.isAdmin || (myPos && normStr(t.position) === myPos)) && !showConfirmBox;
         const editable = canEditTask(t);
-        const deletable = canDeleteTask(t);
+        const cancellable = canCancelTask(t);
         const timeLeft = editable ? getEditTimeLeftLabel(t) : '';
 
         return `
@@ -1136,13 +1265,13 @@
             <div class="task-top">
               <div class="tag-group">
                 ${t.priority ? '<span class="tag tag-prio"><i class="fi fi-rr-flame"></i> Muhim</span>' : '<span class="tag tag-normal"><i class="fi fi-rr-tag"></i> Oddiy</span>'}
-                <span class="tag ${stClass}">${escHtml(t.status)}</span>
+                <span class="tag ${stClass}">${stLabel}</span>
               </div>
               <div class="task-top-right">
                 ${state.activeTab !== 'archive' && t.status === 'Bajarildi' ? `<button type="button" class="archive-pill-btn" onclick="archiveTaskByIdx(${idx})"><i class="fi fi-rr-box"></i> Arxivlash</button>` : ''}
-                ${state.activeTab === 'archive' ? `<button type="button" class="edit-pill-btn" onclick="unarchiveTaskByIdx(${idx})"><i class="fi fi-rr-undo"></i> Qaytarish</button>` : ''}
+                ${state.activeTab === 'archive' && t.status === 'Bajarildi' ? `<button type="button" class="edit-pill-btn" onclick="unarchiveTaskByIdx(${idx})"><i class="fi fi-rr-undo"></i> Qaytarish</button>` : ''}
                 ${editable && state.activeTab !== 'archive' ? `<button type="button" class="edit-pill-btn" onclick="openEditTaskModal(${idx})"><i class="fi fi-rr-edit"></i> Tahrirlash <span class="edit-time-left">(${timeLeft})</span></button>` : ''}
-                ${deletable && state.activeTab !== 'archive' ? `<button type="button" class="delete-pill-btn" onclick="askDeleteTask(${idx})"><i class="fi fi-rr-trash"></i> O‘chirish</button>` : ''}
+                ${cancellable && state.activeTab !== 'archive' ? `<button type="button" class="cancel-pill-btn" onclick="askCancelTask(${idx})"><i class="fi fi-rr-ban"></i> Bekor qilish</button>` : ''}
                 <span style="font-size:11px; color:var(--muted);">#${t.rowIndex}</span>
               </div>
             </div>
@@ -1154,11 +1283,26 @@
               ${t.hours ? `<span class="meta-item"><i class="fi fi-rr-clock"></i> <strong>${escHtml(t.hours)} soat</strong></span>` : ''}
               ${t.status === 'Bajarildi' && t.completedAt ? `<span class="meta-item"><i class="fi fi-rr-check-circle"></i> Bajarildi: <strong>${escHtml(t.completedAt)}</strong></span>` : ''}
             </div>
+            ${showConfirmBox ? `
+              <div class="confirm-req-box">
+                <div class="confirm-req-text">
+                  <i class="fi fi-rr-bell"></i>
+                  <span><strong>${escHtml(t.position)}</strong> vazifani «Bajarildi» deb belgiladi. Tasdiqlaysizmi?</span>
+                </div>
+                <div class="btn-row">
+                  <button type="button" class="btn btn-success btn-sm" onclick="confirmTaskCompletionByIdx(${idx}, 'APPROVE')"><i class="fi fi-rr-check"></i> Tasdiqlash</button>
+                  <button type="button" class="btn btn-danger btn-sm" onclick="confirmTaskCompletionByIdx(${idx}, 'REJECT')"><i class="fi fi-rr-cross-small"></i> Rad etish</button>
+                </div>
+              </div>
+            ` : ''}
             ${canChange && state.activeTab !== 'archive' ? `
               <div class="status-switch">
                 <button type="button" class="st-btn ${t.status === 'Yangi' ? 'active-yangi' : ''}" onclick="changeTaskStatusByIdx(${idx}, 'Yangi')">Yangi</button>
-                <button type="button" class="st-btn ${t.status === 'Jarayonda' ? 'active-jarayonda' : ''}" onclick="changeTaskStatusByIdx(${idx}, 'Jarayonda')">Jarayonda</button>
-                <button type="button" class="st-btn ${t.status === 'Bajarildi' ? 'active-bajarildi' : ''}" onclick="changeTaskStatusByIdx(${idx}, 'Bajarildi')"><i class="fi fi-rr-check"></i> Bajarildi</button>
+                <button type="button" class="st-btn ${t.status === 'Jarayonda' ? 'active-jarayonda' : (isWaitingAssignee ? 'active-pending' : '')}" onclick="changeTaskStatusByIdx(${idx}, 'Jarayonda')">Jarayonda</button>
+                ${isWaitingAssignee
+                  ? `<button type="button" class="st-btn pending-locked" disabled><i class="fi fi-rr-clock"></i> Kutilmoqda</button>`
+                  : `<button type="button" class="st-btn ${t.status === 'Bajarildi' ? 'active-bajarildi' : ''}" onclick="changeTaskStatusByIdx(${idx}, 'Bajarildi')"><i class="fi fi-rr-check"></i> Bajarildi</button>`
+                }
               </div>
             ` : ''}
           </div>
@@ -1166,59 +1310,124 @@
       }).join('');
     }
 
-    function archiveTaskByIdx(idx) {
+    async function archiveTaskByIdx(idx) {
       const t = currentRenderedTasks[idx];
       if (!t || t.status !== 'Bajarildi') return;
+      t.archived = true;
+      t.isArchived = true;
       setTaskArchiveState(t, 'archived');
       refreshTabCounts();
       renderCurrentTab();
       showToast('Arxivga o‘tkazildi');
+      apiPost({ action: 'ARCHIVE_TASK', chatId: CHAT_ID, rowIndex: t.rowIndex, position: t.position, task: t.task, archived: true }).catch(() => {});
     }
 
-    function unarchiveTaskByIdx(idx) {
+    async function unarchiveTaskByIdx(idx) {
       const t = currentRenderedTasks[idx];
-      if (!t) return;
+      if (!t || t.status !== 'Bajarildi') return;
+      t.archived = false;
+      t.isArchived = false;
       setTaskArchiveState(t, 'active');
       refreshTabCounts();
       renderCurrentTab();
       showToast('Arxivdan chiqarildi');
+      apiPost({ action: 'ARCHIVE_TASK', chatId: CHAT_ID, rowIndex: t.rowIndex, position: t.position, task: t.task, archived: false }).catch(() => {});
     }
 
     const statusFlushTimers = {};
 
     async function changeTaskStatusByIdx(idx, newStatus) {
       const t = currentRenderedTasks[idx];
-      if (!t || t.status === newStatus) return;
+      if (!t || t.status === newStatus || t.status === 'Bekor qilingan') return;
+
       const prev = t.status;
       const prevCompleted = t.completedAt;
-      t.status = newStatus;
-      if (newStatus !== 'Bajarildi') {
+      const prevCompletedMs = t.completedAtMs;
+      const optimisticStatus = (newStatus === 'Bajarildi' && needsCompletionApproval(t))
+        ? 'Tasdiqlashda'
+        : newStatus;
+
+      t.status = optimisticStatus;
+      if (optimisticStatus !== 'Bajarildi') {
         t.completedAt = '';
+        t.completedAtMs = 0;
+        t.archived = false;
+        t.isArchived = false;
         clearTaskArchiveState(t);
       }
       refreshTabCounts();
       renderCurrentTab();
+
       try {
         const res = await apiPost({ action: 'UPDATE_TASK_STATUS', chatId: CHAT_ID, rowIndex: t.rowIndex, position: t.position, task: t.task, status: newStatus });
         if (!res.ok) throw new Error(res.error || 'Yangilab bo‘lmadi');
-        if (newStatus === 'Bajarildi' && res.updatedAt) {
-          t.completedAt = res.updatedAt;
-          renderCurrentTab();
+
+        const serverStatus = res.status || optimisticStatus;
+        t.status = serverStatus;
+        if (serverStatus === 'Bajarildi') {
+          t.completedAt = res.completedAt || res.updatedAt || '';
+          t.completedAtMs = res.completedAtMs || Date.now();
         }
+        refreshTabCounts();
+        renderCurrentTab();
 
         const timerKey = String(t.rowIndex);
         clearTimeout(statusFlushTimers[timerKey]);
-        if (newStatus === 'Jarayonda' || newStatus === 'Bajarildi') {
+        if (serverStatus === 'Jarayonda' || serverStatus === 'Bajarildi' || serverStatus === 'Tasdiqlashda') {
           statusFlushTimers[timerKey] = setTimeout(() => {
             delete statusFlushTimers[timerKey];
             apiPost({ action: 'FLUSH_STATUS_NOTIFY', chatId: CHAT_ID }).catch(() => {});
           }, 10500);
         }
 
-        showToast(`Holat: ${newStatus}`);
+        if (serverStatus === 'Tasdiqlashda') {
+          showToast('Yuboruvchiga tasdiqlash so‘rovi jo‘natildi');
+        } else {
+          showToast(`Holat: ${serverStatus}`);
+        }
       } catch (err) {
         t.status = prev;
         t.completedAt = prevCompleted;
+        t.completedAtMs = prevCompletedMs;
+        refreshTabCounts();
+        renderCurrentTab();
+        showToast('Xatolik: ' + err.message);
+      }
+    }
+
+    async function confirmTaskCompletionByIdx(idx, decision) {
+      const t = currentRenderedTasks[idx];
+      if (!t || !canConfirmTask(t)) return;
+
+      const prevStatus = t.status;
+      const prevComp = t.completedAt;
+      const prevCompMs = t.completedAtMs;
+
+      t.status = decision === 'APPROVE' ? 'Bajarildi' : 'Jarayonda';
+      refreshTabCounts();
+      renderCurrentTab();
+
+      try {
+        const res = await apiPost({
+          action: 'CONFIRM_TASK_COMPLETION',
+          chatId: CHAT_ID,
+          rowIndex: t.rowIndex,
+          position: t.position,
+          task: t.task,
+          decision: decision
+        });
+        if (!res.ok) throw new Error(res.error || 'Amal bajarilmadi');
+
+        t.status = res.status || t.status;
+        t.completedAt = res.completedAt || '';
+        t.completedAtMs = res.completedAtMs || 0;
+        refreshTabCounts();
+        renderCurrentTab();
+        showToast(decision === 'APPROVE' ? 'Vazifa tasdiqlandi (Bajarildi)!' : 'Rad etildi (Jarayonda holatiga qaytdi)');
+      } catch (err) {
+        t.status = prevStatus;
+        t.completedAt = prevComp;
+        t.completedAtMs = prevCompMs;
         refreshTabCounts();
         renderCurrentTab();
         showToast('Xatolik: ' + err.message);
@@ -1290,34 +1499,37 @@
       }
     }
 
-    function askDeleteTask(idx) {
+    function askCancelTask(idx) {
       const t = currentRenderedTasks[idx];
-      if (!t || !canDeleteTask(t)) {
-        showToast('Bu vazifani o‘chirib bo‘lmaydi.');
+      if (!t || !canCancelTask(t)) {
+        showToast('Bu vazifani bekor qilib bo‘lmaydi.');
         return;
       }
-      document.getElementById('confirmTitle').innerHTML = '<i class="fi fi-rr-exclamation" style="color:var(--red);"></i> Vazifani o‘chirish';
-      document.getElementById('confirmText').innerText = `«${t.task}» vazifasini jadvaldan va tizimdan butunlay o‘chirishni tasdiqlaysizmi?`;
+      document.getElementById('confirmTitle').innerHTML = '<i class="fi fi-rr-ban" style="color:var(--red);"></i> Vazifani bekor qilish';
+      document.getElementById('confirmText').innerText = `«${t.task}» vazifasini bekor qilib, Arxivga o‘tkazishni tasdiqlaysizmi?`;
       document.getElementById('confirmCancelBtn').innerText = 'Yo‘q';
-      document.getElementById('confirmOkBtn').innerHTML = '<i class="fi fi-rr-trash"></i> Ha';
+      document.getElementById('confirmOkBtn').innerHTML = '<i class="fi fi-rr-ban"></i> Ha';
 
       confirmCallback = async () => {
         closeConfirm();
-        showToast('O‘chirilmoqda...');
+        showToast('Bekor qilinmoqda...');
         try {
           const res = await apiPost({
-            action: 'DELETE_TASK',
+            action: 'CANCEL_TASK',
             chatId: CHAT_ID,
             rowIndex: t.rowIndex,
             position: t.position,
             task: t.task
           });
-          if (!res.ok) throw new Error(res.error || 'O‘chirib bo‘lmadi');
-          clearTaskArchiveState(t);
-          state.tasks = state.tasks.filter(item => item !== t);
+          if (!res.ok) throw new Error(res.error || 'Bekor qilib bo‘lmadi');
+          t.status = 'Bekor qilingan';
+          t.archived = true;
+          t.isArchived = true;
+          t.completedAt = '';
+          t.completedAtMs = 0;
           refreshTabCounts();
           renderCurrentTab();
-          showToast('Vazifa butunlay o‘chirildi');
+          showToast('Vazifa bekor qilindi va Arxivga o‘tkazildi');
         } catch (err) {
           showToast('Xatolik: ' + err.message);
         }
@@ -1376,7 +1588,7 @@
 
     function openEditTaskModal(idx) {
       const t = currentRenderedTasks[idx];
-      if (!t || !canEditTask(t)) { showToast('Tahrirlash muddati (6 soat) tugagan yoki vazifa bajarilgan.'); return; }
+      if (!t || !canEditTask(t)) { showToast('Tahrirlash muddati (6 soat) tugagan yoki vazifa yopilgan.'); return; }
       editingTask = { rowIndex: t.rowIndex, origPosition: t.position, origTask: t.task };
       fillPositionSelect(t.position);
       document.getElementById('taskModalTitle').innerHTML = '<i class="fi fi-rr-edit" style="color:var(--amber);"></i> Vazifani tahrirlash';
